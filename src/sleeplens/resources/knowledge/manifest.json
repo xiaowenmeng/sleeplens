@@ -1,0 +1,283 @@
+{
+  "bundle_version": "sleep-knowledge-v7",
+  "sources": [
+    {
+      "source_id": "B1",
+      "title": "SleepLens record definitions",
+      "filename": "B1.md",
+      "version": "4.0",
+      "effective_date": "2026-11-11",
+      "checked_at": "2026-11-11",
+      "source_url": null,
+      "synthetic": true,
+      "scope": "Record semantics; seed provenance remains documented separately"
+    },
+    {
+      "source_id": "B2",
+      "title": "SleepLens product analysis and service rules",
+      "filename": "B2.md",
+      "version": "3.0",
+      "effective_date": "2026-11-11",
+      "checked_at": "2026-11-11",
+      "source_url": null,
+      "synthetic": true,
+      "scope": "Product-defined display rules; not clinical standards"
+    },
+    {
+      "source_id": "H1",
+      "title": "CDC · About Sleep",
+      "filename": "H1.md",
+      "version": "2024-05-15-summary-v2",
+      "effective_date": "2024-05-15",
+      "checked_at": "2026-11-24",
+      "source_url": "https://www.cdc.gov/sleep/about/",
+      "synthetic": false,
+      "scope": "General adult reference",
+      "section_topics": {
+        "AdultDuration": [
+          "duration"
+        ],
+        "Quality": [
+          "quality",
+          "daytime"
+        ],
+        "Habits": [
+          "general_advice"
+        ]
+      }
+    },
+    {
+      "source_id": "H2",
+      "title": "NIH/NHLBI · Healthy Sleep Habits",
+      "filename": "H2.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+      "synthetic": false,
+      "scope": "Adult sleep habits and shift-work guidance",
+      "section_topics": {
+        "Schedule": [
+          "routine",
+          "general_advice",
+          "duration"
+        ],
+        "WindDown": [
+          "relaxation",
+          "screens",
+          "general_advice"
+        ],
+        "Caffeine": [
+          "caffeine",
+          "alcohol",
+          "general_advice"
+        ],
+        "Naps": [
+          "naps"
+        ],
+        "ShiftWork": [
+          "shift_work"
+        ]
+      }
+    },
+    {
+      "source_id": "H3",
+      "title": "NIH/NHLBI · Insomnia Treatment",
+      "filename": "H3.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhlbi.nih.gov/health/insomnia/treatment",
+      "synthetic": false,
+      "scope": "Insomnia treatment education; no individualized prescription",
+      "section_topics": {
+        "StimulusControl": [
+          "insomnia",
+          "night_waking"
+        ],
+        "CBTI": [
+          "persistent_insomnia",
+          "cbti"
+        ],
+        "Medicines": [
+          "medication"
+        ]
+      }
+    },
+    {
+      "source_id": "H4",
+      "title": "NHS · Insomnia",
+      "filename": "H4.md",
+      "version": "2024-03-19-summary-v1",
+      "effective_date": "2024-03-19",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhs.uk/conditions/insomnia/",
+      "synthetic": false,
+      "scope": "Insomnia self-help and care-seeking guidance",
+      "section_topics": {
+        "FirstSteps": [
+          "insomnia",
+          "routine"
+        ],
+        "WhenToSeekHelp": [
+          "persistent_insomnia",
+          "daytime",
+          "help"
+        ],
+        "SleepAids": [
+          "medication"
+        ]
+      }
+    },
+    {
+      "source_id": "H5",
+      "title": "NIH/NHLBI · Sleep Apnea Symptoms",
+      "filename": "H5.md",
+      "version": "2025-01-09-summary-v1",
+      "effective_date": "2025-01-09",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhlbi.nih.gov/health/sleep-apnea/symptoms",
+      "synthetic": false,
+      "scope": "Symptoms warranting assessment; not a diagnosis",
+      "section_topics": {
+        "BreathingSymptoms": [
+          "breathing",
+          "daytime"
+        ]
+      }
+    },
+    {
+      "source_id": "H6",
+      "title": "NIH/NHLBI ? Sleep Phases and Stages",
+      "filename": "H6.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-11",
+      "source_url": "https://www.nhlbi.nih.gov/health/sleep/stages-of-sleep",
+      "synthetic": false,
+      "scope": "General sleep physiology; no universal stage target",
+      "section_topics": {
+        "NREM": [
+          "sleep_stages",
+          "deep_sleep",
+          "light_sleep"
+        ],
+        "REM": [
+          "sleep_stages",
+          "rem_sleep"
+        ],
+        "Pattern": [
+          "stage_distribution",
+          "sleep_stages",
+          "night_waking"
+        ]
+      }
+    },
+    {
+      "source_id": "H7",
+      "title": "NIH/NHLBI ? Your Sleep/Wake Cycle",
+      "filename": "H7.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-11",
+      "source_url": "https://www.nhlbi.nih.gov/health/sleep/sleep-wake-cycle",
+      "synthetic": false,
+      "scope": "General circadian physiology; no universal bedtime",
+      "section_topics": {
+        "Clock": [
+          "circadian",
+          "routine"
+        ],
+        "EveningLight": [
+          "circadian",
+          "screens"
+        ]
+      }
+    },
+    {
+      "source_id": "H8",
+      "title": "NIH/NHLBI ? Insomnia Symptoms",
+      "filename": "H8.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-11",
+      "source_url": "https://www.nhlbi.nih.gov/health/insomnia/symptoms",
+      "synthetic": false,
+      "scope": "Symptom context; no awakening-count diagnostic cutoff",
+      "section_topics": {
+        "NightWaking": [
+          "night_waking",
+          "quality",
+          "daytime"
+        ],
+        "SymptomDiary": [
+          "sleep_diary",
+          "night_waking"
+        ]
+      }
+    },
+    {
+      "source_id": "H9",
+      "title": "NIH/NHLBI ? Insomnia Diagnosis",
+      "filename": "H9.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-11",
+      "source_url": "https://www.nhlbi.nih.gov/health/insomnia/diagnosis",
+      "synthetic": false,
+      "scope": "Clinical assessment and diary context; not self-diagnosis",
+      "section_topics": {
+        "Diary": [
+          "sleep_diary"
+        ],
+        "Evaluation": [
+          "help",
+          "night_waking",
+          "daytime"
+        ]
+      }
+    },
+    {
+      "source_id": "H10",
+      "title": "Google Health ? Sleep Stage Estimates",
+      "filename": "H10.md",
+      "version": "undated-summary-v1",
+      "effective_date": null,
+      "checked_at": "2026-11-11",
+      "source_url": "https://support.google.com/googlehealth/answer/14236712?hl=en",
+      "synthetic": false,
+      "scope": "Manufacturer-specific Fitbit/Pixel Watch information; not a universal device definition",
+      "section_topics": {
+        "Estimates": [
+          "wearables",
+          "sleep_stages"
+        ],
+        "Benchmarks": [
+          "stage_distribution",
+          "wearables"
+        ],
+        "AwakeDefinition": [
+          "sleep_diary",
+          "wearables"
+        ]
+      }
+    },
+    {
+      "source_id": "H11",
+      "title": "AASM ? Consumer Sleep Technology Position Statement (2018)",
+      "filename": "H11.md",
+      "version": "2018-05-15-summary-v1",
+      "effective_date": "2018-05-15",
+      "checked_at": "2026-11-11",
+      "source_url": "https://pubmed.ncbi.nlm.nih.gov/29734997/",
+      "synthetic": false,
+      "scope": "Historical statement; not current approval status of a specific product",
+      "section_topics": {
+        "ClinicalUse": [
+          "wearables",
+          "help"
+        ]
+      }
+    }
+  ]
+}

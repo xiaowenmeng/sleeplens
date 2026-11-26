@@ -1,0 +1,9 @@
+{
+  "provenance": "Developer-authored candidate rewrites for offline application replay; these are not new model outputs or original record data.",
+  "fixture": "display_sleep.json",
+  "questions": ["Explain the selected sleep records, focusing on the most useful observations.", "中文回答"],
+  "selection": {"profile_id": "P01", "start_date": "2026-10-19", "end_date": "2026-10-25", "compare_previous": true},
+  "expected": {"current_mean_sleep_min": 446.2857142857143, "previous_mean_sleep_min": 437.14285714285717, "valid_nights_each": 7, "shortest_date": "2026-10-22", "shortest_sleep_min": 339, "shortest_awake_min": 49},
+  "english_candidate": "From 19 to 25 October, you averaged about 7 hours 26 minutes of sleep a night; the previous week averaged about 7 hours 17 minutes, so the two weekly averages are close.\n\n22 October stands out as the shortest night: 5 hours 39 minutes of sleep, with 49 minutes awake during the night. As a next step, notice whether you wake refreshed or feel sleepy during the day, and compare that with these nights.[H1:Quality]",
+  "chinese_candidate": "10月19日至25日，你平均每晚睡了约7小时26分钟；前一周约7小时17分钟，两周平均时长比较接近。\n\n值得留意的是10月22日：那晚睡得最短，只有5小时39分钟，中途清醒49分钟。接下来可以留意醒来是否恢复精神、白天是否困倦，和这几晚的记录对照着看。[H1:Quality]"
+}
