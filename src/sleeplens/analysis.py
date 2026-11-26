@@ -115,8 +115,9 @@ def analyze_sleep(profile_id: str, start_date: str, end_date: str,
     except OverflowError:
         return fail("invalid_input", "date_out_of_range", "The preceding period exceeds supported calendar dates.")
     result.update(profile_id=profile_id, period=_period(start, end), granularity="day" if nights == 1 else "week")
-    if end >= current_day:
-        return fail("unsupported_period", "period_not_finished", "Only completed periods ending before today can be analyzed.")
+    if end > current_day:
+        # Today's waking date is last night's sleep, which has already ended.
+        return fail("unsupported_period", "period_not_finished", "Only periods ending on or before today's waking date can be analyzed.")
     try:
         dataset = load_dataset()
     except DataQualityError as exc:

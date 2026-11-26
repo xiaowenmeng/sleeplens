@@ -17,12 +17,19 @@ from sleeplens.knowledge import load_knowledge
 from sleeplens.record_grounding import QUANTITIES, measurement
 
 
-WEEK = dict(profile_id="P01", start_date="2026-10-19", end_date="2026-10-25", compare_previous=True)
+WEEK = dict(profile_id="P01", start_date="2026-11-20", end_date="2026-11-26", compare_previous=True)
+
+
+@pytest.fixture(autouse=True)
+def fixed_today(monkeypatch):
+    # The display week ends on a recent date; pin the clock so it stays "completed".
+    monkeypatch.setattr("sleeplens.agent.berlin_today", lambda: date(2026, 12, 26))
+    monkeypatch.setattr("sleeplens.analysis.berlin_today", lambda: date(2026, 12, 26))
 
 
 @pytest.fixture
 def records():
-    return analyze_sleep(**WEEK, today=date(2026, 11, 24))
+    return analyze_sleep(**WEEK, today=date(2026, 12, 26))
 
 
 def check(text, records):
@@ -30,38 +37,38 @@ def check(text, records):
 
 
 @pytest.mark.parametrize("text", [
-    "Your average was about 7 h 26 min.",
-    "Your mean recorded sleep was about 7 hours 26 minutes a night.",
-    "平均每晚睡了约7小时26分钟。",
-    "平均每晚睡了7小时26.3分钟。",
+    "Your average was about 7 h 18 min.",
+    "Your mean recorded sleep was about 7 hours 18 minutes a night.",
+    "平均每晚睡了约7小时18分钟。",
+    "平均每晚睡了7小时17.7分钟。",
     "The previous week averaged about 7 hours 17 minutes.",
-    "The previous week (12–18 October) averaged about 7 hours 17 minutes.",
-    "19–25 October: your mean sleep was about 7 hours 26 minutes.",
-    "All seven nights from 19 to 25 October are valid.",
-    "Your average sleep was 7.44 hours.",
-    "The mean difference from the previous week was 9 minutes.",
-    "Your average was about 7 h 26 min, roughly 9 minutes more than the previous week's 7 h 17 min.",
-    "The previous week averaged about 7 hours 17 minutes, so this week's mean was roughly 9 minutes longer.",
-    "22 October: 5 h 39 min of sleep with 2 awakenings and 49 minutes awake.",
-    "22 October: 5 hours 39 minutes of sleep with 49 minutes awake across two awakenings.",
+    "The previous week (13–19 November) averaged about 7 hours 17 minutes.",
+    "20–26 November: your mean sleep was about 7 hours 18 minutes.",
+    "All seven nights from 20 to 26 November are valid.",
+    "Your average sleep was 7.30 hours.",
+    "The mean difference from the previous week was 0.6 minutes.",
+    "Your average was about 7 h 18 min, roughly 0.6 minutes more than the previous week's 7 h 17 min.",
+    "The previous week averaged about 7 hours 17 minutes, so this week's mean was roughly 0.6 minutes longer.",
+    "23 November: 5 h 39 min of sleep with 2 awakenings and 49 minutes awake.",
+    "23 November: 5 hours 39 minutes of sleep with 49 minutes awake across two awakenings.",
 ])
 def test_supported_rounded_means_and_natural_english_sentences_pass(text, records):
     assert check(text, records) is None
 
 
 @pytest.mark.parametrize("text", [
-    "平均每晚睡了7小时25分钟。",  # Rounding cannot move a full minute.
-    "平均每晚睡了7小时26.0分钟。",  # Written decimal precision matters.
-    "Your average sleep was 7.43 hours.",
-    "The previous week averaged 7 h 26 min.",
-    "The previous week (12–17 October) averaged 7 h 17 min.",
-    "The mean difference from the previous week was 10 minutes.",
-    "Your average was roughly 9 minutes shorter than the previous week.",
-    "22 October: 5 hours 39.3 minutes of sleep.",  # Raw minutes stay exact.
-    "22 October: 6 hours 42 minutes of sleep.",  # Correct value, wrong date.
-    "23 October: 5 hours 39 minutes of sleep.",
-    "22 October: 2 awakenings and 48 minutes awake.",
-    "22 October: 49 awakenings and 2 minutes awake.",
+    "平均每晚睡了7小时16分钟。",  # Rounding cannot move a full minute.
+    "平均每晚睡了7小时18.0分钟。",  # Written decimal precision matters.
+    "Your average sleep was 7.29 hours.",
+    "The previous week averaged 7 h 17.7 min.",  # The current week's mean.
+    "The previous week (13–18 November) averaged 7 h 17 min.",
+    "The mean difference from the previous week was 1.6 minutes.",
+    "Your average was roughly 0.6 minutes shorter than the previous week.",
+    "23 November: 5 hours 39.3 minutes of sleep.",  # Raw minutes stay exact.
+    "23 November: 6 hours 42 minutes of sleep.",  # Correct value, wrong date.
+    "24 November: 5 hours 39 minutes of sleep.",
+    "23 November: 2 awakenings and 48 minutes awake.",
+    "23 November: 49 awakenings and 2 minutes awake.",
 ])
 def test_rounding_does_not_allow_wrong_fields_dates_directions_or_precision(text, records):
     assert check(text, records)
@@ -74,8 +81,8 @@ def test_counts_and_minutes_are_separate_quantities():
 
 
 def test_complete_coverage_cannot_be_claimed_for_a_week_with_gaps():
-    output = analyze_sleep("P02", "2026-10-19", "2026-10-25", False, today=date(2026, 11, 24))
-    assert check("All seven nights from 19 to 25 October are valid.", output)
+    output = analyze_sleep("P02", "2026-11-20", "2026-11-26", False, today=date(2026, 12, 26))
+    assert check("All seven nights from 20 to 26 November are valid.", output)
 
 
 class Client:
@@ -94,9 +101,9 @@ class Client:
 
 
 def test_weekly_explanation_with_rounded_mean_is_displayed_without_repair():
-    answer = ("2026-10-19 to 2026-10-25: your mean sleep was about 7 hours 26 minutes. "
-              "The previous week averaged about 7 hours 17 minutes, roughly 9 minutes less.\n\n"
-              "22 October was the shortest night: 5 hours 39 minutes of sleep, "
+    answer = ("2026-11-20 to 2026-11-26: your mean sleep was about 7 hours 18 minutes. "
+              "The previous week averaged about 7 hours 17 minutes, roughly 0.6 minutes less.\n\n"
+              "23 November was the shortest night: 5 hours 39 minutes of sleep, "
               "with 2 awakenings and 49 minutes awake. The weekly average hides that shorter night.")
     client = Client(answer)
     result = ChatSession(client).ask(
@@ -113,8 +120,8 @@ def test_a_real_numeric_error_still_falls_back_to_a_compact_record_table():
     assert result["status"] == "needs_review"
     assert "999" not in result["answer"] + result["verified_record_facts"]
     assert "|" in result["verified_record_facts"]
-    assert "446.3" in result["verified_record_facts"] and "437.1" in result["verified_record_facts"]
-    assert "7/7" in result["verified_record_facts"] and "+9.1" in result["verified_record_facts"]
+    assert "437.7" in result["verified_record_facts"] and "437.1" in result["verified_record_facts"]
+    assert "7/7" in result["verified_record_facts"] and "+0.6" in result["verified_record_facts"]
     assert "could not be verified" not in result["answer"]
 
 
@@ -128,8 +135,8 @@ def test_health_numbers_keep_their_source_qualifiers_after_record_rounding_is_re
 @pytest.mark.parametrize("valid", [True, False])
 def test_web_shows_the_interpretation_or_one_notice_with_a_record_table(monkeypatch, tmp_path, valid):
     monkeypatch.chdir(tmp_path)
-    answer = ("Your mean recorded sleep was about 7 hours 26 minutes.\n\n"
-              "22 October was the shortest night: 5 hours 39 minutes of sleep, "
+    answer = ("Your mean recorded sleep was about 7 hours 18 minutes.\n\n"
+              "23 November was the shortest night: 5 hours 39 minutes of sleep, "
               "with 2 awakenings and 49 minutes awake.") if valid else "The mean recorded sleep was 999 minutes."
     client = Client(answer)
     monkeypatch.setattr("sleeplens.dashboard.create_model", lambda: (client, Settings(api_key="offline")))
@@ -143,5 +150,5 @@ def test_web_shows_the_interpretation_or_one_notice_with_a_record_table(monkeypa
         assert answer in shown and not turn.get("verified_record_facts")
     else:
         assert turn["status"] == "needs_review" and len(app.warning) == 1
-        assert "| Dates |" in shown and "446.3" in shown and "999" not in shown
+        assert "| Dates |" in shown and "437.7" in shown and "999" not in shown
     assert "unverified interpretation is excluded" not in shown

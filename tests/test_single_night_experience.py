@@ -20,8 +20,8 @@ from sleeplens.knowledge import load_knowledge
 from sleeplens.query_policy import plan_query, search_query
 
 
-DAY = dict(profile_id="P01", start_date="2026-10-19", end_date="2026-10-19", compare_previous=False)
-QUESTION = "你好，帮我分析一下2026年10月19日的睡眠记录。"
+DAY = dict(profile_id="P01", start_date="2026-11-20", end_date="2026-11-20", compare_previous=False)
+QUESTION = "你好，帮我分析一下2026年11月20日的睡眠记录。"
 FEEDBACK = "我醒来后很容易就入睡了。"
 FIRST = ("这晚记录到睡眠7小时45分钟，夜间醒来2次，中途清醒合计8分钟。"
          "记录中的清醒时间较短；结合醒后能否再睡着，可以进一步理解这些夜醒对你的影响。[H8:NightWaking] "
@@ -64,7 +64,7 @@ def evidence(args=DAY, *, search=True, proposal=None):
 
 @pytest.fixture(autouse=True)
 def clock(monkeypatch):
-    monkeypatch.setattr("sleeplens.agent.berlin_today", lambda: date(2026, 11, 24))
+    monkeypatch.setattr("sleeplens.agent.berlin_today", lambda: date(2026, 12, 26))
 
 
 def seed(*tail):
@@ -94,7 +94,7 @@ def test_three_turn_updates_keep_date_reports_and_answered_topics(feedback, answ
     for turn in (second, third):
         assert turn["record_context"]["source"] == "history"
         assert turn["record_context"]["scope_matches"]
-        assert turn["response_plan"]["period"] == ["2026-10-19", "2026-10-19"]
+        assert turn["response_plan"]["period"] == ["2026-11-20", "2026-11-20"]
         assert "EXPERIENCE_CONTEXT_DATA" in turn["system_prompt"]
         assert "followup" in turn["business_skill"]["sections"]
     reports = third["experience_context"]["reports"]
@@ -135,24 +135,24 @@ def test_model_plan_refinement_keeps_raw_subjective_context():
 
 
 def test_english_feedback_is_scoped_without_full_metric_inheritance():
-    previous = {"task": "combined", "profile_id": "P01", "resolved_period": ["2026-10-19"] * 2,
+    previous = {"task": "combined", "profile_id": "P01", "resolved_period": ["2026-11-20"] * 2,
                 "metrics": ["mean", "deep", "light", "rem", "awakenings"],
                 "experience_context": {"pending_questions": ["return_to_sleep"]}}
     plan = plan_query("I fell back asleep easily.", previous=previous, selected_query=DAY)
     assert plan.followup and plan.experience_reply
-    assert plan.period == ("2026-10-19", "2026-10-19")
+    assert plan.period == ("2026-11-20", "2026-11-20")
     assert plan.metrics == ("awake",)
     assert "insomnia" not in plan.topics
 
 
 @pytest.mark.parametrize("next_question", ["深睡是多少分钟？", "为什么白天还是困？"])
 def test_feedback_and_new_question_preserve_both_parts(next_question):
-    previous = {"task": "combined", "profile_id": "P01", "resolved_period": ["2026-10-19"] * 2,
+    previous = {"task": "combined", "profile_id": "P01", "resolved_period": ["2026-11-20"] * 2,
                 "metrics": ["mean", "deep", "light", "rem", "awakenings"]}
     plan = plan_query(FEEDBACK + next_question, previous=previous, selected_query=DAY)
     assert plan.experience_reply and plan.followup
     assert "return_to_sleep" in plan.experience_fields
-    assert plan.period == ("2026-10-19", "2026-10-19")
+    assert plan.period == ("2026-11-20", "2026-11-20")
     if "深睡" in next_question:
         assert "deep" in plan.metrics
     else:
@@ -169,7 +169,7 @@ def test_unbound_subjective_reply_does_not_assume_page_date():
 
 
 @pytest.mark.parametrize("change", [
-    {"profile_id": "P03"}, {"start_date": "2026-10-20", "end_date": "2026-10-20"},
+    {"profile_id": "P03"}, {"start_date": "2026-11-21", "end_date": "2026-11-21"},
 ])
 def test_changed_page_scope_does_not_attach_old_experience(change):
     session, client, _ = seed(SECOND, "你指的是哪次醒来后的感受？")
@@ -183,11 +183,11 @@ def test_changed_page_scope_does_not_attach_old_experience(change):
 
 
 def test_explicit_new_night_clears_reports_and_queries_new_record():
-    other = {**DAY, "start_date": "2026-10-20", "end_date": "2026-10-20"}
+    other = {**DAY, "start_date": "2026-11-21", "end_date": "2026-11-21"}
     row = analyze_sleep(**other)["daily_records"]["current"][0]
     session, _, _ = seed(SECOND, evidence(other, search=False), f"这晚记录睡眠{row['sleep_min']}分钟，值得结合自己的感受看。")
     session.ask(FEEDBACK, selected_query=DAY)
-    result = session.ask("再分析一下2026年10月20日的睡眠记录。", selected_query=DAY)
+    result = session.ask("再分析一下2026年11月21日的睡眠记录。", selected_query=DAY)
     assert result["status"] == "answered"
     assert result["tool_events"][0]["validated_arguments"] == other
     assert not result["experience_context"]["reports"]
@@ -214,13 +214,13 @@ def test_actual_record_gaps_are_preserved(monkeypatch, fault, answer, state):
         from sleeplens.data import load_dataset
         dataset = load_dataset()
         dataset = replace(dataset, records=tuple(r for r in dataset.records
-                          if not (r.profile_id == "P01" and r.record_date == date(2026, 10, 19))))
+                          if not (r.profile_id == "P01" and r.record_date == date(2026, 11, 20))))
         monkeypatch.setattr("sleeplens.analysis.load_dataset", lambda: dataset)
     elif fault == "details":
         from sleeplens.data import DETAIL_FIELDS, load_dataset
         dataset = load_dataset()
         dataset = replace(dataset, records=tuple(replace(r, **dict.fromkeys(DETAIL_FIELDS))
-                          if r.profile_id == "P01" and r.record_date == date(2026, 10, 19) else r
+                          if r.profile_id == "P01" and r.record_date == date(2026, 11, 20) else r
                           for r in dataset.records))
         monkeypatch.setattr("sleeplens.analysis.load_dataset", lambda: dataset)
     else:

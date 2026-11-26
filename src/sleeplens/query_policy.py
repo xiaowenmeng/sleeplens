@@ -4,7 +4,7 @@ import re
 from dataclasses import asdict, dataclass, replace
 from datetime import timedelta
 
-from sleeplens.knowledge import TOPIC_TERMS
+from sleeplens.knowledge import TOPIC_TERMS, term_matches
 from sleeplens.application_dialogue import application_dialogue_kind, product_field_kind, split_introduction
 from sleeplens.date_resolution import explicit_period
 from sleeplens.experience_context import feedback_fields
@@ -12,8 +12,7 @@ from sleeplens.reply_policy import named_stage_metrics
 
 
 def matches(term, text):
-    return (bool(re.search(r"(?<![a-z])" + re.escape(term) + r"(?![a-z])", text.lower()))
-            if term.isascii() else term in text)
+    return term_matches(term, text.lower())
 
 
 @dataclass(frozen=True)
@@ -283,7 +282,7 @@ def plan_query(question, *, previous=None, today=None, selected_query=None):
         end = today - timedelta(days=today.weekday() + 1)
         period = ((end - timedelta(days=6)).isoformat(), end.isoformat())
     elif today and re.search(r"最近[七7]天|过去[七7]天|(?:最近|过去|近)[一1]周|last (?:seven|7) days|past (?:week|seven days|7 days)", text):
-        period = ((today - timedelta(days=7)).isoformat(), (today - timedelta(days=1)).isoformat())
+        period = ((today - timedelta(days=6)).isoformat(), today.isoformat())
     dates = re.findall(r"\d{4}-\d{2}-\d{2}", text)
     if len(dates) == 2:
         period = tuple(dates)

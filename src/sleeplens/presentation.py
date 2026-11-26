@@ -15,7 +15,7 @@ ERROR_TEXT = {
     "invalid_period": "请选择一个醒来日期，或正好包含7天的起止日期。",
     "single_day_comparison_not_supported": "单日查询请关闭与前7夜比较。",
     "date_out_of_range": "无法计算超出日历范围的前一周期。",
-    "period_not_finished": "只能分析在今天之前已结束的周期。",
+    "period_not_finished": "只能分析截至今天醒来日期（昨晚的睡眠）的记录。",
     "dataset_unavailable": "无法读取本地数据，未生成统计结果。",
 }
 

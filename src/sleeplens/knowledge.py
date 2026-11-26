@@ -20,7 +20,7 @@ TOPIC_TERMS = {
     "routine": ("routine", "schedule", "wake time", "bedtime", "作息", "起床", "规律", "熬夜", "周末补觉"),
     "relaxation": ("relax", "wind down", "stress", "焦虑", "放松", "压力", "想事情"),
     "screens": ("screen", "phone", "屏幕", "手机", "刷视频"),
-    "naps": ("nap", "午睡", "补觉"),
+    "naps": ("nap", "napping", "午睡", "补觉"),
     "shift_work": ("shift work", "night shift", "夜班", "倒班"),
     "breathing": ("apnea", "snor", "gasp", "breathing pauses", "打鼾", "打呼", "憋醒", "呼吸暂停"),
     "daytime": ("daytime sleep", "tired", "fatigue", "sleepy", "白天困", "嗜睡", "疲倦"),
@@ -38,6 +38,21 @@ TOPIC_TERMS = {
     "circadian": ("circadian", "body clock", "生物钟", "昼夜节律", "入睡晚", "睡得晚", "凌晨入睡"),
     "sleep_diary": ("sleep diary", "sleep latency", "睡眠日记", "入睡耗时", "入睡潜伏期"),
 }
+
+
+def term_matches(term, lower_text):
+    """Match a topic term in lower-cased text, allowing English word endings.
+
+    Terms of four or more letters accept any ending ("snor" -> "snoring",
+    "tracker" -> "trackers"). Shorter terms accept only a plural "s", so
+    "rem" does not match "remember" and "tea" does not match "team".
+    """
+    if not term.isascii():
+        return term in lower_text
+    ending = r"\w*" if len(term) >= 4 else r"s?(?![a-z])"
+    return bool(re.search(r"(?<![a-z])" + re.escape(term) + ending, lower_text))
+
+
 STOP_WORDS = {"the", "and", "for", "with", "sleep", "sleeping", "how", "what", "can", "does", "about", "before", "after", "from", "this", "that"}
 
 
@@ -80,8 +95,7 @@ def search_sleep_knowledge(query: str, *, excluded_topics=()) -> dict:
     query = query.strip()
     lower = query.lower()
     topics = {topic for topic, terms in TOPIC_TERMS.items()
-              if any((bool(re.search(r"(?<![a-z])" + re.escape(term) + r"(?![a-z])", lower))
-                      if term.isascii() else term in lower) for term in terms)}
+              if any(term_matches(term, lower) for term in terms)}
     words = set(re.findall(r"[a-z][a-z0-9-]{2,}", lower)) - STOP_WORDS
     try:
         bundle = load_knowledge()

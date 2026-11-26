@@ -16,6 +16,9 @@ from sleeplens.response_planning import build_response_plan
 
 
 WEEK = dict(profile_id="P01", start_date="2026-10-19", end_date="2026-10-25", compare_previous=False)
+# Display-data week for the nightly-table tests; WEEK above pairs with the regression fixture.
+DISPLAY_WEEK = dict(profile_id="P01", start_date="2026-11-20", end_date="2026-11-26", compare_previous=False)
+DISPLAY_TODAY = date(2026, 12, 26)
 
 
 class Client:
@@ -100,26 +103,26 @@ def test_waking_interpretation_does_not_force_nightly_table(question):
     ("English", "Show deep sleep night by night for the selected week, table only."),
 ])
 def test_nightly_table_does_not_prepend_means_or_internal_checks(language, question):
-    output = analyze_sleep(**WEEK, today=date(2026, 11, 24))
-    plan = plan_query(question, today=date(2026, 11, 24), selected_query=WEEK)
+    output = analyze_sleep(**DISPLAY_WEEK, today=DISPLAY_TODAY)
+    plan = plan_query(question, today=DISPLAY_TODAY, selected_query=DISPLAY_WEEK)
     answer = render_facts(output, plan, language)
-    assert "|" in answer and "2026-10-22" in answer
+    assert "|" in answer and "2026-11-23" in answer
     assert "平均每晚深睡" not in answer and "Mean deep sleep" not in answer
     assert "中午" not in answer and "noon" not in answer
 
 
 def test_requested_mean_and_nightly_detail_are_both_retained():
-    output = analyze_sleep(**WEEK, today=date(2026, 11, 24))
-    plan = plan_query("给出所选这周平均深睡时长，并逐夜列出。", today=date(2026, 11, 24), selected_query=WEEK)
+    output = analyze_sleep(**DISPLAY_WEEK, today=DISPLAY_TODAY)
+    plan = plan_query("给出所选这周平均深睡时长，并逐夜列出。", today=DISPLAY_TODAY, selected_query=DISPLAY_WEEK)
     answer = render_facts(output, plan, "Chinese")
     assert "平均每晚深睡" in answer and "|" in answer
 
 
 def test_nightly_onsets_do_not_explain_internal_average_algorithm():
-    output = analyze_sleep(**WEEK, today=date(2026, 11, 24))
-    plan = plan_query("逐夜列出所选这周入睡时刻。", today=date(2026, 11, 24), selected_query=WEEK)
+    output = analyze_sleep(**DISPLAY_WEEK, today=DISPLAY_TODAY)
+    plan = plan_query("逐夜列出所选这周入睡时刻。", today=DISPLAY_TODAY, selected_query=DISPLAY_WEEK)
     answer = render_facts(output, plan, "Chinese")
-    assert "2026-10-22" in answer and "|" in answer
+    assert "2026-11-23" in answer and "|" in answer
     assert "中午" not in answer and "平均入睡" not in answer
 
 

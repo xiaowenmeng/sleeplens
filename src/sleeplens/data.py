@@ -4,7 +4,6 @@ import json
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from zoneinfo import ZoneInfo
-from importlib.resources import files
 from pathlib import Path
 
 
@@ -74,9 +73,15 @@ def _unique_object(pairs):
 
 
 def load_dataset(path: Path | None = None) -> SleepDataset:
-    # Browsing and agent tools share this default. The original fixed records
-    # remain available through the internal path seam for regression tests.
-    resource = path if path is not None else files("sleeplens").joinpath("fixtures/display_sleep.json")
+    """Browsing and agent tools share the default: the rolling display window.
+
+    A path loads a fixed JSON file instead, such as the regression fixture or
+    the committed display snapshot used by offline checks.
+    """
+    if path is None:
+        from sleeplens.display_data import display_end_date, rolling_dataset
+        return rolling_dataset(display_end_date())
+    resource = path
     try:
         raw = json.loads(resource.read_text(encoding="utf-8"), object_pairs_hook=_unique_object)
     except (json.JSONDecodeError, UnicodeError):

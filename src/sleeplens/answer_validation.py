@@ -4,7 +4,7 @@ import json
 import re
 from dataclasses import dataclass, replace
 
-from sleeplens.knowledge import TOPIC_TERMS
+from sleeplens.knowledge import TOPIC_TERMS, term_matches
 from sleeplens.application_dialogue import is_product_description
 from sleeplens.record_grounding import NUMBER, QUANTITIES, cited_quantity_supported, health_context, record_validation_text, supports_measurement, validate_record_claims, discourse_quantity, product_definition_quantity
 
@@ -450,8 +450,7 @@ def needs_health_evidence(question, answer):
     if re.search(r"成人|睡多久|几小时.*够|需要.*睡|应该.*睡|how (?:much|many).*sleep|enough sleep|hours.*need", question, re.I):
         return True
     lower = (question + " " + answer).lower()
-    return any((bool(re.search(r"(?<![a-z])" + re.escape(term) + r"(?![a-z])", lower))
-                if term.isascii() else term in lower) for topic, terms in TOPIC_TERMS.items()
+    return any(term_matches(term, lower) for topic, terms in TOPIC_TERMS.items()
                if topic not in {"duration", "quality", "general_advice"} for term in terms)
 
 
