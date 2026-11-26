@@ -9,6 +9,7 @@ from sleeplens.data import DETAIL_FIELDS, DataQualityError, PROFILE_IDS, SleepDa
 SCHEMA_VERSION = "sleep-analysis-v2"
 RULE_VERSION = "sleep-rules-v2"
 MIN_COMPARISON_NIGHTS = 4  # Product display rule, not a medical/statistical threshold.
+SUPPORTED_NIGHTS = (1, 7, 14)  # One night, one week, or the whole two-week display window.
 
 
 def berlin_today() -> date:
@@ -76,7 +77,7 @@ def detail_statistics(records, *, nights=7):
 
 def analyze_sleep(profile_id: str, start_date: str, end_date: str,
                   compare_previous: bool, *, today: date | None = None) -> dict:
-    """Read a completed single waking date or analyze seven consecutive dates.
+    """Read a completed single waking date or analyze 7 or 14 consecutive dates.
 
     ``today`` is an internal test clock and is NOT exposed in the model schema.
     Numeric precision is retained here; the CLI/UI controls display rounding.
@@ -105,16 +106,19 @@ def analyze_sleep(profile_id: str, start_date: str, end_date: str,
     except (ValueError, TypeError):
         return fail("invalid_input", "invalid_date", "Dates must be real calendar dates in YYYY-MM-DD form.")
     nights = (end - start).days + 1
-    if nights not in {1, 7}:
-        return fail("invalid_input", "invalid_period", "Request a single waking date or exactly seven consecutive dates.")
+    if nights not in SUPPORTED_NIGHTS:
+        return fail("invalid_input", "invalid_period", "Request a single waking date or exactly 7 or 14 consecutive dates.")
     if nights == 1 and compare_previous:
         return fail("invalid_input", "single_day_comparison_not_supported", "Single-night lookup does not apply a weekly comparison; set compare_previous=false.")
+    if nights == 14 and compare_previous:
+        return fail("invalid_input", "two_week_comparison_not_supported",
+                    "A 14-day lookup does not compare with an earlier period; to compare weeks, request the later 7 days with compare_previous=true.")
     try:
         previous_start = start - timedelta(days=7) if compare_previous else None
         previous_end = start - timedelta(days=1) if compare_previous else None
     except OverflowError:
         return fail("invalid_input", "date_out_of_range", "The preceding period exceeds supported calendar dates.")
-    result.update(profile_id=profile_id, period=_period(start, end), granularity="day" if nights == 1 else "week")
+    result.update(profile_id=profile_id, period=_period(start, end), granularity={1: "day", 7: "week", 14: "two_weeks"}[nights])
     if end > current_day:
         # Today's waking date is last night's sleep, which has already ended.
         return fail("unsupported_period", "period_not_finished", "Only periods ending on or before today's waking date can be analyzed.")

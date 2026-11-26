@@ -2,7 +2,7 @@
 
 import re
 from dataclasses import asdict, dataclass, replace
-from datetime import timedelta
+from datetime import date, timedelta
 
 from sleeplens.knowledge import TOPIC_TERMS, term_matches
 from sleeplens.application_dialogue import application_dialogue_kind, product_field_kind, split_introduction
@@ -137,7 +137,14 @@ def plan_query(question, *, previous=None, today=None, selected_query=None):
                 topics = set(section.get("topics", []))
     record = bool(re.search(r"记录|平均|均值|覆盖|缺失|哪.*[天晚夜]|最[长短少多]|睡了多久|睡眠.*比较|比较.*睡眠|(?:这周|本周|上周).*睡|最近.*睡眠|\bp0[123]\b|\b(?:record|records|average|coverage|compare|shortest|longest)\b", text))
     record = record or bool(profile)
-    comparison_request = bool(re.search(r"(?:跟|和|与|比).{0,4}(?:前一周|此前一周|上周)|compare.*(?:preceding|previous)|compared with.*week", text))
+    # The week being compared against ("than last week", "vs the previous week",
+    # "跟上周比"). Its spans also tell the period logic below that such a
+    # "last week" is the baseline, not the week the user is asking about.
+    baseline_spans = [match.span() for match in re.finditer(
+        r"(?:跟|和|与|比).{0,4}(?:前一周|此前一周|上周)"
+        r"|(?:\bthan\b|\bcompared?\b|\bcomparing\b|\bcomparison\b|\bvs\.?|\bversus\b|\bagainst\b)[^.?!。？！]{0,40}?"
+        r"(?:(?:the\s+)?(?:previous|preceding|prior|last)\s+week|the\s+week\s+before)", text)]
+    comparison_request = bool(baseline_spans or re.search(r"compare.*(?:preceding|previous)|compared with.*week", text))
     comparison_request = comparison_request or bool(re.search(r"比较(?:一下|下)?(?:前一周|上周)", text))
     if comparison_request and previous.get("resolved_period") and not knowledge_only:
         followup = True
@@ -278,9 +285,15 @@ def plan_query(question, *, previous=None, today=None, selected_query=None):
         metrics.append("comparison")
     profile = re.search(r"(?<![a-z0-9])p0[123](?![a-z0-9])", text)
     period = None
-    if today and re.search(r"上周|上一周|last week", text) and not re.search(r"比上周|和上周|与上周|with last week|than last week", text):
+    # "Last week" names the requested period unless it only appears as the
+    # comparison baseline ("compare this week to last week").
+    named_last_week = any(not any(start <= begin and end <= stop for start, stop in baseline_spans)
+                          for begin, end in (m.span() for m in re.finditer(r"上周|上一周|last week", text)))
+    if today and named_last_week and not re.search(r"比上周|和上周|与上周|with last week|than last week", text):
         end = today - timedelta(days=today.weekday() + 1)
         period = ((end - timedelta(days=6)).isoformat(), end.isoformat())
+    elif today and re.search(r"(?:最近|过去|近)(?:两|二|2)(?:个)?(?:周|星期)|(?:最近|过去|近)(?:十四|14)天|(?:last|past) (?:two weeks|2 weeks|fortnight|fourteen days|14 days)", text):
+        period = ((today - timedelta(days=13)).isoformat(), today.isoformat())
     elif today and re.search(r"最近[七7]天|过去[七7]天|(?:最近|过去|近)[一1]周|last (?:seven|7) days|past (?:week|seven days|7 days)", text):
         period = ((today - timedelta(days=6)).isoformat(), today.isoformat())
     dates = re.findall(r"\d{4}-\d{2}-\d{2}", text)
@@ -312,6 +325,18 @@ def plan_query(question, *, previous=None, today=None, selected_query=None):
         metrics = [metric for metric in metrics if metric != "comparison"]
     if period and period[0] == period[1]:
         comparison = False
+    # While viewing the 14-day window, "compare with the previous week" means
+    # its newer week against its older week, both of which are in the window.
+    window = period or ((selected_query or {}).get("start_date"), (selected_query or {}).get("end_date"))
+    try:
+        window_days = (date.fromisoformat(window[1]) - date.fromisoformat(window[0])).days + 1
+    except (TypeError, ValueError):
+        window_days = None
+    if window_days == 14:
+        if comparison and not explicit:
+            period = ((date.fromisoformat(window[1]) - timedelta(days=6)).isoformat(), window[1])
+        else:
+            comparison = False
     if experience_reply and not knowledge_only and not explicit and not profile:
         if previous.get("resolved_period"):
             task = "combined"
@@ -523,9 +548,10 @@ def render_detail_facts(output, requested, language, *, daily=False, include_mea
             items.append(f"{chinese if zh else english}：{formatted}{unit}")
     intro = f"{dates.get('start_date')}—{dates.get('end_date')}"
     text = "" if daily and not include_means else intro + "\n" + ("；" if zh else "; ").join(items) + ("。" if zh else ".")
-    if count < 7:
-        text += (f"\n{count}/7晚有详细记录，缺失未补零。" if zh else
-                 f"\n{count}/7 nights have detailed records; missing nights were not filled with zero.")
+    expected = stats["expected_nights"]
+    if count < expected:
+        text += (f"\n{count}/{expected}晚有详细记录，缺失未补零。" if zh else
+                 f"\n{count}/{expected} nights have detailed records; missing nights were not filled with zero.")
     if daily:
         fields = {"sleep_onset": "sleep_onset", "wake_time": "wake_time", "awakenings": "night_awakenings",
                   "awake": "awake_min", "deep": "deep_sleep_min", "light": "light_sleep_min", "rem": "rem_sleep_min"}
@@ -579,13 +605,15 @@ def render_facts(output, plan, language):
             hours, minutes = divmod(round(mean, 1), 60)
             duration = f"{int(hours)}小时{minutes:g}分钟" if zh else f"{int(hours)} h {minutes:g} min"
             dates = output.get("period") or {}
-            label = f"你查看的这一周（{dates.get('start_date', '')}—{dates.get('end_date', '')}）"
+            span = "这两周" if current["expected_nights"] == 14 else "这一周"
+            label = f"你查看的{span}（{dates.get('start_date', '')}—{dates.get('end_date', '')}）"
             parts.append(f"{label}平均每晚睡了{duration}（{mean:.1f}分钟）。" if zh else f"Average recorded sleep: {duration} ({mean:.1f} minutes).")
-            if current["valid_nights"] < 7:
-                parts.append(f"均值仅依据{current['valid_nights']}/7晚有效记录。" if zh else f"Based on {current['valid_nights']}/7 recorded nights only.")
+            expected = current["expected_nights"]
+            if current["valid_nights"] < expected:
+                parts.append(f"均值仅依据{current['valid_nights']}/{expected}晚有效记录。" if zh else f"Based on {current['valid_nights']}/{expected} recorded nights only.")
     if "coverage" in metrics:
-        n = current["valid_nights"]
-        parts.append(f"有{n}/7晚有效记录，缺少{7-n}晚，覆盖率{current['coverage']:.1%}。" if zh else f"{n}/7 recorded nights; {7-n} unavailable; coverage {current['coverage']:.1%}.")
+        n, expected = current["valid_nights"], current["expected_nights"]
+        parts.append(f"有{n}/{expected}晚有效记录，缺少{expected-n}晚，覆盖率{current['coverage']:.1%}。" if zh else f"{n}/{expected} recorded nights; {expected-n} unavailable; coverage {current['coverage']:.1%}.")
     daily = (output.get("daily_records") or {}).get("current") or []
     valid = [row for row in daily if row["sleep_valid"]]
     if "extrema" in metrics:

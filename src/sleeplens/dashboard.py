@@ -34,7 +34,7 @@ class DashboardSession:
         self.analysis = None
         initial = default_query()
         self.apply_selection(initial["profile_id"], initial["start_date"], initial["compare_previous"],
-                             days=1 if initial["start_date"] == initial["end_date"] else 7)
+                             days=selection_days(initial))
 
     def reset_chat(self):
         if self._client is not None:
@@ -43,10 +43,10 @@ class DashboardSession:
         self.turns = []
 
     def apply_selection(self, profile_id: str, start_date: str, compare_previous: bool, *, days=7):
-        if days not in {1, 7}:
-            raise ValueError("Choose one day or seven days")
-        if days == 1:
-            compare_previous = False
+        if days not in {1, 7, 14}:
+            raise ValueError("Choose one, seven or fourteen days")
+        if days != 7:
+            compare_previous = False  # Only a week is compared with the preceding week.
         try:
             end_date = (parse_iso_date(start_date) + timedelta(days=days - 1)).isoformat()
         except (ValueError, TypeError, OverflowError):
@@ -101,6 +101,11 @@ class DashboardSession:
             except ConfigError:
                 raise ModelError("The sleep question service is unavailable.") from None
         return self._client.complete(messages, tools, timeout=timeout)
+
+
+def selection_days(selection: dict) -> int:
+    """Number of waking dates a selection covers (1, 7 or 14)."""
+    return (parse_iso_date(selection["end_date"]) - parse_iso_date(selection["start_date"])).days + 1
 
 
 def chart_rows(analysis: dict) -> list[dict]:

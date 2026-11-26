@@ -6,6 +6,7 @@ inside its first evidence-tool call without an extra model round trip.
 import copy
 import json
 import re
+from datetime import date
 from dataclasses import replace
 
 from sleeplens.query_policy import requested_detail_metrics
@@ -67,6 +68,7 @@ def build_response_plan(question, plan, selection=None, *, source="application",
         answer_format = "summary_with_nights" if intent == "interpretation" else "table"
     period = plan.period or ((selection["start_date"], selection["end_date"]) if records and selection else None)
     single_day = bool(period and period[0] == period[1])
+    two_weeks = bool(period and (date.fromisoformat(period[1]) - date.fromisoformat(period[0])).days == 13)
     if single_day:
         answer_format = ("advice" if intent == "advice" else
                          "explanation" if intent == "interpretation" or plan.wants_analysis else "short")
@@ -77,7 +79,9 @@ def build_response_plan(question, plan, selection=None, *, source="application",
             missing.append("profile_id")
         if not period:
             missing.append("period")
-    time_scope = ("single_day" if single_day else "last_7_days" if re.search(r"(?:最近|过去|近)[一1]周|(?:最近|过去)[七7]天|last (?:seven|7) days|past (?:week|seven days|7 days)", question, re.I) else
+    time_scope = ("single_day" if single_day else
+                  "last_14_days" if re.search(r"(?:最近|过去|近)(?:两|二|2)(?:个)?(?:周|星期)|(?:最近|过去|近)(?:十四|14)天|(?:last|past) (?:two weeks|2 weeks|fortnight|fourteen days|14 days)", question, re.I) else
+                  "last_7_days" if re.search(r"(?:最近|过去|近)[一1]周|(?:最近|过去)[七7]天|last (?:seven|7) days|past (?:week|seven days|7 days)", question, re.I) else
                   "last_calendar_week" if plan.period and re.search(r"上周|上一周|last week", question, re.I) else
                   "explicit_dates" if plan.period and len(re.findall(r"\d{4}-\d{2}-\d{2}", question)) == 2 else
                   "confirmed_history" if plan.period else "selected_week" if period else "unspecified")
@@ -88,7 +92,7 @@ def build_response_plan(question, plan, selection=None, *, source="application",
         "period_source": "question_or_confirmed_history" if plan.period else "page_selection" if period else "unspecified",
         "time_scope": time_scope,
         "evidence": (["records"] if records else []) + (["knowledge"] if knowledge else []),
-        "granularity": "day" if single_day else "week" if period else None,
+        "granularity": "day" if single_day else "two_weeks" if two_weeks else "week" if period else None,
         "answer_format": answer_format, "include_nightly": records and (single_day or "daily" in metrics),
         "needs_interpretation": not closed_stage and (intent == "interpretation" or (records and plan.wants_analysis)), "missing": missing,
         "requirements": (["requested_facts", "actual_dates"] if records else []) +
