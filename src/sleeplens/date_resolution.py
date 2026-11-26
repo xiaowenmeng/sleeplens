@@ -78,7 +78,7 @@ def explicit_period(question, *, today, selection=None, previous=None):
                 end = date(day.year, day.month, int(abbreviated_end.group(1)))
             except ValueError:
                 return None, "explicit_date_range", "invalid_date"
-            if (end - day).days not in {0, 6}:
+            if (end - day).days not in {0, 6, 13}:
                 return None, "explicit_date_range", "unsupported_range"
             return (day.isoformat(), end.isoformat()), "explicit_date_range", None
         # With an explicit evening, the associated waking date is next day.
@@ -91,6 +91,6 @@ def explicit_period(question, *, today, selection=None, previous=None):
         else:
             source = matches[0][3]
         return (day.isoformat(), day.isoformat()), source, None
-    if (days[1] - days[0]).days not in {0, 6}:
+    if (days[1] - days[0]).days not in {0, 6, 13}:
         return None, "explicit_date_range", "unsupported_range"
     return tuple(day.isoformat() for day in days), "explicit_date_range", None

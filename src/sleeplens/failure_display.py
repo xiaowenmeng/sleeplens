@@ -27,8 +27,9 @@ def expected_record_scope(plan, selection):
     comparison = plan.compare_previous
     if comparison is None and "comparison" in plan.metrics:
         comparison = True
-    if period and period[0] == period[1]:
-        comparison = False
+    if period and (period[0] == period[1]
+                   or (date.fromisoformat(period[1]) - date.fromisoformat(period[0])).days == 13):
+        comparison = False  # Single nights and two-week windows are not compared.
     return {"profile_id": profile, "period": list(period) if period else None, "compare_previous": comparison}
 
 

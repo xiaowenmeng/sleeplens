@@ -14,7 +14,7 @@ import streamlit as st
 from sleeplens import display_data
 from sleeplens.analysis import berlin_today
 from sleeplens.config import ConfigError, load_share_settings
-from sleeplens.dashboard import DashboardSession, chart_rows
+from sleeplens.dashboard import DashboardSession, chart_rows, selection_days
 from sleeplens.knowledge import load_knowledge
 from sleeplens.reply_policy import public_calculations
 from sleeplens.data import PROFILE_IDS
@@ -175,7 +175,7 @@ def _sync_controls(view):
         st.session_state["record_profile"] = view.selection["profile_id"]
         st.session_state["record_start"] = date.fromisoformat(view.selection["start_date"])
         st.session_state["record_compare"] = view.selection["compare_previous"]
-        st.session_state["record_span"] = 1 if view.selection["start_date"] == view.selection["end_date"] else 7
+        st.session_state["record_span"] = selection_days(view.selection)
 
 
 def _chart(result, text):
@@ -213,6 +213,11 @@ def _statistics(result, text):
         text["limited"] = "仅展示该醒来日期的记录；单日数据不能代表长期睡眠状况。" if zh else "This record describes only the specified waking date, not a long-term sleep pattern."
         text["chart"] = "当天睡眠时长" if zh else "This night's duration"
         text["stages"] = "当天睡眠阶段" if zh else "This night's stages"
+    elif nights == 14:
+        zh = text is TEXT["中文"]
+        text = dict(text)
+        text["reading"] = "如何理解这两周" if zh else "Reading these two weeks"
+        text["not_requested"] = "不适用" if zh else "Not applicable"  # No earlier window to compare with.
     mean = text["none"] if current["mean_sleep_min"] is None else f"{current['mean_sleep_min']:.1f} {text['min']}"
     state = result["comparison_state"]
     change = (f"{result['difference_min']:+.1f} {text['min']}" if state == "available"
@@ -435,7 +440,7 @@ def main():
             previous.reset_chat()
         st.session_state["dashboard"] = DashboardSession()
         if previous is not None and previous.selection:
-            st.session_state["dashboard"].apply_selection(previous.selection["profile_id"], previous.selection["start_date"], previous.selection["compare_previous"], days=1 if previous.selection["start_date"] == previous.selection["end_date"] else 7)
+            st.session_state["dashboard"].apply_selection(previous.selection["profile_id"], previous.selection["start_date"], previous.selection["compare_previous"], days=selection_days(previous.selection))
             st.session_state["sync_controls"] = True
         st.session_state["product_revision"] = APP_BEHAVIOR_REVISION
     # The synthetic records are a rolling window ending today. When the Berlin
@@ -452,21 +457,27 @@ def main():
     initial_start = view.selection.get("start_date")
     st.session_state.setdefault("record_start", date.fromisoformat(initial_start) if initial_start else None)
     st.session_state.setdefault("record_compare", view.selection.get("compare_previous", False))
-    st.session_state.setdefault("record_span", 1 if view.selection.get("start_date") == view.selection.get("end_date") else 7)
+    st.session_state.setdefault("record_span", selection_days(view.selection) if view.selection else 7)
     with st.sidebar:
         st.markdown("### ◔ SleepLens")
         language = st.selectbox("Language / 语言", ["English", "中文"], key="ui_language")
         text = TEXT[language]
         st.divider()
         st.subheader(text["choose"])
-        span = st.selectbox("查询范围" if language == "中文" else "Record range", [7, 1],
-                            format_func=lambda value: ("单日" if value == 1 else "连续七天") if language == "中文" else ("One day" if value == 1 else "Seven days"), key="record_span")
+        span_labels = ({1: "单日", 7: "连续七天", 14: "连续十四天"} if language == "中文" else
+                       {1: "One day", 7: "Seven days", 14: "Fourteen days"})
+        span = st.selectbox("查询范围" if language == "中文" else "Record range", [7, 14, 1],
+                            format_func=span_labels.get, key="record_span")
         with st.form("record_selection"):
             profile = st.selectbox(text["profile"], PROFILE_IDS, key="record_profile")
             start = st.date_input(text["start"], value=None, min_value=min(date(2026, 1, 1), st.session_state["record_start"] or date(2026, 1, 1)),
                                   max_value=max(berlin_today() - timedelta(days=span - 1), st.session_state["record_start"] or date.min), format="YYYY-MM-DD", key="record_start")
-            st.caption(("只查询指定的醒来日期。" if language == "中文" else "Queries only the specified waking date.") if span == 1 else ("查询包含起始日及之后六天。" if language == "中文" else "Includes the start date and the following six dates."))
-            compare = st.checkbox(text["compare"], key="record_compare", disabled=span == 1)
+            span_notes = ({1: "只查询指定的醒来日期。", 7: "查询包含起始日及之后六天。", 14: "查询包含起始日及之后十三天，即完整的两周记录。"} if language == "中文" else
+                          {1: "Queries only the specified waking date.", 7: "Includes the start date and the following six dates.",
+                           14: "Includes the start date and the following 13 dates: the full two weeks of records."})
+            st.caption(span_notes[span])
+            # Only a week is compared with the preceding week.
+            compare = st.checkbox(text["compare"], key="record_compare", disabled=span != 7)
             apply = st.form_submit_button(text["apply"], key="apply_selection", width="stretch")
         st.caption(text["free"])
         if apply:

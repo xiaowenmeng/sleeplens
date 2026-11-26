@@ -36,6 +36,14 @@ from sleeplens.reply_policy import (
 
 
 PROMPT_VERSION = "prompt-v30"
+
+
+def _span_days(arguments):
+    """Waking dates covered by analyze_sleep arguments, or None if unreadable."""
+    try:
+        return (parse_iso_date(arguments["end_date"]) - parse_iso_date(arguments["start_date"])).days + 1
+    except (KeyError, TypeError, ValueError):
+        return None
 USABLE_RESULTS = {"ok", "partial_data", "no_data"}
 
 
@@ -290,10 +298,10 @@ class ChatSession:
                 if (type(selected_query["profile_id"]) is not str
                         or selected_query["profile_id"] not in PROFILE_IDS
                         or type(selected_query["compare_previous"]) is not bool
-                        or (parse_iso_date(selected_query["end_date"]) - parse_iso_date(selected_query["start_date"])).days not in {0, 6}):
+                        or (parse_iso_date(selected_query["end_date"]) - parse_iso_date(selected_query["start_date"])).days not in {0, 6, 13}):
                     raise ValueError
             except (ValueError, TypeError):
-                return fail("invalid_selection", "页面选择无效，请重新选择档案和单日或连续七天。")
+                return fail("invalid_selection", "页面选择无效，请重新选择档案和单日、连续七天或十四天。")
             result["selected_query"] = dict(selected_query)
             selection_message = {"role": "user", "content": (
                 "APP_SELECTION_DATA: These explicitly selected defaults fill missing profile/date/comparison parameters only. "
@@ -306,7 +314,7 @@ class ChatSession:
             introduction = identity_reply(self._language) + "\n\n" if plan.intro_requested else ""
             if plan.date_error == "missing_month":
                 return fail("date_clarification", introduction + (f"你指哪年哪月的这一天？请提供完整日期，例如{berlin_today().isoformat()}。" if self._language == "Chinese" else f"Which month and year do you mean? Please provide a full date, such as {berlin_today().isoformat()}."))
-            return fail("date_clarification", introduction + ("请提供一个有效的具体日期，或连续七天的起止日期；本次未执行记录查询。" if self._language == "Chinese" else "Please provide a valid date or seven-day range. No record lookup was executed."))
+            return fail("date_clarification", introduction + ("请提供一个有效的具体日期，或连续七天、十四天的起止日期；本次未执行记录查询。" if self._language == "Chinese" else "Please provide a valid date, or a 7- or 14-day range. No record lookup was executed."))
         target_profile = plan.profile_id or (selected_query or {}).get("profile_id")
         if record_output and target_profile and target_profile != record_output["profile_id"]:
             plan = plan_query(question, today=berlin_today(), selected_query=selected_query)
@@ -476,8 +484,8 @@ class ChatSession:
             current.append({"role": "assistant", "content": text})
             return accept(text)
         if plan.unsupported_window:
-            text = ("目前支持已结束的单日或连续七天记录。请提供具体日期或七天的起止日期，也可以使用页面所选日期。" if self._language == "Chinese"
-                    else "I can read a completed single date or seven-day window. Please specify a date or seven-day range, or use the selected dates.")
+            text = ("目前支持单日、连续七天或十四天的记录。请提供具体日期或起止日期，也可以使用页面所选日期。" if self._language == "Chinese"
+                    else "I can read a single date or a 7- or 14-day window. Please specify a date or range, or use the selected dates.")
             result["answer_validation"]["status"] = "scope_clarification"
             current.append({"role": "assistant", "content": text})
             return accept(text)
@@ -595,7 +603,8 @@ class ChatSession:
                     for call_index, call in enumerate(message.tool_calls):
                         arguments = decoded[call_index][0]
                         if (call.function.name == ANALYZE_TOOL_NAME and isinstance(arguments, dict)
-                                and (plan.compare_previous is False or (plan.period and plan.period[0] == plan.period[1]))
+                                and (plan.compare_previous is False or (plan.period and plan.period[0] == plan.period[1])
+                                     or _span_days(arguments) == 14)
                                 and type(arguments.get("compare_previous")) is bool):
                             arguments = {**arguments, "compare_previous": False}
                         elif (call.function.name == ANALYZE_TOOL_NAME and isinstance(arguments, dict)

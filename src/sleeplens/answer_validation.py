@@ -481,17 +481,20 @@ def record_summary(output, language):
     """Render personal statistics solely from the validated Python result."""
     chinese = language == "Chinese"
     def period(label, stats):
-        count = stats["valid_nights"]
+        count, expected = stats["valid_nights"], stats["expected_nights"]
         mean = stats["mean_sleep_min"]
         hours, minutes = divmod(round(mean, 1), 60) if mean is not None else (0, 0)
         if chinese:
-            return (f"{label}有{count}/7晚有效记录" +
+            return (f"{label}有{count}/{expected}晚有效记录" +
                     (f"，平均每晚睡了{int(hours)}小时{minutes:g}分钟（{mean:.1f}分钟）" if mean is not None else "，暂无可用均值"))
-        return (f"{label}: {count}/7 recorded nights" +
+        return (f"{label}: {count}/{expected} recorded nights" +
                 (f", averaging {mean:.1f} minutes" if mean is not None else ", no available average"))
     dates = output.get("period") or {}
     date_range = f"{dates.get('start_date', '')}—{dates.get('end_date', '')}"
-    label = f"你查看的这一周（{date_range}）" if chinese else f"The seven nights you selected ({date_range})"
+    if output["current"]["expected_nights"] == 14:
+        label = f"你查看的这两周（{date_range}）" if chinese else f"The 14 nights you selected ({date_range})"
+    else:
+        label = f"你查看的这一周（{date_range}）" if chinese else f"The seven nights you selected ({date_range})"
     text = period(label, output["current"])
     if output.get("previous"):
         text += ("；" if chinese else "; ") + period("此前一周" if chinese else "The preceding seven nights", output["previous"])

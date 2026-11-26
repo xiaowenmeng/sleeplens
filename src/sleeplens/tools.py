@@ -22,7 +22,9 @@ ANALYZE_TOOL_SCHEMA = {
         "name": ANALYZE_TOOL_NAME,
         "description": (
             "Read sleep records for P01, P02 or P03 and calculate statistics "
-            "for one completed waking date (start_date=end_date, compare_previous=false), or a completed seven-day period. Explicit user dates override page defaults; never expand a single date into a week. Optionally compare "
+            "for one completed waking date (start_date=end_date, compare_previous=false), a completed seven-day period, or a 14-day period "
+            "(compare_previous=false; to compare its two weeks, request its later seven days with compare_previous=true). "
+            "Explicit user dates override page defaults; never expand a single date into a week. A seven-day period can optionally compare "
             "the preceding seven days. Ask for missing profile/dates first. "
             "Missing nights are not zero. A difference is available only if each "
             "period has at least four valid nights (product rule, not medical advice). "
@@ -41,8 +43,8 @@ ANALYZE_TOOL_SCHEMA = {
             "properties": {
                 "profile_id": {"type": "string", "enum": ["P01", "P02", "P03"]},
                 "start_date": {"type": "string", "description": "Inclusive waking date, YYYY-MM-DD."},
-                "end_date": {"type": "string", "description": "Inclusive waking date: equal to start_date for one day, or start_date plus six days for a week."},
-                "compare_previous": {"type": "boolean", "description": "False for a single date; for a week, whether to compare the preceding seven days."},
+                "end_date": {"type": "string", "description": "Inclusive waking date: equal to start_date for one day, start_date plus six days for a week, or plus thirteen days for two weeks."},
+                "compare_previous": {"type": "boolean", "description": "False for a single date or 14 days; for a week, whether to compare the preceding seven days."},
             },
             "required": ["profile_id", "start_date", "end_date", "compare_previous"],
             "additionalProperties": False,

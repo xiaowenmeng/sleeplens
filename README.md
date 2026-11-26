@@ -34,7 +34,7 @@ macOS / Linux 使用 `.venv/bin/python -m streamlit run app.py`。下文命令�
 
 ## 首次使用 / First visit
 
-页面顶部介绍项目，并提供提问示例按钮；记录统计和说明可在“数据详情”与“关于 SleepLens / 使用说明”中查看。通过顶部语言选择切换中文或 English；数据、说明和示例跟随切换。展开左上角侧栏，可选择档案及单日或连续七天的醒来日期，再点击“查看记录 / Apply selection”。修改查询会开启新对话；“清空对话 / Clear conversation”保留当前记录选择。
+页面顶部介绍项目，并提供提问示例按钮；记录统计和说明可在“数据详情”与“关于 SleepLens / 使用说明”中查看。通过顶部语言选择切换中文或 English；数据、说明和示例跟随切换。展开左上角侧栏，可选择档案及单日、连续七天或连续十四天（完整的两周记录）的醒来日期，再点击“查看记录 / Apply selection”。只有七天范围可以勾选“与前7夜比较”；查看十四天时，问“比上周多睡还是少睡”会比较这两周中较新的一周和较早的一周。修改查询会开启新对话；“清空对话 / Clear conversation”保留当前记录选择。
 
 首页六类提问覆盖单晚时长、深睡占比、完整阶段分布、有效七天均值或前周比较、深睡含义及判断边界。日期和字段来自当前档案，数据不足时不提供相应示例。点击按钮**仅填入聊天框**；可编辑并确认发送，点击本身不初始化模型或产生模型费用。“课堂测试示例”单独收纳无记录日期、诊断边界和范围外请求，用于检查系统如何处理限制。
 
@@ -42,7 +42,7 @@ macOS / Linux 使用 `.venv/bin/python -m streamlit run app.py`。下文命令�
 
 SleepLens 面向成年用户，提供记录查询、计算、近期比较及有资料支持的一般睡眠解释；不提供疾病诊断或个人用药方案，资料或记录不足时说明限制。合成档案不对应真实个人；现有测试未证明改善睡眠或临床效果。
 
-**English:** Choose a language at the top. Open the sidebar to select a synthetic profile and a completed waking date or seven-day period, then apply the selection. Example buttons only prepare a question: review it and send explicitly. Data details distinguish recorded and calculated metrics, absent dates, unavailable records and incomplete fields. Changing the selection starts a fresh conversation; Clear conversation keeps the selection. SleepLens is for adult record interpretation and general sleep information, with no diagnosis, personal medication plans or established clinical benefit.
+**English:** Choose a language at the top. Open the sidebar to select a synthetic profile and a waking date, a seven-day period or the full fourteen days, then apply the selection. Only a seven-day range can be compared with the previous seven nights; while viewing fourteen days, asking how this week compares with the previous week compares the two weeks inside the view. Example buttons only prepare a question: review it and send explicitly. Data details distinguish recorded and calculated metrics, absent dates, unavailable records and incomplete fields. Changing the selection starts a fresh conversation; Clear conversation keeps the selection. SleepLens is for adult record interpretation and general sleep information, with no diagnosis, personal medication plans or established clinical benefit.
 
 界面与以下离线命令复用同一数据概览和示例逻辑；日期、唯一日期数、有效夜数及缺失日期均按当前工具实际读取的文件生成，避免独立维护一份过时的概览：
 
