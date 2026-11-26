@@ -592,9 +592,12 @@ def render_facts(output, plan, language):
             change = f"平均每晚比此前一周{'少' if delta < 0 else '多'}{abs(delta):.1f}分钟" if delta else "两周平均时长相同"
             means = f"这一周平均{cur['mean_sleep_min']:.1f}分钟、此前一周{prev['mean_sleep_min']:.1f}分钟"
             return (change + "，" + means if plan.lead_change else means + "，" + change) + "。"
-        return f"The selected period averaged {cur['mean_sleep_min']:.1f} minutes, versus {prev['mean_sleep_min']:.1f} previously, a change of {delta:+.1f} minutes per night."
+        change = (f"{abs(delta):.1f} minutes {'more' if delta > 0 else 'less'} per night" if round(delta, 1)
+                  else "the same mean per night")
+        return f"The selected period averaged {cur['mean_sleep_min']:.1f} minutes, versus {prev['mean_sleep_min']:.1f} previously: {change}."
     if not metrics or "comparison" in metrics:
-        return record_summary(output, language)
+        # A comparison question gets its "more or less" answer first.
+        return record_summary(output, language, lead_with_change="comparison" in metrics)
     current = output["current"]
     parts = []
     if "mean" in metrics:
