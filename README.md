@@ -12,13 +12,23 @@ python -m venv .venv
 if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 ```
 
+macOS / Linux：
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+[ -f .env ] || cp .env.example .env
+```
+
 在 `.env` 中填写自己的 API 密钥，并确认接口地址和模型名称与账号权限一致。已有 `.env` 时跳过复制，避免覆盖本地配置。
 
-双击 `start_app.bat`，或运行：
+启动网页：
 
 ```powershell
 .\.venv\Scripts\python.exe -m streamlit run app.py
 ```
+
+macOS / Linux 使用 `.venv/bin/python -m streamlit run app.py`。下文命令均以 Windows 写法为例，macOS / Linux 将 `.\.venv\Scripts\python.exe` 换成 `.venv/bin/python` 即可。
 
 打开 http://127.0.0.1:8501 。浏览记录不调用模型；AI 问答会使用配置账号的 API 额度。
 
@@ -54,7 +64,7 @@ SleepLens 面向成年用户，提供记录查询、计算、近期比较及有�
 
 ## 文件说明
 
-- `app.py`、`start_app.bat`：网页启动入口。
+- `app.py`：网页启动入口，本地运行和 Streamlit Community Cloud 部署均使用它。
 - `src/sleeplens/`：agent、工具、分析逻辑和网页界面。
 - `src/sleeplens/resources/`：运行时读取的提示词、知识库和 Skill；其中的 Markdown 文件需要保留。
 - `src/sleeplens/display_data.py`：网页、命令行和问答工具默认使用的展示数据，运行时按当天日期生成。
@@ -63,14 +73,11 @@ SleepLens 面向成年用户，提供记录查询、计算、近期比较及有�
 - `scripts/build_display_dataset.py`：写入或核对上述快照。
 - `scripts/check_current.py`：当前版本的离线对话、双语回复、引用及上下文加载检查。
 - `tests/`：当前实现的离线测试，覆盖计算、缺失数据、回答边界、安全、来源和聊天流程。
-- `docs/improvement_examples.md`：四条实际改进案例；最少历史证据见同目录的 `improvement_evidence.json`。
-- `docs/course_materials/`：保留的课程原始资料、作业要求、报告草稿及历史评测报告；详见其中的 `README.md`，不参与启动或测试。
-- `docs/REVIEW_RUBRIC.json`：人工语义复核参考，自动校验不能替代人工评审。
 - `artifacts/`：运行时按需生成的聊天诊断、分享日志及离线检查结果，不是启动入口。
 - `pyproject.toml`：项目元数据和运行依赖；`requirements.txt` 通过 `-e .` 安装本项目及其依赖。
 - `.env.example`、`.streamlit/config.toml`：环境变量模板和网页配置。
 
-本地 `.env`、`.venv/`、`.state/` 和 `artifacts/` 不随源码分享。额度账本和运行日志会在需要时自动生成。交给组员的源码包括根目录入口与配置模板、`src/`、`scripts/`、`tests/` 和 `docs/`；各自在本机安装依赖并配置密钥。
+本地 `.env`、`.venv/`、`.state/` 和 `artifacts/` 不随源码分享。额度账本和运行日志会在需要时自动生成。交给组员的源码包括根目录入口与配置模板、`src/`、`scripts/` 和 `tests/`；各自在本机安装依赖并配置密钥。
 
 展示数据版本为 `display-sleep-v1`，始终覆盖截至今天（Europe/Berlin）的最近14个醒来日期，包括今天醒来的昨晚，因此数据不会过期。同一天内页面、工具和问答看到的记录完全一致；日期变化后整个窗口向前滚动，同一日历日期的数值可能与前一天看到的不同，已打开的页面会自动切换到新窗口并开始新对话。当前各档案的确切覆盖和缺口见页面“数据详情”或上方概览命令。P01作息有波动，偶尔出现较短的一晚；P02时间变化较大，有分散的记录缺口；P03相对稳定，但每晚时长、夜醒和分期也有变化。生成器使用固定种子 `20261124`，结合各档案的作息基线、相邻夜晚相关的时间波动、周末偏移和少量不规则事件；参数用于展示，未按真实人群拟合，也不代表某种睡眠模式的发生率。记录没有附加咖啡、压力等未经观察的原因。所有分期和时间戳均经过原有完整性校验，时刻保留柏林夏令时切换时的实际偏移。
 
@@ -110,7 +117,7 @@ SleepLens 面向成年用户，提供记录查询、计算、近期比较及有�
 
 ## 课堂演示与分享
 
-课堂演示、组员测试及以后提交源码均使用根目录 `app.py` 和当前 `src/`。旧冻结运行包和旧打包脚本已清理。课程材料中的历史评分只描述当时版本，不能当作当前版本成绩。
+课堂演示、组员测试及以后提交源码均使用根目录 `app.py` 和当前 `src/`。
 
 选择 P01、新建对话，可依次测试：
 
@@ -121,12 +128,20 @@ SleepLens 面向成年用户，提供记录查询、计算、近期比较及有�
 
 普通问答可能调用配置模型；离线验证使用上方测试命令，不需要为演示故意破坏数据文件。
 
-本地公开展示使用当前根目录入口，PowerShell 命令为：
+### 在线分享（Streamlit Community Cloud）
 
-```powershell
-.\start_public_share.ps1
-# 自定义端口：.\start_public_share.ps1 -Port 8503
-.\stop_public_share.ps1
+在线版本部署在 Streamlit Community Cloud，入口文件为 `app.py`，依赖由 `requirements.txt` 安装。配置写在应用的 **Settings → Secrets** 中，不要提交到仓库；顶层的 secrets 会作为环境变量提供给应用，与本地 `.env` 使用相同的名称：
+
+```toml
+DEEPSEEK_API_KEY = "..."
+DEEPSEEK_BASE_URL = "https://api.chatanywhere.tech/v1"
+DEEPSEEK_MODEL = "deepseek-v4-flash"
+SLEEPLENS_SHARE_MODE = "1"
+SLEEPLENS_SHARE_PASSWORD = "至少12个字符的访问密码"
+SLEEPLENS_SHARE_LOG_DAYS = "7"
+SLEEPLENS_REQUEST_LIMIT = "300"
 ```
 
-分享脚本需要本地 `.venv/` 和 `.state/cloudflared.exe`，生成的临时地址、访问密码及进程信息保存在 `.state/public-preview-access.json`；停止脚本读取它来识别进程。旧 `-Classroom` 参数已移除。启动分享会访问外部隧道服务，须由主持人按需执行；本次清理未启动、停止或修改外部分享服务。模型认证、余额、实际回答与公网可达性仍需单独验证。
+公开链接任何人都能打开，因此建议开启分享模式：访客需输入访问密码，并在使用前确认说明（合成数据、只用虚构情境、问题会发送给第三方模型服务、只保留不含对话内容的运行记录）。分享模式下只记录运行元数据，不保存问答内容。`SLEEPLENS_REQUEST_LIMIT` 设为正整数可限制模型调用总次数，避免额度被耗尽；调用账本保存在应用容器内，应用重启或重新部署后会重新计数。修改 secrets 后，在 Cloud 控制台中重启应用（Reboot app）以确保新配置生效。
+
+本地也可以在 `.env` 中设置 `SLEEPLENS_SHARE_MODE=1` 和访问密码，预览同样的密码页和说明页。模型认证、余额、实际回答与公网可达性仍需在部署后单独验证。

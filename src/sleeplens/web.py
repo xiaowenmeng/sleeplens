@@ -399,22 +399,32 @@ def main():
     if sharing.enabled:
         digest = hashlib.sha256(sharing.password.encode()).hexdigest()
         if st.session_state.get("share_authenticated") != digest:
-            st.title("SleepLens · Shared preview")
+            st.title("SleepLens · Preview")
+            st.caption("Enter the access password you were given.")
             with st.form("share_login"):
                 password = st.text_input("Access password", type="password", key="share_access_input")
                 submitted = st.form_submit_button("Enter")
             if submitted:
-                if hmac.compare_digest(password, sharing.password):
+                # Compare bytes: comparing str values raises TypeError for non-ASCII input.
+                if hmac.compare_digest(password.encode(), sharing.password.encode()):
                     st.session_state["share_authenticated"] = digest
                     st.rerun()
-                st.error("Incorrect access password")
+                st.error("Incorrect password. Please try again.")
             st.stop()
         st.session_state.pop("share_access_input", None)
         if not st.session_state.get("share_notice_accepted"):
-            st.title("SleepLens · Shared preview")
-            st.info(f"This preview uses synthetic records. Use fictional scenarios only. Questions are sent to the configured third-party model service; metadata-only logs are retained for {sharing.log_days} days.")
+            st.title("SleepLens · Preview")
+            st.markdown("**Before you start**")
+            st.info(
+                "- The sleep records here are synthetic and don't belong to any real person.\n"
+                "- Please use made-up scenarios only. Don't enter real health or personal details about yourself or anyone else.\n"
+                "- Your questions are sent to a third-party AI model service to generate answers.\n"
+                "- We keep only usage logs without your conversation text (such as timing, status and usage) "
+                f"for {sharing.log_days} days.\n"
+                "- SleepLens offers general sleep information and is not a substitute for medical advice."
+            )
             consent = st.checkbox("I understand", key="share_consent")
-            if st.button("Start testing", disabled=not consent):
+            if st.button("Start", disabled=not consent):
                 st.session_state["share_notice_accepted"] = True
                 st.rerun()
             st.stop()

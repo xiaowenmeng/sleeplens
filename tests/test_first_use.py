@@ -8,6 +8,7 @@ import pytest
 from streamlit.testing.v1 import AppTest
 
 from sleeplens.analysis import analyze_sleep
+from sleeplens.query_policy import plan_query
 from sleeplens.data import PROFILE_IDS
 
 
@@ -51,7 +52,24 @@ def test_function_examples_use_real_dates_fields_and_supported_windows(profile, 
                 assert row["sleep_min"] > 0 and all(row[k] is not None for k in ["deep_sleep_min", "light_sleep_min", "rem_sleep_min"])
             if example["query"]["compare_previous"]:
                 assert output["comparison_state"] == "available"
-        assert "昨晚" not in example["question"] and "last night" not in example["question"].lower()
+            # The prepared wording must resolve to exactly the dates the button prepares.
+            plan = plan_query(example["question"], today=date(2026, 12, 27))
+            assert plan.period == (example["query"]["start_date"], example["query"]["end_date"])
+
+
+@pytest.mark.parametrize("language", ["中文", "English"])
+def test_examples_for_the_newest_night_use_relative_wording(language):
+    from sleeplens.onboarding import data_catalogue, question_examples
+
+    today = date(2026, 11, 26)  # The pinned display window ends today.
+    examples = question_examples(data_catalogue("P01", today=today), language)
+    night, week = ("昨晚", "最近七天") if language == "中文" else ("last night", "past 7 days")
+    for example in examples:
+        if example["query"]:
+            assert "2026-" not in example["question"]
+            assert (week if example["id"] == "period" else night) in example["question"]
+            plan = plan_query(example["question"], today=today)
+            assert plan.period == (example["query"]["start_date"], example["query"]["end_date"])
 
 
 def test_units_and_computed_fields_match_the_implemented_record_definitions():

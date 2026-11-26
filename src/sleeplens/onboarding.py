@@ -155,29 +155,47 @@ def _week(info, selection=None):
 
 
 def question_examples(info, language, selection=None):
+    """Prepared questions built from the current data. A night that ended this
+    morning is phrased as "last night" and a week ending today as "the past 7
+    days", so the wording stays natural as the rolling data moves; older
+    selected dates are named explicitly."""
     zh = language == "中文"
     examples = []
     label = COPY[language]["labels"]
     profile = info["profile_id"]
+    today = info.get("as_of_date")
     rows = [r for r in info.get("rows", []) if r["sleep_valid"] and r["sleep_min"] and r["sleep_min"] > 0]
     if selection:
         rows.sort(key=lambda r: (selection["start_date"] <= r["date"] <= selection["end_date"], r["date"]))
+
+    def night(day):
+        # Chinese: "P01昨晚" / "P01在2026-11-20"; English: "last night" / "on 2026-11-20".
+        if day == today:
+            return ("昨晚", "last night")
+        return (f"在{day}", f"on {day}")
+
     if rows:
         day = rows[-1]["date"]
-        examples.append(dict(id="duration", label=label["duration"], question=(f"{profile}在{day}睡了多久？" if zh else f"How long did {profile} sleep on {day}?"), query=_query(info, day)))
+        cn, en = night(day)
+        examples.append(dict(id="duration", label=label["duration"], question=(f"{profile}{cn}睡了多久？" if zh else f"How long did {profile} sleep {en}?"), query=_query(info, day)))
     detailed = [r for r in rows if all(r.get(f) is not None for f in ("deep_sleep_min", "light_sleep_min", "rem_sleep_min"))]
     if detailed:
         day = detailed[-1]["date"]
-        for key, cn, en in [("deep", f"{profile}在{day}的深睡占比是多少？", f"What was {profile}'s deep sleep percentage on {day}?"),
-                            ("stages", f"列出{profile}在{day}完整的睡眠阶段分布和占比。", f"Show the full sleep stage distribution and percentages for {profile} on {day}.")]:
-            examples.append(dict(id=key, label=label[key], question=cn if zh else en, query=_query(info, day)))
+        cn, en = night(day)
+        for key, cn_text, en_text in [("deep", f"{profile}{cn}的深睡占比是多少？", f"What was {profile}'s deep sleep percentage {en}?"),
+                                      ("stages", f"列出{profile}{cn}完整的睡眠阶段分布和占比。", f"Show the full sleep stage distribution and percentages for {profile} {en}.")]:
+            examples.append(dict(id=key, label=label[key], question=cn_text if zh else en_text, query=_query(info, day)))
     period = _week(info, selection)
     if period:
         start, end = period["start_date"], period["end_date"]
-        question = (f"比较{profile}在{start}至{end}的平均睡眠时长与前一周的变化。" if period["compare_previous"] else
-                    f"{profile}在{start}至{end}的平均睡眠时长是多少？") if zh else (
-                    f"Compare {profile}'s mean sleep duration for {start} to {end} with the previous week." if period["compare_previous"] else
-                    f"What was {profile}'s mean sleep duration from {start} to {end}?")
+        if end == today:
+            cn, en = "最近七天", "over the past 7 days"
+        else:
+            cn, en = f"在{start}至{end}", f"from {start} to {end}"
+        question = (f"比较{profile}{cn}的平均睡眠时长与前一周的变化。" if period["compare_previous"] else
+                    f"{profile}{cn}的平均睡眠时长是多少？") if zh else (
+                    f"Compare {profile}'s mean sleep duration {en} with the previous week." if period["compare_previous"] else
+                    f"What was {profile}'s mean sleep duration {en}?")
         examples.append(dict(id="period", label=label["period"], question=question, query=period))
     try:
         if any(r["citation_id"] == "H6:NREM" for r in load_knowledge().references):
@@ -186,8 +204,9 @@ def question_examples(info, language, selection=None):
         pass
     if detailed:
         day = detailed[-1]["date"]
-        examples.append(dict(id="normality", label=label["normality"], question=(f"{profile}在{day}的深睡占比正常吗？" if zh else
-                             f"Was {profile}'s deep sleep percentage normal on {day}?"), query=_query(info, day)))
+        cn, en = night(day)
+        examples.append(dict(id="normality", label=label["normality"], question=(f"{profile}{cn}的深睡占比正常吗？" if zh else
+                             f"Was {profile}'s deep sleep percentage normal {en}?"), query=_query(info, day)))
     return examples
 
 

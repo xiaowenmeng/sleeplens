@@ -305,7 +305,7 @@ class ChatSession:
         if plan.date_error:
             introduction = identity_reply(self._language) + "\n\n" if plan.intro_requested else ""
             if plan.date_error == "missing_month":
-                return fail("date_clarification", introduction + ("你指哪年哪月的这一天？请提供完整日期，例如2026-10-20。" if self._language == "Chinese" else "Which month and year do you mean? Please provide a full date, such as 2026-10-20."))
+                return fail("date_clarification", introduction + (f"你指哪年哪月的这一天？请提供完整日期，例如{berlin_today().isoformat()}。" if self._language == "Chinese" else f"Which month and year do you mean? Please provide a full date, such as {berlin_today().isoformat()}."))
             return fail("date_clarification", introduction + ("请提供一个有效的具体日期，或连续七天的起止日期；本次未执行记录查询。" if self._language == "Chinese" else "Please provide a valid date or seven-day range. No record lookup was executed."))
         target_profile = plan.profile_id or (selected_query or {}).get("profile_id")
         if record_output and target_profile and target_profile != record_output["profile_id"]:
