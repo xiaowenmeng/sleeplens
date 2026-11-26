@@ -477,9 +477,33 @@ def needs_health_for_task(question, answer, plan, has_health_citation):
     return needs_health_evidence("" if plan.task == "definition" else question, answer)
 
 
-def record_summary(output, language):
-    """Render personal statistics solely from the validated Python result."""
+def comparison_answer(output, language):
+    """One sentence answering "more or less than the previous week?", or None.
+
+    Uses only the validated difference; the amount is per night, to one decimal.
+    """
+    delta = output.get("difference_min")
+    if not output.get("previous"):
+        return None
     chinese = language == "Chinese"
+    if delta is None:
+        return ("还不能判断比前一周睡得多还是少：每周至少需要4晚有效记录才能比较。" if chinese else
+                "I can't tell whether you slept more or less than the previous week: each week needs at least 4 recorded nights to compare.")
+    if round(delta, 1) == 0:
+        return "两周平均每晚的睡眠时长相同。" if chinese else "You slept the same amount per night as the previous week, on average."
+    word_zh, word_en = ("多", "more") if delta > 0 else ("少", "less")
+    if chinese:
+        return f"比前一周睡得{word_zh}：平均每晚{word_zh}{abs(delta):.1f}分钟。"
+    return f"You slept {word_en} than the previous week: {abs(delta):.1f} minutes {word_en} per night on average."
+
+
+def record_summary(output, language, *, lead_with_change=False):
+    """Render personal statistics solely from the validated Python result.
+
+    With lead_with_change, a comparison opens with the direct "more/less" answer.
+    """
+    chinese = language == "Chinese"
+    lead = comparison_answer(output, language) if lead_with_change else None
     def period(label, stats):
         count, expected = stats["valid_nights"], stats["expected_nights"]
         mean = stats["mean_sleep_min"]
@@ -499,13 +523,18 @@ def record_summary(output, language):
     if output.get("previous"):
         text += ("；" if chinese else "; ") + period("此前一周" if chinese else "The preceding seven nights", output["previous"])
         difference = output.get("difference_min")
-        if difference is None:
+        if lead:
+            pass  # The opening sentence already answers the comparison.
+        elif difference is None:
             text += "。有效记录不足，暂不比较这两周的变化" if chinese else ". Too few recorded nights to compare the weeks"
         elif chinese:
-            text += f"。平均每晚比此前一周{'多' if difference > 0 else '少'}{abs(difference):.1f}分钟" if difference else "。两周平均时长相同"
+            text += f"。平均每晚比此前一周{'多' if difference > 0 else '少'}{abs(difference):.1f}分钟" if round(difference, 1) else "。两周平均时长相同"
+        elif round(difference, 1):
+            text += f". That is {abs(difference):.1f} minutes {'more' if difference > 0 else 'less'} per night than the preceding seven nights"
         else:
-            text += f". Mean change: {difference:+.1f} minutes per night"
-    return text + ("。" if chinese else ".")
+            text += ". Both weeks have the same mean"
+    text += "。" if chinese else "."
+    return f"{lead}{'' if chinese else ' '}{text}" if lead else text
 
 
 def validate_record_text(text, output, *, require_summary, health_references, policy_references=None):

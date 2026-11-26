@@ -102,6 +102,13 @@ def build_response_plan(question, plan, selection=None, *, source="application",
                         (["product_rule_explanation"] if plan.include_rule_explanation else []) +
                         (["supporting_sources"] if knowledge else []),
     }
+    if intent == "comparison" and records:
+        result["requirements"].append("direction_and_amount")
+        result["comparison_goal"] = (
+            "Answer the question directly in the first sentence: say whether the selected period's mean sleep was "
+            "more, less, or the same as the previous period, and by how many minutes per night, from difference_min. "
+            "Then give both means and their dates. If comparison_state is not available, say plainly that the "
+            "comparison cannot be made and why, instead of implying a direction.")
     if closed_stage:
         result["requirements"] = [item for item in result["requirements"] if item != "grounded_interpretation"]
         result["stage_goal"] = (

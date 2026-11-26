@@ -70,7 +70,8 @@ def test_comparison_question_is_answered_from_both_weeks():
     question = "Did I sleep more or less than the previous week? By how much?"
     result = ChatSession(Client({**WEEK, "compare_previous": True})).ask(question, selected_query=WEEK)
     assert result["status"] == "answered"
-    assert "preceding seven nights" in result["answer"] and "Mean change" in result["answer"]
+    assert result["answer"].startswith("You slept more than the previous week: 0.6 minutes more per night")
+    assert "preceding seven nights" in result["answer"]
 
 
 def test_fourteen_day_lookup_covers_the_whole_window():
@@ -106,7 +107,7 @@ def test_comparison_while_viewing_two_weeks_compares_its_two_weeks():
     assert plan.period == ("2026-11-20", "2026-11-26") and plan.compare_previous is True
     result = ChatSession(Client({**WEEK, "compare_previous": True})).ask(question, selected_query=TWO_WEEKS)
     assert result["status"] == "answered"
-    assert "(2026-11-20—2026-11-26)" in result["answer"] and "Mean change" in result["answer"]
+    assert "(2026-11-20—2026-11-26)" in result["answer"] and result["answer"].startswith("You slept more")
 
 
 @pytest.mark.parametrize("question", ["How did I sleep over the past two weeks?", "最近两周睡得怎么样？",
@@ -130,3 +131,40 @@ def test_sidebar_offers_fourteen_days_and_disables_comparison(monkeypatch, tmp_p
     assert view.analysis["current"]["expected_nights"] == 14
     cards = {metric.label: metric.value for metric in app.metric}
     assert cards["Valid nights"] == "14/14" and cards["Change vs previous"] == "Not applicable"
+
+
+# --- The comparison answer says "more", "less" or "the same" up front. ---
+
+def _week_result(delta, previous_nights=7):
+    from copy import deepcopy
+    output = deepcopy(analyze_sleep(**{**WEEK, "compare_previous": True}))
+    output["difference_min"] = delta
+    output["previous"]["valid_nights"] = previous_nights
+    return output
+
+
+@pytest.mark.parametrize("delta, english, chinese", [
+    (17.6, "You slept more than the previous week: 17.6 minutes more per night on average.", "比前一周睡得多：平均每晚多17.6分钟。"),
+    (-17.6, "You slept less than the previous week: 17.6 minutes less per night on average.", "比前一周睡得少：平均每晚少17.6分钟。"),
+    (0.02, "You slept the same amount per night as the previous week, on average.", "两周平均每晚的睡眠时长相同。"),
+    (None, "I can't tell whether you slept more or less than the previous week", "还不能判断比前一周睡得多还是少"),
+])
+def test_comparison_answer_leads_with_the_direction(delta, english, chinese):
+    from sleeplens.answer_validation import record_summary
+    output = _week_result(delta, previous_nights=7 if delta is not None else 1)
+    assert record_summary(output, "English", lead_with_change=True).startswith(english)
+    assert record_summary(output, "Chinese", lead_with_change=True).startswith(chinese)
+
+
+def test_plain_english_summary_states_direction_instead_of_a_signed_number():
+    from sleeplens.answer_validation import record_summary
+    text = record_summary(_week_result(-17.6), "English")
+    assert "17.6 minutes less per night than the preceding seven nights" in text and "-17.6" not in text
+
+
+def test_model_is_told_to_answer_more_or_less_first():
+    from sleeplens.response_planning import build_response_plan
+    question = "did i sleep more or less than last week"
+    plan = build_response_plan(question, plan_query(question, today=TODAY, selected_query=WEEK), WEEK)
+    assert "direction_and_amount" in plan["requirements"]
+    assert "more, less, or the same" in plan["comparison_goal"]
