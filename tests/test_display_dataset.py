@@ -2,7 +2,7 @@
 
 import json
 import runpy
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from importlib.resources import files
 from pathlib import Path
 from statistics import pstdev
@@ -51,7 +51,7 @@ def test_profiles_have_irregular_nightly_values_instead_of_short_repeating_cycle
         assert counts[lag:] != counts[:-lag]
 
 
-def test_stage_totals_and_elapsed_time_stay_consistent_including_clock_change():
+def test_stage_totals_and_elapsed_time_stay_consistent():
     rows = [r for r in load_dataset().records if r.sleep_valid]
     offsets = set()
     for row in rows:
@@ -62,12 +62,13 @@ def test_stage_totals_and_elapsed_time_stay_consistent_including_clock_change():
         elapsed = (wake.astimezone(timezone.utc) - onset.astimezone(timezone.utc)).total_seconds() / 60
         assert elapsed == row.sleep_min + row.awake_min
         assert (row.night_awakenings == 0) == (row.awake_min == 0)
-    assert len(offsets) == 2  # October 25 crosses Berlin's autumn clock change.
+    assert offsets == {timedelta(hours=1)}  # November nights all use Berlin winter time (CET).
 
 
-def test_browsing_and_tool_queries_use_identical_display_records_and_gap_states():
+def test_browsing_and_tool_queries_use_identical_display_records_and_gap_states(monkeypatch):
+    monkeypatch.setattr("sleeplens.analysis.berlin_today", lambda: date(2026, 12, 26))
     view = DashboardSession()
-    output = view.apply_selection("P02", "2026-10-19", True)
+    output = view.apply_selection("P02", "2026-11-20", True)
     tool_output = dispatch_tool("analyze_sleep", view.selection)
     assert output == tool_output
     assert output["dataset_version"] == "display-sleep-v1"
@@ -84,17 +85,18 @@ def test_browsing_and_tool_queries_use_identical_display_records_and_gap_states(
 
 
 def test_single_day_gaps_are_not_zero_sleep():
-    for day in ("2026-10-20", "2026-10-24"):
-        result = analyze_sleep("P02", day, day, False, today=date(2026, 11, 24))
+    for day in ("2026-11-21", "2026-11-25"):
+        result = analyze_sleep("P02", day, day, False, today=date(2026, 12, 26))
         assert result["status"] == "no_data"
         assert result["current"]["mean_sleep_min"] is None
         assert result["daily_records"]["current"][0]["sleep_min"] is None
 
 
-def test_agent_answers_from_the_same_display_data_as_the_dashboard():
-    query = dict(profile_id="P03", start_date="2026-10-20", end_date="2026-10-20", compare_previous=False)
+def test_agent_answers_from_the_same_display_data_as_the_dashboard(monkeypatch):
+    monkeypatch.setattr("sleeplens.analysis.berlin_today", lambda: date(2026, 12, 26))
+    query = dict(profile_id="P03", start_date="2026-11-21", end_date="2026-11-21", compare_previous=False)
     view = DashboardSession()
-    record = view.apply_selection("P03", "2026-10-20", False, days=1)["daily_records"]["current"][0]
+    record = view.apply_selection("P03", "2026-11-21", False, days=1)["daily_records"]["current"][0]
     messages = [ChatCompletionMessage(role="assistant", tool_calls=[{
         "id": "record", "type": "function", "function": {
             "name": "analyze_sleep", "arguments": json.dumps(query)}}]),
@@ -105,7 +107,7 @@ def test_agent_answers_from_the_same_display_data_as_the_dashboard():
             return SimpleNamespace(model="offline-display-check", usage=None, choices=[
                 SimpleNamespace(message=messages.pop(0), finish_reason="stop")])
 
-    result = ChatSession(Client()).ask("P03在2026-10-20醒了几次？", selected_query=query)
+    result = ChatSession(Client()).ask("P03在2026-11-21醒了几次？", selected_query=query)
     assert result["status"] == "answered"
     evidence = result["tool_events"][0]["result"]
     assert evidence["dataset_version"] == "display-sleep-v1"

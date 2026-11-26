@@ -25,7 +25,7 @@ from sleeplens.record_grounding import normalize_record_format
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "src/sleeplens/resources/skills/sleep-analysis"
-TODAY = date(2026, 11, 24)
+TODAY = date(2026, 12, 26)  # After both fixtures' last waking date.
 
 
 class ScriptedClient:
@@ -103,7 +103,7 @@ def run_checks():
     cases = [
         ("lookup_only", "synthetic_sleep.json", "records", "10月20日睡了多久？只要数值，不要分析。", query(), None),
         ("single_day_analysis", "synthetic_sleep.json", "combined", "帮我分析10月21日的睡眠。", query(start="2026-10-21"), "night waking"),
-        ("weekly_overview", "display_sleep.json", "combined", "分析所选这周，跟前周比怎么样？", query(start="2026-10-19", end="2026-10-25", compare=True), "sleep quality"),
+        ("weekly_overview", "display_sleep.json", "combined", "分析所选这周，跟前周比怎么样？", query(start="2026-11-20", end="2026-11-26", compare=True), "sleep quality"),
         ("missing_record", "synthetic_sleep.json", "records", "这天醒了几次？", query(profile="P02", start="2026-10-24"), None),
         ("compound", "synthetic_sleep.json", "definition", "解释均值的分母规则，并告诉我所选这周平均睡多久。", query(start="2026-10-19", end="2026-10-25"), None),
     ]

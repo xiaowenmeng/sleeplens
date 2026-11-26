@@ -48,11 +48,17 @@ def explicit_period(question, *, today, selection=None, previous=None):
         if re.search(r"今晚|今夜|今天晚上|\btonight\b|\bthis evening\b", question, re.I):
             day = today + timedelta(days=1)
             return (day.isoformat(), day.isoformat()), "tonight_waking_date", None
-        if re.search(r"昨晚|昨天晚上|last night", question, re.I):
-            return (today.isoformat(), today.isoformat()), "last_night_waking_date", None
-        if re.search(r"昨天|昨日|yesterday", question, re.I):
+        # A night belongs to the date of waking. "The night before last" ended
+        # yesterday morning. Check it before "yesterday"/"last night".
+        if re.search(r"(?<![以之提睡目先])前天|\bthe night before last\b|\bday before yesterday\b", question, re.I):
             day = today - timedelta(days=1)
-            return (day.isoformat(), day.isoformat()), "yesterday", None
+            return (day.isoformat(), day.isoformat()), "night_before_last_waking_date", None
+        if re.search(r"昨晚|昨天晚上|昨夜|last night", question, re.I):
+            return (today.isoformat(), today.isoformat()), "last_night_waking_date", None
+        # For sleep, "yesterday" means the night that started yesterday
+        # evening, i.e. the one the user woke from this morning.
+        if re.search(r"昨天|昨日|yesterday", question, re.I):
+            return (today.isoformat(), today.isoformat()), "yesterday", None
         if re.search(r"(?<!\d)\d{1,2}\s*(?:日|号)(?!\d)", question):
             return None, "day_without_month", "missing_month"
         return None, None, None

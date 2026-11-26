@@ -16,14 +16,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @pytest.fixture
 def week():
-    return analyze_sleep("P01", "2026-10-19", "2026-10-25", True, today=date(2026, 11, 24))
+    return analyze_sleep("P01", "2026-11-20", "2026-11-26", True, today=date(2026, 12, 26))
 
 
 @pytest.mark.parametrize("answer", [
     "本周平均每晚睡了约7小时26分钟，两周平均时长比较接近。",
     "你的本周和前周平均时长差不多。",
     "Your two weekly averages are similar.",
-    "This week's shortest night was 22 October, with 5 hours 39 minutes of sleep.",
+    "This week's shortest night was 23 November, with 5 hours 39 minutes of sleep.",
 ])
 def test_natural_observation_needs_no_disclaimer(answer, week):
     assert validate_interpretation(answer, week) is None

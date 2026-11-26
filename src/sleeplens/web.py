@@ -11,6 +11,7 @@ import pandas as pd
 import altair as alt
 import streamlit as st
 
+from sleeplens import display_data
 from sleeplens.analysis import berlin_today
 from sleeplens.config import ConfigError, load_share_settings
 from sleeplens.dashboard import DashboardSession, chart_rows
@@ -427,6 +428,15 @@ def main():
             st.session_state["dashboard"].apply_selection(previous.selection["profile_id"], previous.selection["start_date"], previous.selection["compare_previous"], days=1 if previous.selection["start_date"] == previous.selection["end_date"] else 7)
             st.session_state["sync_controls"] = True
         st.session_state["product_revision"] = APP_BEHAVIOR_REVISION
+    # The synthetic records are a rolling window ending today. When the Berlin
+    # date changes, every night's values shift, so start fresh on the new
+    # window instead of mixing an earlier day's records into this conversation.
+    window_end = display_data.display_end_date().isoformat()
+    if st.session_state.setdefault("data_window_end", window_end) != window_end:
+        st.session_state["dashboard"].reset_chat()
+        st.session_state["dashboard"] = DashboardSession()
+        st.session_state["data_window_end"] = window_end
+        st.session_state["sync_controls"] = True
     view = st.session_state["dashboard"]
     _sync_controls(view)
     initial_start = view.selection.get("start_date")
@@ -444,7 +454,7 @@ def main():
         with st.form("record_selection"):
             profile = st.selectbox(text["profile"], PROFILE_IDS, key="record_profile")
             start = st.date_input(text["start"], value=None, min_value=min(date(2026, 1, 1), st.session_state["record_start"] or date(2026, 1, 1)),
-                                  max_value=max(berlin_today() - timedelta(days=span), st.session_state["record_start"] or date.min), format="YYYY-MM-DD", key="record_start")
+                                  max_value=max(berlin_today() - timedelta(days=span - 1), st.session_state["record_start"] or date.min), format="YYYY-MM-DD", key="record_start")
             st.caption(("只查询指定的醒来日期。" if language == "中文" else "Queries only the specified waking date.") if span == 1 else ("查询包含起始日及之后六天。" if language == "中文" else "Includes the start date and the following six dates."))
             compare = st.checkbox(text["compare"], key="record_compare", disabled=span == 1)
             apply = st.form_submit_button(text["apply"], key="apply_selection", width="stretch")

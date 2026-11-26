@@ -4,7 +4,7 @@ import math
 import re
 import unicodedata
 from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import date
 
 
 POLICY_VERSION = "classified-replies-v2"
@@ -197,11 +197,11 @@ def policy_trace(category, reason=None, *, partial=False):
 
 
 def unavailable_period_reply(period, today, language):
-    last = (today - timedelta(days=1)).isoformat()
+    last = today.isoformat()
     if language == "Chinese":
-        return f"所问睡眠归入醒来日期{period[1]}，当前仅支持{last}及以前的醒来日期，暂时无法查询。你可以选择一个已结束且有记录的醒来日期。"
-    return (f"The requested sleep belongs to waking date {period[1]}; only waking dates through {last} are supported. "
-            "Please choose a completed waking date with a record.")
+        return f"所问睡眠归入醒来日期{period[1]}，这晚的睡眠还没有结束；目前最多可以查到{last}醒来的那次睡眠（昨晚）。你可以选择一个已有记录的醒来日期。"
+    return (f"The requested sleep belongs to waking date {period[1]} and hasn't happened yet; the latest night available "
+            f"is the one you woke from on {last} (last night). Please choose a waking date with a record.")
 
 
 STAGES = (("deep", "deep_sleep_min", "深睡", "Deep sleep"),

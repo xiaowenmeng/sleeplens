@@ -252,10 +252,10 @@ def test_missing_health_evidence_does_not_spend_a_third_generation(monkeypatch):
 
 
 def test_current_profile_failure_never_reuses_historical_facts():
-    client = Client(lookup(DAY), "这晚睡了410分钟。", lookup({**DAY, "profile_id": "P02", "start_date": "2026-11-23", "end_date": "2026-11-23"}), "你的记录睡了410分钟。")
+    client = Client(lookup(DAY), "这晚睡了410分钟。", lookup({**DAY, "profile_id": "P02", "start_date": "2026-11-24", "end_date": "2026-11-24"}), "你的记录睡了410分钟。")
     session = ChatSession(client)
     assert session.ask("P01在2026-10-22睡了多久？")["status"] == "answered"
-    result = session.ask("改查P02在2026-11-23睡了多久？")
+    result = session.ask("改查P02在2026-11-24睡了多久？")  # Tomorrow's waking date: lookup fails.
     assert not result.get("verified_record_facts") and "410" not in result["answer"]
 
 
@@ -266,29 +266,6 @@ def test_insufficient_comparison_has_no_fabricated_difference():
     assert "差值" not in result.get("verified_record_facts", "") or "不足" in result["verified_record_facts"]
     assert "少了30" not in result["answer"]
     assert "少30" not in result.get("verified_record_facts", "")
-
-
-def test_last_night_keeps_waking_date_and_explains_latest_supported_date():
-    result = ChatSession(Client(lookup({**DAY, "start_date": "2026-11-23", "end_date": "2026-11-23"}),
-                                "本轮记录读取失败，无法提供这晚的个人数值。")).ask("P01昨晚睡了多久？")
-    assert result["query_plan"]["period"] == ("2026-11-23", "2026-11-23")
-    assert "2026-11-22" in result["answer"]
-
-
-def test_last_night_cutoff_is_explicit_even_when_the_model_honestly_abstains():
-    query = {**DAY, "start_date": "2026-11-23", "end_date": "2026-11-23"}
-    result = ChatSession(Client(lookup(query), "资料没有覆盖这一天，无法判断睡眠情况。")).ask("P01昨晚睡了多久？")
-    assert "2026-11-22" in result["answer"]
-
-
-def test_last_night_general_advice_keeps_the_explicit_record_cutoff():
-    query = {**DAY, "start_date": "2026-11-23", "end_date": "2026-11-23"}
-    batch = lookup(query)
-    batch.tool_calls.append(ChatCompletionMessage(role="assistant", tool_calls=[{
-        "id": "health", "type": "function", "function": {"name": "search_sleep_knowledge", "arguments": '{"query":"sleep routine"}'}}]).tool_calls[0])
-    result = ChatSession(Client(batch, "建议保持作息规律。[H2:Schedule]")).ask("P01昨晚睡得怎样，给些改善建议？")
-    assert result["status"] == "answered" and "2026-11-22" in result["answer"]
-    assert "保持作息" in result["answer"] and not result.get("verified_record_facts")
 
 
 def test_invalid_date_does_not_hide_an_independent_introduction():

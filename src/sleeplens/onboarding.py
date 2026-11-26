@@ -17,7 +17,7 @@ COPY = {
         "data": "数据详情", "about": "关于 SleepLens / 使用说明", "classroom": "课堂测试示例",
         "classroom_hint": "用于检查系统如何处理限制；点击仅填入问题，不自动发送。",
         "about_text": "面向希望看懂睡眠记录的成年用户，可查询单晚数据、计算阶段占比、汇总连续七天的记录，并比较相邻两周的平均睡眠时长。记录查询取得实际数值，计算工具负责统计，睡眠知识资料支持一般解释；三者用途不同。\n\n回答下方的参考依据可查看实际引用的资料，计算详情可核对日期、所用数据和已完成的运算。缺少记录或可靠依据时会说明限制；不提供疾病诊断或个人用药方案。\n\n本项目使用合成示例，当前测试不能证明产品能改善睡眠或产生临床效果。切换查询后开始新的对话，也可在侧栏点击“清空对话”。",
-        "date_rule": "日期以醒来日为准，例如所选日期的记录对应当天最终醒来的那次睡眠；只支持今天之前的醒来日期。",
+        "date_rule": "日期以醒来日为准，例如所选日期的记录对应当天最终醒来的那次睡眠；可以查到今天醒来的那次睡眠（昨晚）及更早的日期。",
         "data_rule": "日期范围不代表每天都有完整数据。无记录、标记不可用和缺少字段分开统计，缺失不会按 0 处理；时刻沿用 Europe/Berlin 当地时间及实际时区偏移。",
         "not_recorded": "当前没有上床时间、入睡潜伏期、分期时间线或诊断评分，不能据此推算这些指标。",
         "raw": "原始记录字段", "computed": "可计算的指标", "metric": "名称", "meaning": "含义", "unit": "单位",
@@ -39,7 +39,7 @@ COPY = {
         "data": "Data details", "about": "About SleepLens / How to use", "classroom": "Classroom test examples",
         "classroom_hint": "Use these to check how the system handles limits. Clicking only prepares a question; it does not send it.",
         "about_text": "For adults who want to understand sleep records: look up a night, calculate stage percentages, summarize seven consecutive days, or compare mean sleep duration across adjacent weeks. Record queries provide measurements, calculation tools produce statistics, and sleep information supports general explanations.\n\nSources below an answer show the material actually cited. Calculation details let you check dates, data and completed calculations. Missing records or insufficient evidence are explained; SleepLens does not diagnose disease or provide personal medication plans.\n\nThese are synthetic examples. Current tests do not establish improved sleep or clinical effects. Changing the record selection starts a fresh conversation; you can also use Clear conversation in the sidebar.",
-        "date_rule": "Dates refer to the day of final awakening: a record belongs to the date you woke up. Only waking dates before today are supported.",
+        "date_rule": "Dates refer to the day of final awakening: a record belongs to the date you woke up. Waking dates up to today are supported, so last night's sleep is included.",
         "data_rule": "A date range does not mean every day has complete data. Absent rows, unavailable records and missing fields are counted separately; missing values are never replaced with zero. Times use Europe/Berlin with the actual UTC offset.",
         "not_recorded": "Bedtime, sleep latency, stage timelines and diagnostic scores are not recorded and cannot be inferred from these fields.",
         "raw": "Recorded fields", "computed": "Calculated metrics", "metric": "Name", "meaning": "Meaning", "unit": "Unit",
@@ -85,7 +85,7 @@ def data_catalogue(profile_id, *, today=None, dataset=None):
         if any(count > 1 for count in counts.values()):
             return {**base, "issue": "duplicate_record"}
         days = sorted(counts)
-        eligible = [r for r in source if r.record_date < today]
+        eligible = [r for r in source if r.record_date <= today]
         valid = [r for r in eligible if r.sleep_valid]
         source_valid = [r for r in source if r.sleep_valid]
         calendar = [days[0] + timedelta(days=i) for i in range((days[-1] - days[0]).days + 1)] if days else []
@@ -211,7 +211,7 @@ def default_query():
     week = _week(info)
     if week:
         return week
-    day = info.get("queryable_end") or (analysis.berlin_today()-timedelta(days=1)).isoformat()
+    day = info.get("queryable_end") or analysis.berlin_today().isoformat()
     return _query(info, day)
 
 

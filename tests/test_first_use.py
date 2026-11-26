@@ -22,7 +22,7 @@ def test_catalogue_matches_raw_dates_validity_and_missing_dates(profile):
     rows = [r for r in raw["records"] if r["profile_id"] == profile]
     days = {date.fromisoformat(r["record_date"]) for r in rows}
     all_days = {min(days) + timedelta(days=i) for i in range((max(days) - min(days)).days + 1)}
-    info = data_catalogue(profile, today=date(2026, 11, 25))
+    info = data_catalogue(profile, today=date(2026, 12, 27))
     assert info["status"] == "ok"
     assert info["record_rows"] == len(rows) and info["unique_dates"] == len(days)
     assert info["missing_dates"] == sorted(d.isoformat() for d in all_days - days)
@@ -38,13 +38,13 @@ def test_catalogue_matches_raw_dates_validity_and_missing_dates(profile):
 def test_function_examples_use_real_dates_fields_and_supported_windows(profile, language):
     from sleeplens.onboarding import data_catalogue, question_examples
 
-    info = data_catalogue(profile, today=date(2026, 11, 25))
+    info = data_catalogue(profile, today=date(2026, 12, 27))
     examples = question_examples(info, language)
     assert {e["id"] for e in examples} == {"duration", "deep", "stages", "period", "knowledge", "normality"}
     for example in examples:
         if example["query"]:
             assert example["query"]["profile_id"] == profile
-            output = analyze_sleep(**example["query"], today=date(2026, 11, 25))
+            output = analyze_sleep(**example["query"], today=date(2026, 12, 27))
             assert output["current"]["valid_nights"] > 0
             if example["id"] in {"deep", "stages", "normality"}:
                 row = output["daily_records"]["current"][0]
@@ -57,7 +57,7 @@ def test_function_examples_use_real_dates_fields_and_supported_windows(profile, 
 def test_units_and_computed_fields_match_the_implemented_record_definitions():
     from sleeplens.onboarding import data_catalogue, metric_rows
 
-    info = data_catalogue("P01", today=date(2026, 11, 25))
+    info = data_catalogue("P01", today=date(2026, 12, 27))
     raw = metric_rows(info, "English")
     assert {r["field"] for r in raw} == {"sleep_min", "sleep_onset", "wake_time", "night_awakenings", "awake_min", "deep_sleep_min", "light_sleep_min", "rem_sleep_min"}
     assert next(r for r in raw if r["field"] == "night_awakenings")["unit"] == "count"
@@ -73,6 +73,9 @@ def forbidden_model():
 def open_app(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setattr("sleeplens.dashboard.create_model", forbidden_model)
+    # Pin the clock after the display data so every recorded date is "completed".
+    for module in ("sleeplens.analysis", "sleeplens.agent", "sleeplens.web"):
+        monkeypatch.setattr(module + ".berlin_today", lambda: date(2026, 12, 26))
     return AppTest.from_file(str(ROOT / "app.py"), default_timeout=15).run()
 
 
@@ -114,10 +117,10 @@ def test_classroom_examples_are_separate_and_have_a_genuinely_absent_date():
     from sleeplens.onboarding import data_catalogue, classroom_examples
 
     for profile in PROFILE_IDS:
-        info = data_catalogue(profile, today=date(2026, 11, 25))
+        info = data_catalogue(profile, today=date(2026, 12, 27))
         examples = classroom_examples(info, "中文")
         no_data = next(e for e in examples if e["id"] == "no_records")
-        output = analyze_sleep(**no_data["query"], today=date(2026, 11, 25))
+        output = analyze_sleep(**no_data["query"], today=date(2026, 12, 27))
         assert output["status"] == "no_data"
         assert output["daily_records"]["current"][0]["record_state"] == "missing_record"
         assert {e["id"] for e in examples} == {"no_records", "medical", "outside"}
@@ -148,7 +151,7 @@ def test_prefilled_example_runs_only_after_explicit_submission(monkeypatch, tmp_
     app.button(key="example_duration").click().run()
     question = app.chat_input[0].proto.value
     calls = []
-    query = dict(profile_id="P01", start_date="2026-10-25", end_date="2026-10-25", compare_previous=False)
+    query = dict(profile_id="P01", start_date="2026-11-26", end_date="2026-11-26", compare_previous=False)
     minutes = analyze_sleep(**query)["daily_records"]["current"][0]["sleep_min"]
     messages = [ChatCompletionMessage(role="assistant", tool_calls=[{
         "id": "record", "type": "function", "function": {
@@ -178,14 +181,15 @@ def test_examples_respect_completed_dates_and_legacy_missing_fields():
     for row in raw["records"]:
         for field in DETAIL_FIELDS:
             row.pop(field, None)
-    info = data_catalogue("P01", today=date(2026, 10, 15), dataset=parse_dataset(raw))
-    assert info["unique_dates"] == 14 and info["queryable_unique_dates"] == 3
-    assert info["queryable_end"] == "2026-10-14" and len(info["incomplete_dates"]) == 14
+    info = data_catalogue("P01", today=date(2026, 11, 16), dataset=parse_dataset(raw))
+    # Today's waking date (last night) is queryable, so 11-13 to 11-16 count.
+    assert info["unique_dates"] == 14 and info["queryable_unique_dates"] == 4
+    assert info["queryable_end"] == "2026-11-16" and len(info["incomplete_dates"]) == 14
     assert info["complete_detail_nights"] == 0
     assert [r["field"] for r in metric_rows(info, "English")] == ["sleep_min"]
     examples = question_examples(info, "English")
     assert {e["id"] for e in examples} == {"duration", "knowledge"}
-    assert all(e["query"] is None or e["query"]["end_date"] < "2026-10-15" for e in examples)
+    assert all(e["query"] is None or e["query"]["end_date"] <= "2026-11-16" for e in examples)
 
 
 @pytest.mark.parametrize("problem,issue", [("duplicate", "duplicate_record"), ("incomplete", "incomplete_data")])

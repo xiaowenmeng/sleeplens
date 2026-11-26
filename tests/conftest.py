@@ -26,6 +26,14 @@ def offline_only(monkeypatch):
     monkeypatch.setattr("sleeplens.llm.DeepSeekClient.complete", forbidden)
 
 
+@pytest.fixture(autouse=True)
+def display_window_snapshot(monkeypatch):
+    # The app's display data is a rolling window ending today. Tests pin it to
+    # the committed snapshot (fixtures/display_sleep.json) so values are fixed.
+    from datetime import date
+    monkeypatch.setattr("sleeplens.display_data.display_end_date", lambda: date(2026, 11, 26))
+
+
 @pytest.fixture
 def regression_dataset(monkeypatch):
     path = files("sleeplens").joinpath("fixtures/synthetic_sleep.json")

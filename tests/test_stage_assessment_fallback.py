@@ -20,9 +20,9 @@ from sleeplens.llm import ModelError
 from sleeplens.query_policy import plan_query
 
 
-TODAY = date(2026, 11, 24)
-WEEK = dict(profile_id="P01", start_date="2026-10-19", end_date="2026-10-25", compare_previous=True)
-DAY = dict(profile_id="P01", start_date="2026-10-19", end_date="2026-10-19", compare_previous=False)
+TODAY = date(2026, 12, 26)
+WEEK = dict(profile_id="P01", start_date="2026-11-20", end_date="2026-11-26", compare_previous=True)
+DAY = dict(profile_id="P01", start_date="2026-11-20", end_date="2026-11-20", compare_previous=False)
 
 
 class Client:
@@ -56,6 +56,7 @@ def evidence(args=None):
 @pytest.fixture(autouse=True)
 def clock(monkeypatch):
     monkeypatch.setattr("sleeplens.agent.berlin_today", lambda: TODAY)
+    monkeypatch.setattr("sleeplens.analysis.berlin_today", lambda: TODAY)
 
 
 @pytest.mark.parametrize("question", [
@@ -65,11 +66,11 @@ def clock(monkeypatch):
 def test_tonight_overrides_old_page_dates_without_a_model(question):
     client = Client()
     result = ChatSession(client).ask(question, selected_query=WEEK)
-    assert result["query_plan"]["period"] == ("2026-11-25", "2026-11-25")
+    assert result["query_plan"]["period"] == ("2026-12-27", "2026-12-27")
     assert result["status"] == "answered" and client.calls == 0
     assert not result["tool_events"] and not result.get("verified_record_facts")
-    assert "2026-11-25" in result["answer"]
-    assert "2026-10-19" not in result["answer"] and "2026-10-25" not in result["answer"]
+    assert "2026-12-27" in result["answer"]
+    assert "2026-11-20" not in result["answer"] and "2026-11-26" not in result["answer"]
     assert result["reply_policy"]["reason"] == "date_unavailable"
     assert not result["citation_check"]["references"]
     assert result["record_availability"]["state"] == "not_queried"
@@ -104,7 +105,7 @@ BAD = "你的深睡67分钟已经达标。[H6:Pattern]"
 
 def test_blocked_stage_grading_preserves_actual_minutes_and_calculated_share():
     client = Client(evidence(DAY), BAD, BAD)
-    result = ChatSession(client).ask("2026-10-19的深睡占比正常吗？", selected_query=WEEK)
+    result = ChatSession(client).ask("2026-11-20的深睡占比正常吗？", selected_query=WEEK)
     row = analyze_sleep(**DAY, today=TODAY)["daily_records"]["current"][0]
     assert result["status"] == "answered"
     assert result["answer_validation"]["fallback"] == "stage_assessment"
@@ -122,10 +123,10 @@ def test_blocked_general_question_gets_product_limit_and_next_step():
 
 
 def test_no_records_fallback_does_not_replace_the_requested_date():
-    args = {**DAY, "start_date": "2026-11-20", "end_date": "2026-11-20"}
-    result = ChatSession(Client(evidence(args), BAD, BAD)).ask("2026-11-20的深睡占比正常吗？", selected_query=WEEK)
-    assert "2026-11-20" in result["answer"] and "没有可用" in result["answer"]
-    assert not result["citation_check"]["references"] and "2026-10-19" not in result["answer"]
+    args = {**DAY, "start_date": "2026-12-22", "end_date": "2026-12-22"}
+    result = ChatSession(Client(evidence(args), BAD, BAD)).ask("2026-12-22的深睡占比正常吗？", selected_query=WEEK)
+    assert "2026-12-22" in result["answer"] and "没有可用" in result["answer"]
+    assert not result["citation_check"]["references"] and "2026-11-20" not in result["answer"]
     assert "67" not in result["answer"]
 
 
@@ -147,7 +148,7 @@ def test_missing_stage_or_zero_denominator_is_not_filled_in(missing):
     else:
         row["sleep_min"] = 0
         row["deep_sleep_min"] = 0
-    plan = plan_query("2026-10-19的深睡占比正常吗？", today=TODAY, selected_query=WEEK)
+    plan = plan_query("2026-11-20的深睡占比正常吗？", today=TODAY, selected_query=WEEK)
     answer = stage_assessment_reply(plan, "Chinese", record=output)
     assert "无法计算" in answer and "0.0%" not in answer
     assert "[B1:ProductStages]" not in answer
@@ -162,32 +163,32 @@ def test_weekly_fallback_uses_each_nights_own_denominator_and_requested_stage():
     for row in output["daily_records"]["current"]:
         assert f"| {row['record_date']} | 深睡 | {row['deep_sleep_min']} | {row['sleep_min']} | {row['deep_sleep_min'] / row['sleep_min'] * 100:.1f}% |" in answer
     assert "| 浅睡 |" not in answer and "| REM |" not in answer
-    assert "2026-10-12" not in answer
+    assert "2026-11-13" not in answer
 
 
 def test_failed_new_lookup_does_not_reuse_old_stage_values(monkeypatch):
     old_row = analyze_sleep(**DAY, today=TODAY)["daily_records"]["current"][0]
-    args = {**DAY, "start_date": "2026-10-20", "end_date": "2026-10-20"}
+    args = {**DAY, "start_date": "2026-11-21", "end_date": "2026-11-21"}
     client = Client(evidence(DAY), f"深睡{old_row['deep_sleep_min']}分钟。", evidence(args), BAD, BAD)
     session = ChatSession(client)
-    assert session.ask("2026-10-19深睡多少分钟？", selected_query=WEEK)["status"] == "answered"
+    assert session.ask("2026-11-20深睡多少分钟？", selected_query=WEEK)["status"] == "answered"
 
     def unavailable():
         raise OSError("injected read failure")
 
     monkeypatch.setattr("sleeplens.analysis.load_dataset", unavailable)
-    result = session.ask("2026-10-20的深睡占比正常吗？", selected_query=WEEK)
+    result = session.ask("2026-11-21的深睡占比正常吗？", selected_query=WEEK)
     assert result["answer_validation"]["fallback"] == "stage_assessment"
     assert "读取失败" in result["answer"] and "稍后再试" in result["answer"]
     assert result["reply_policy"]["category"] == "tool_failure"
-    assert "2026-10-19" not in result["answer"] and "| ---" not in result["answer"]
+    assert "2026-11-20" not in result["answer"] and "| ---" not in result["answer"]
     assert result["record_context"]["scope_matches"] is False
     assert result["record_availability"]["state"] == "lookup_failed"
 
 
 @pytest.mark.parametrize("question,client", [
     ("今晚的深睡占比正常吗？", lambda: Client()),
-    ("2026-10-19的深睡占比正常吗？", lambda: Client(evidence(DAY), BAD, BAD)),
+    ("2026-11-20的深睡占比正常吗？", lambda: Client(evidence(DAY), BAD, BAD)),
     ("Is my deep sleep percentage normal?", lambda: Client(ModelError("unavailable"))),
 ])
 def test_web_displays_fallback_as_an_answer_with_its_sources(monkeypatch, tmp_path, question, client):

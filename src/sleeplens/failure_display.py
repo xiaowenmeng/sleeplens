@@ -60,7 +60,7 @@ def stage_assessment_reply(plan, language, *, record=None, lookup=None, selectio
     period = expected_record_scope(plan, selection or {})["period"] if plan.task == "combined" else plan.period
     if today is None and lookup and lookup.get("as_of_date"):
         today = date.fromisoformat(lookup["as_of_date"])
-    if not record and period and today and date.fromisoformat(period[1]) >= today:
+    if not record and period and today and date.fromisoformat(period[1]) > today:
         return unavailable_period_reply(period, today, language)
     issue = record_issue(record, lookup, plan, language)
     values = stage_values(plan, record, language)[0] if record else []
