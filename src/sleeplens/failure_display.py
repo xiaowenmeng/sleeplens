@@ -7,7 +7,7 @@ import re
 
 from sleeplens.query_policy import render_facts, requested_detail_metrics
 from sleeplens.reply_policy import (
-    data_gap_reply, message, policy_trace, record_issue, stage_facts, stage_question,
+    message, policy_trace, record_issue, stage_facts, stage_question,
     stage_values, unavailable_period_reply, field_labels,
     stage_response_scope, stage_limitation, comparison_available,
     stage_record_gap,

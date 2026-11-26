@@ -40,6 +40,16 @@ EVENTS = {("P01", 4): (73, 5, 0), ("P01", 10): (19, -8, 31),
           ("P03", 8): (41, -3, 13)}
 
 
+def _after_midnight(day: date, minutes: int) -> datetime:
+    """Berlin time a number of elapsed minutes after local midnight.
+
+    Adding in UTC keeps every result a real local time, including on the
+    spring clock change, when 02:00-02:59 does not exist in Berlin.
+    """
+    midnight = datetime.combine(day, time(), BERLIN).astimezone(timezone.utc)
+    return (midnight + timedelta(minutes=minutes)).astimezone(BERLIN)
+
+
 def display_end_date() -> date:
     """The newest waking date in the display data: today in Europe/Berlin."""
     return datetime.now(BERLIN).date()
@@ -62,8 +72,8 @@ def build_display_dataset(end_date: date) -> dict:
             if spec["profile_id"] == "P01" and offset >= 7:
                 onset_min += 17
             later, extra_sleep_opportunity, extra_awake = EVENTS.get((spec["profile_id"], offset), (0, 0, 0))
-            onset = datetime.combine(day - timedelta(days=1), time(), BERLIN) + timedelta(minutes=round(onset_min + later))
-            wake = datetime.combine(day, time(), BERLIN) + timedelta(minutes=round(wake_min + extra_sleep_opportunity))
+            onset = _after_midnight(day - timedelta(days=1), round(onset_min + later))
+            wake = _after_midnight(day, round(wake_min + extra_sleep_opportunity))
             count = rng.choices(range(4), weights=spec["awakenings"])[0]
             if extra_awake:
                 count = max(count, 2)

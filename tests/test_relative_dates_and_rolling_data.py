@@ -126,3 +126,12 @@ def test_open_page_moves_to_the_new_window_when_the_date_changes(monkeypatch, tm
     assert not app.exception
     assert app.session_state["dashboard"].selection["end_date"] == "2026-11-27"
     assert app.session_state["data_window_end"] == "2026-11-27"
+
+
+@pytest.mark.parametrize("year", range(2026, 2033))
+def test_every_window_around_berlin_clock_changes_is_valid(year):
+    # Late bedtimes once fell in the hour skipped at the spring change, which
+    # made the whole dataset fail validation on two days a year.
+    for start in (date(year, 3, 20), date(year, 10, 20)):
+        for offset in range(30):
+            display_data.build_display_dataset(start + timedelta(days=offset))  # Raises if invalid.

@@ -11,7 +11,6 @@ from streamlit.testing.v1 import AppTest
 
 from sleeplens.agent import ChatSession
 from sleeplens.config import Settings
-from sleeplens.query_policy import plan_query
 from sleeplens.telemetry import save_share_event
 from sleeplens.tools import dispatch_tool
 
