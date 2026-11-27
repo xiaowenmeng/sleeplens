@@ -1,0 +1,369 @@
+{
+  "status": "answered",
+  "mode": "live",
+  "session_id": "9922724f381646aabef4573452ebb507",
+  "turn_number": 1,
+  "created_at": "2026-11-23T16:42:12.082908+00:00",
+  "question": "我晚上一直刷亮屏手机，到了床上还是不困。资料能解释一种可能的影响吗？能认定我的情况就是手机造成的吗？",
+  "answer": "资料确实能解释一种可能的影响：夜间明亮的灯光会干扰褪黑素分泌，让入睡变得更困难，而手机屏幕正是这类光源之一[H7:EveningLight]。所以“床上刷亮屏手机、躺下还不困”这个组合，在生理机制上是有合理联系的。\n\n但不能据此认定你的情况就是手机造成的。同一份资料明确说明，这不能证明某个人的入睡偏晚就是由屏幕引起的[H7:EveningLight]。要判断具体原因，还需要知道你的上床时间、关灯时间、实际入睡时刻、白天活动量、咖啡因摄入，以及最近几晚的睡眠记录；这些信息目前都还没有。\n\n如果想减少这个可能的影响，可以试试在睡前留出一小时做安静活动，并减少使用亮屏设备[H2:WindDown]。这只是一个可尝试的调整方向，并不等于已经确认了你的原因。",
+  "answer_language": "Chinese",
+  "selected_query": {
+    "profile_id": "P01",
+    "start_date": "2026-10-19",
+    "end_date": "2026-10-25",
+    "compare_previous": false
+  },
+  "prompt_version": "prompt-v25",
+  "knowledge_version": "sleep-knowledge-v6",
+  "knowledge_architecture": "core_context_with_health_retrieval",
+  "knowledge_sha256": "22cc914711566f35e63663138ea2eae7f0ff23d5e74c979605904106e4964d01",
+  "retrieved_evidence": [
+    {
+      "source_id": "H7",
+      "title": "NIH/NHLBI ? Your Sleep/Wake Cycle",
+      "filename": "H7.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-11",
+      "source_url": "https://www.nhlbi.nih.gov/health/sleep/sleep-wake-cycle",
+      "synthetic": false,
+      "scope": "General circadian physiology; no universal bedtime",
+      "section_id": "EveningLight",
+      "topics": [
+        "circadian",
+        "screens"
+      ],
+      "citation_id": "H7:EveningLight",
+      "text": "Bright artificial light late in the evening can interfere with melatonin release and make falling asleep harder. Screens are possible sources of this light. This does not prove that a particular person's late sleep onset was caused by a screen, or establish one compulsory bedtime for everyone."
+    },
+    {
+      "source_id": "H2",
+      "title": "NIH/NHLBI · Healthy Sleep Habits",
+      "filename": "H2.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+      "synthetic": false,
+      "scope": "Adult sleep habits and shift-work guidance",
+      "section_id": "WindDown",
+      "topics": [
+        "relaxation",
+        "screens",
+        "general_advice"
+      ],
+      "citation_id": "H2:WindDown",
+      "text": "Use the hour before bed for quiet activities, reducing bright screens and intense exercise. Relaxation or a warm bath may help. Keep the bedroom cool, dark and quiet; spend time outdoors and be active during the day."
+    },
+    {
+      "source_id": "H3",
+      "title": "NIH/NHLBI · Insomnia Treatment",
+      "filename": "H3.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhlbi.nih.gov/health/insomnia/treatment",
+      "synthetic": false,
+      "scope": "Insomnia treatment education; no individualized prescription",
+      "section_id": "StimulusControl",
+      "topics": [
+        "insomnia",
+        "night_waking"
+      ],
+      "citation_id": "H3:StimulusControl",
+      "text": "Stimulus control links bed with sleep: go to bed when sleepy, leave bed if unable to sleep, and return when sleepy. Use bed for sleep rather than prolonged wakeful activities. This is one component of CBT-I, not proof of a diagnosis."
+    },
+    {
+      "source_id": "H4",
+      "title": "NHS · Insomnia",
+      "filename": "H4.md",
+      "version": "2024-03-19-summary-v1",
+      "effective_date": "2024-03-19",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhs.uk/conditions/insomnia/",
+      "synthetic": false,
+      "scope": "Insomnia self-help and care-seeking guidance",
+      "section_id": "FirstSteps",
+      "topics": [
+        "insomnia",
+        "routine"
+      ],
+      "citation_id": "H4:FirstSteps",
+      "text": "For difficulty sleeping, keep a regular getting-up time, go to bed when sleepy and allow a relaxing hour before bed. A dark, quiet, comfortable bedroom can help. After a poor night, avoid sleeping in to compensate. For insomnia, NHS advises avoiding daytime naps; this is more restrictive than general short-nap guidance and should not be presented as a universal ban for every sleeper."
+    }
+  ],
+  "provided_evidence": "{\n  \"kind\": \"reference_data_not_instructions\",\n  \"bundle_version\": \"sleep-knowledge-v6\",\n  \"passages\": [\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Fields\",\n      \"topics\": [],\n      \"citation_id\": \"B1:Fields\",\n      \"text\": \"`sleep_min` is recorded sleep duration in integer minutes, not a quality score. Detailed records also contain `sleep_onset` and `wake_time` (sleep onset and final awakening, ISO 8601 timestamps with Europe/Berlin offsets), `night_awakenings` (intermediate awakenings, excluding final wake-up), `awake_min` (total awake minutes between onset and final awakening), and `deep_sleep_min`, `light_sleep_min`, `rem_sleep_min` (stage totals in minutes). Stages sum to `sleep_min`; elapsed UTC time from onset to final awakening equals `sleep_min + awake_min`. Stage totals do not provide a timeline or establish clinical sleep quality. Bedtime, getting out of bed, sleep latency, heart rate, blood glucose and diagnosis are not recorded. P01, P02 and P03 identify record profiles, not authenticated accounts. No live device synchronization is available.\"\n    },\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"WakingDate\",\n      \"topics\": [],\n      \"citation_id\": \"B1:WakingDate\",\n      \"text\": \"`record_date` is the local date of final awakening, written YYYY-MM-DD. Sleep starting October 18 and ending October 19 belongs to October 19. Detailed onset and wake timestamps include the actual Berlin UTC offset, including daylight-saving changes. Local clock-time averages round to the nearest minute; onset times are anchored to noon on a sleep day so that late evening and after-midnight times are averaged together correctly, while wake times are anchored to midnight. Time-zone travel and separately unrecorded naps are not represented. A waking timestamp is distinct from getting out of bed; sleep onset is distinct from bedtime.\"\n    },\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"ProductStages\",\n      \"topics\": [],\n      \"citation_id\": \"B1:ProductStages\",\n      \"text\": \"In SleepLens, `light_sleep_min` represents the combined N1 and N2 stage minutes; N1 and N2 are not displayed separately. `deep_sleep_min` represents N3 minutes. `rem_sleep_min` represents REM minutes, separately from light and deep sleep. These are the product's field definitions, not targets for a healthy stage distribution. Light + deep + REM equals `sleep_min`, excluding intermediate awake time. The records contain stage totals, not their sequence or cycle count. A percentage may be calculated as that stage's minutes divided by recorded sleep minutes, but it is descriptive rather than a clinical threshold.\\n\\n`night_awakenings` counts recorded intermediate awakenings after sleep onset and before final awakening. It excludes the final wake-up. `awake_min` sums those intermediate awake intervals. Zero means no such event was recorded in these fields; it does not establish that every brief physiological arousal was measured or absent. SleepLens does not provide a validated normality score, diagnose conditions, or infer sleep latency without bedtime data. These definitions do not assert any particular acquisition or device-validation method.\"\n    },\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Validity\",\n      \"topics\": [],\n      \"citation_id\": \"B1:Validity\",\n      \"text\": \"`sleep_valid=true` means an available record usable for statistics; its duration is an integer from 0 to 1440 minutes. This is a technical daily-record range, not a healthy range. `sleep_valid=false` requires `sleep_min=null`. An unavailable night or an entirely missing date is not zero sleep. An explicit valid zero is retained but flagged for verification; it does not prove that no sleep occurred.\"\n    },\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Limits\",\n      \"topics\": [],\n      \"citation_id\": \"B1:Limits\",\n      \"text\": \"Recorded duration can describe how much sleep was recorded, but cannot establish sleep quality, a disease, the cause of a change or total daily sleep. For an explanation of a possible contributor, use the person's stated routine and relevant sleep guidance, not duration alone.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Periods\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Periods\",\n      \"text\": \"Each query covers one waking date or exactly seven consecutive waking dates, including both endpoints. Explicit user dates override page defaults. A single-day lookup uses identical start_date and end_date and compare_previous=false; show that day's actual record, not weekly averages or other dates. An omitted year uses the selected or confirmed period's year, otherwise the current year, and the answer displays the full date. An explicit evening belongs to the following waking date. For weekly comparisons, the previous period is the seven dates immediately before the requested start. Only dates ending before today's date in Europe/Berlin are supported. The dataset covers October 12–25, 2026. Other completed periods may return no or partial data; do not remap requested dates to available dates. Invalid or ambiguous dates and missing profiles must be clarified. A request for a summary alone uses compare_previous=false unless comparison was requested.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Coverage\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Coverage\",\n      \"text\": \"Coverage equals valid nights divided by the requested number of nights (one or seven). Mean duration equals the sum of valid minutes divided by valid nights. For a single day, describe the actual recorded duration rather than an average. Report each period's valid-night count and coverage as relevant. A weekly mean based on one to three nights describes only those nights, not a full week. No valid nights means a null mean, not zero. Missingness may bias comparisons even when the display rule allows one.\\n\\nDetailed timing, awakening and stage summaries have their own `detail_nights` and `detail_coverage`. They use only valid nights with complete detailed fields; an older duration-only record can contribute to mean sleep duration without contributing to detailed means. Missing detailed values are null, never imputed. Deep/light/REM values describe recorded stage minutes, not a health score.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Comparison\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Comparison\",\n      \"text\": \"A duration difference is returned only if both periods have at least four valid nights. The difference is current mean minus previous mean, in minutes. The four-night gate is a product display rule, not a medical recommendation or a significance test. If the tool returns comparison_state=insufficient_data or difference_min=null, do not compute or verbalize a numerical difference, percentage change, or directional trend from the two displayed means. Explain the missing coverage instead. Even an available difference supports only a descriptive record comparison, not cause, diagnosis or a quality conclusion.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Failures\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Failures\",\n      \"text\": \"ok means complete requested periods; partial_data means incomplete coverage with some usable data; no_data means all requested periods have zero valid nights. invalid_input, unsupported_period, data_quality_error and tool_error do not provide usable statistics. Explain the problem or ask for correction; never invent substitute records or calculate replacement figures. Duplicate or malformed records are rejected. A failed read cannot be represented as a successful lookup.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Service\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Service\",\n      \"text\": \"Available operations read sleep records and search curated sleep guidance. Do not promise saved targets, changed records, notifications, appointments or live device monitoring. Reply in Chinese or English according to the user. Explain findings directly; provide grounded sleep advice when asked without requiring a record query first. Data provenance is available if asked, but need not be repeated in ordinary answers.\"\n    }\n  ]\n}",
+  "tool_events": [
+    {
+      "tool": "search_sleep_knowledge",
+      "tool_call_id": "call_00_upv3onv493ilwa4tt7hvxb4i",
+      "executed": true,
+      "validated_arguments": {
+        "query": "睡前使用手机 亮屏 蓝光 入睡困难 睡眠延迟 影响 因果"
+      },
+      "result": {
+        "status": "ok",
+        "query": "睡前使用手机 亮屏 蓝光 入睡困难 睡眠延迟 影响 因果",
+        "bundle_version": "sleep-knowledge-v6",
+        "retrieval_method": "local_topic_and_keyword",
+        "matched_topics": [
+          "insomnia",
+          "screens"
+        ],
+        "excluded_topics": [],
+        "passages": [
+          {
+            "source_id": "H7",
+            "title": "NIH/NHLBI ? Your Sleep/Wake Cycle",
+            "filename": "H7.md",
+            "version": "2022-03-24-summary-v1",
+            "effective_date": "2022-03-24",
+            "checked_at": "2026-11-11",
+            "source_url": "https://www.nhlbi.nih.gov/health/sleep/sleep-wake-cycle",
+            "synthetic": false,
+            "scope": "General circadian physiology; no universal bedtime",
+            "section_id": "EveningLight",
+            "topics": [
+              "circadian",
+              "screens"
+            ],
+            "citation_id": "H7:EveningLight",
+            "text": "Bright artificial light late in the evening can interfere with melatonin release and make falling asleep harder. Screens are possible sources of this light. This does not prove that a particular person's late sleep onset was caused by a screen, or establish one compulsory bedtime for everyone."
+          },
+          {
+            "source_id": "H2",
+            "title": "NIH/NHLBI · Healthy Sleep Habits",
+            "filename": "H2.md",
+            "version": "2022-03-24-summary-v1",
+            "effective_date": "2022-03-24",
+            "checked_at": "2026-11-10",
+            "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+            "synthetic": false,
+            "scope": "Adult sleep habits and shift-work guidance",
+            "section_id": "WindDown",
+            "topics": [
+              "relaxation",
+              "screens",
+              "general_advice"
+            ],
+            "citation_id": "H2:WindDown",
+            "text": "Use the hour before bed for quiet activities, reducing bright screens and intense exercise. Relaxation or a warm bath may help. Keep the bedroom cool, dark and quiet; spend time outdoors and be active during the day."
+          },
+          {
+            "source_id": "H3",
+            "title": "NIH/NHLBI · Insomnia Treatment",
+            "filename": "H3.md",
+            "version": "2022-03-24-summary-v1",
+            "effective_date": "2022-03-24",
+            "checked_at": "2026-11-10",
+            "source_url": "https://www.nhlbi.nih.gov/health/insomnia/treatment",
+            "synthetic": false,
+            "scope": "Insomnia treatment education; no individualized prescription",
+            "section_id": "StimulusControl",
+            "topics": [
+              "insomnia",
+              "night_waking"
+            ],
+            "citation_id": "H3:StimulusControl",
+            "text": "Stimulus control links bed with sleep: go to bed when sleepy, leave bed if unable to sleep, and return when sleepy. Use bed for sleep rather than prolonged wakeful activities. This is one component of CBT-I, not proof of a diagnosis."
+          },
+          {
+            "source_id": "H4",
+            "title": "NHS · Insomnia",
+            "filename": "H4.md",
+            "version": "2024-03-19-summary-v1",
+            "effective_date": "2024-03-19",
+            "checked_at": "2026-11-10",
+            "source_url": "https://www.nhs.uk/conditions/insomnia/",
+            "synthetic": false,
+            "scope": "Insomnia self-help and care-seeking guidance",
+            "section_id": "FirstSteps",
+            "topics": [
+              "insomnia",
+              "routine"
+            ],
+            "citation_id": "H4:FirstSteps",
+            "text": "For difficulty sleeping, keep a regular getting-up time, go to bed when sleepy and allow a relaxing hour before bed. A dark, quiet, comfortable bedroom can help. After a poor night, avoid sleeping in to compensate. For insomnia, NHS advises avoiding daytime naps; this is more restrictive than general short-nap guidance and should not be presented as a universal ban for every sleeper."
+          }
+        ]
+      },
+      "requested_arguments": {
+        "query": "睡前使用手机 亮屏 蓝光 入睡困难 睡眠延迟 影响 因果"
+      }
+    }
+  ],
+  "model_calls": [
+    {
+      "status": "completed",
+      "model": "deepseek-v4.1-flash-1017",
+      "prompt_tokens": 11373,
+      "completion_tokens": 59,
+      "total_tokens": 11432
+    },
+    {
+      "status": "completed",
+      "model": "deepseek-v4.1-flash-1017",
+      "prompt_tokens": 12343,
+      "completion_tokens": 182,
+      "total_tokens": 12525
+    }
+  ],
+  "total_tokens": 23957,
+  "answer_validation": {
+    "repairs": [],
+    "status": "passed",
+    "policy_version": "grounded-errors-v2"
+  },
+  "citation_check": {
+    "status": "valid",
+    "references": [
+      {
+        "source_id": "H7",
+        "title": "NIH/NHLBI ? Your Sleep/Wake Cycle",
+        "filename": "H7.md",
+        "version": "2022-03-24-summary-v1",
+        "effective_date": "2022-03-24",
+        "checked_at": "2026-11-11",
+        "source_url": "https://www.nhlbi.nih.gov/health/sleep/sleep-wake-cycle",
+        "synthetic": false,
+        "scope": "General circadian physiology; no universal bedtime",
+        "section_id": "EveningLight",
+        "topics": [
+          "circadian",
+          "screens"
+        ],
+        "citation_id": "H7:EveningLight",
+        "text": "Bright artificial light late in the evening can interfere with melatonin release and make falling asleep harder. Screens are possible sources of this light. This does not prove that a particular person's late sleep onset was caused by a screen, or establish one compulsory bedtime for everyone."
+      },
+      {
+        "source_id": "H2",
+        "title": "NIH/NHLBI · Healthy Sleep Habits",
+        "filename": "H2.md",
+        "version": "2022-03-24-summary-v1",
+        "effective_date": "2022-03-24",
+        "checked_at": "2026-11-10",
+        "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+        "synthetic": false,
+        "scope": "Adult sleep habits and shift-work guidance",
+        "section_id": "WindDown",
+        "topics": [
+          "relaxation",
+          "screens",
+          "general_advice"
+        ],
+        "citation_id": "H2:WindDown",
+        "text": "Use the hour before bed for quiet activities, reducing bright screens and intense exercise. Relaxation or a warm bath may help. Keep the bedroom cool, dark and quiet; spend time outdoors and be active during the day."
+      }
+    ],
+    "invalid": [],
+    "unavailable": [],
+    "structural_only": true
+  },
+  "validation_warnings": [],
+  "error": null,
+  "fictional_evaluation_fixture": false,
+  "business_skill": {
+    "name": "sleep-analysis",
+    "version": "3.2.0",
+    "sections": [
+      "health"
+    ],
+    "context_sha256": "51c761503bbc8ad3b5269fc8a1d7aed90481379b567ca542c8d66bfb22f13e2f",
+    "source_sha256": {
+      "SKILL.md": "733eaa8c2f1c7e44c567d3ecff956a72bc366f63a3012dd31474697deae13d8e",
+      "references/response_patterns.md": "d8bcfe339cd3343c6a6b0ccffa1576054cc8dd26db613ffcbb56a92875a275e2",
+      "references/examples.md": "79bdcd840d4ddd4b24f340b72215e60812f787217279b1036f592b043b301dcb"
+    },
+    "status": "loaded",
+    "delivery": "model_request_attempted"
+  },
+  "response_plan": {
+    "version": "response-plan-v1",
+    "source": "application",
+    "intent": "explanation",
+    "task": "health",
+    "metrics": [],
+    "profile_id": null,
+    "period": null,
+    "period_source": "unspecified",
+    "time_scope": "unspecified",
+    "evidence": [
+      "knowledge"
+    ],
+    "granularity": null,
+    "answer_format": "explanation",
+    "include_nightly": false,
+    "needs_interpretation": false,
+    "missing": [],
+    "requirements": [
+      "supporting_sources"
+    ]
+  },
+  "history_before_turn": [],
+  "query_plan": {
+    "task": "health",
+    "metrics": [],
+    "topics": [
+      "screens"
+    ],
+    "no_caffeine": false,
+    "no_coffee": false,
+    "caffeine_question": false,
+    "profile_id": null,
+    "period": null,
+    "brief": false,
+    "followup": false,
+    "unsupported_window": false,
+    "focus_citations": [],
+    "special_population": false,
+    "knowledge_only": false,
+    "compare_sources": false,
+    "brief_record_recap": false,
+    "lead_change": false,
+    "causality_question": false,
+    "personal_assessment": false,
+    "wants_improvement": false,
+    "wants_analysis": false,
+    "sleep_overview": false,
+    "unavailable_measurement": null,
+    "application_dialogue": null,
+    "date_error": null,
+    "date_source": null,
+    "product_field": null,
+    "intro_requested": false,
+    "population_scope": "adult",
+    "compare_previous": null
+  },
+  "elapsed_seconds": 8.094,
+  "record_context": {
+    "source": "none",
+    "status": null,
+    "scope_matches": false,
+    "scope": {
+      "profile_id": "P01",
+      "period": [
+        "2026-10-19",
+        "2026-10-25"
+      ],
+      "compare_previous": null
+    },
+    "origin_turn": null,
+    "provided_via": null
+  },
+  "available_health_ids": [
+    "H2:WindDown",
+    "H3:StimulusControl",
+    "H4:FirstSteps",
+    "H7:EveningLight"
+  ],
+  "app_version": "0.1.0",
+  "base_url": "https://api.chatanywhere.tech/v1",
+  "requested_model": "deepseek-v4-flash",
+  "cleanup_provenance": {
+    "original_sha256": "ae6fdba6f09e8b84503a8afd4b0649e2ae861039cceb6166f258e76d8f49dca3",
+    "omitted_duplicate_instruction_fields": [
+      "system_prompt"
+    ],
+    "note": "Historical report evidence excerpt; outputs, tool evidence, validation and version metadata retained. Not a complete runtime snapshot."
+  }
+}

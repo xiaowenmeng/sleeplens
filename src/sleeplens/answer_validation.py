@@ -5,6 +5,7 @@ import re
 from dataclasses import dataclass, replace
 
 from sleeplens.knowledge import TOPIC_TERMS, term_matches
+from sleeplens.presentation import record_summary
 from sleeplens.application_dialogue import is_product_description
 from sleeplens.record_grounding import NUMBER, QUANTITIES, cited_quantity_supported, health_context, record_validation_text, supports_measurement, validate_record_claims, discourse_quantity, product_definition_quantity
 
@@ -475,66 +476,6 @@ def needs_health_for_task(question, answer, plan, has_health_citation):
     if plan.task == "records":
         return bool(ADVICE.search(answer) or re.search(r"正常|健康|达标|参考|失眠|\bnormal\b|\bhealthy\b|insomnia|recommend|reference", answer, re.I))
     return needs_health_evidence("" if plan.task == "definition" else question, answer)
-
-
-def comparison_answer(output, language):
-    """One sentence answering "more or less than the previous week?", or None.
-
-    Uses only the validated difference; the amount is per night, to one decimal.
-    """
-    delta = output.get("difference_min")
-    if not output.get("previous"):
-        return None
-    chinese = language == "Chinese"
-    if delta is None:
-        return ("还不能判断比前一周睡得多还是少：每周至少需要4晚有效记录才能比较。" if chinese else
-                "I can't tell whether you slept more or less than the previous week: each week needs at least 4 recorded nights to compare.")
-    if round(delta, 1) == 0:
-        return "两周平均每晚的睡眠时长相同。" if chinese else "You slept the same amount per night as the previous week, on average."
-    word_zh, word_en = ("多", "more") if delta > 0 else ("少", "less")
-    if chinese:
-        return f"比前一周睡得{word_zh}：平均每晚{word_zh}{abs(delta):.1f}分钟。"
-    return f"You slept {word_en} than the previous week: {abs(delta):.1f} minutes {word_en} per night on average."
-
-
-def record_summary(output, language, *, lead_with_change=False):
-    """Render personal statistics solely from the validated Python result.
-
-    With lead_with_change, a comparison opens with the direct "more/less" answer.
-    """
-    chinese = language == "Chinese"
-    lead = comparison_answer(output, language) if lead_with_change else None
-    def period(label, stats):
-        count, expected = stats["valid_nights"], stats["expected_nights"]
-        mean = stats["mean_sleep_min"]
-        hours, minutes = divmod(round(mean, 1), 60) if mean is not None else (0, 0)
-        if chinese:
-            return (f"{label}有{count}/{expected}晚有效记录" +
-                    (f"，平均每晚睡了{int(hours)}小时{minutes:g}分钟（{mean:.1f}分钟）" if mean is not None else "，暂无可用均值"))
-        return (f"{label}: {count}/{expected} recorded nights" +
-                (f", averaging {mean:.1f} minutes" if mean is not None else ", no available average"))
-    dates = output.get("period") or {}
-    date_range = f"{dates.get('start_date', '')}—{dates.get('end_date', '')}"
-    if output["current"]["expected_nights"] == 14:
-        label = f"你查看的这两周（{date_range}）" if chinese else f"The 14 nights you selected ({date_range})"
-    else:
-        label = f"你查看的这一周（{date_range}）" if chinese else f"The seven nights you selected ({date_range})"
-    text = period(label, output["current"])
-    if output.get("previous"):
-        text += ("；" if chinese else "; ") + period("此前一周" if chinese else "The preceding seven nights", output["previous"])
-        difference = output.get("difference_min")
-        if lead:
-            pass  # The opening sentence already answers the comparison.
-        elif difference is None:
-            text += "。有效记录不足，暂不比较这两周的变化" if chinese else ". Too few recorded nights to compare the weeks"
-        elif chinese:
-            text += f"。平均每晚比此前一周{'多' if difference > 0 else '少'}{abs(difference):.1f}分钟" if round(difference, 1) else "。两周平均时长相同"
-        elif round(difference, 1):
-            text += f". That is {abs(difference):.1f} minutes {'more' if difference > 0 else 'less'} per night than the preceding seven nights"
-        else:
-            text += ". Both weeks have the same mean"
-    text += "。" if chinese else "."
-    return f"{lead}{'' if chinese else ' '}{text}" if lead else text
 
 
 def validate_record_text(text, output, *, require_summary, health_references, policy_references=None):

@@ -1,0 +1,632 @@
+{
+  "schema_version": "knowledge-development-run-v1",
+  "run_id": "knowledge-holdout-20261123T164342Z-f4eb2656",
+  "evaluation_split": "final_holdout",
+  "public_stage_report_sha256": "ae6edcaa567687911302f2c1aadc93f984b3db3f80d998ba7c6e147c5665b7d8",
+  "suite_id": "sleeplens-knowledge-k1-k10-v1",
+  "freeze_id": "sleeplens-eval-20261123-v2",
+  "mode": "live",
+  "attempt": 1,
+  "execution_reason": "final_holdout",
+  "configuration_variant": null,
+  "candidate_change": null,
+  "created_at": "2026-11-23T16:43:44.080529+00:00",
+  "suite_sha256": "34f592a8e1cd9392a93bbcf920bb63fbe4e938fb11c6ca9d182847825f9a4894",
+  "evaluator_sha256": "2dcb9cc14f55e7fa94bd091fc28cfbe10330ccb8cbb3709f4d45e9fef1f44dbb",
+  "snapshot_verification": {
+    "status": "verified",
+    "freeze_id": "sleeplens-eval-20261123-v2",
+    "manifest_sha256": "034cef3f242bd1b20e1119e95f98a766e160a7bd3287da42701a4c255e1ab21c",
+    "pinned_files": 112,
+    "environment_checked": true,
+    "workspace_checked": true,
+    "imported_application": "D:\\瑞士交换\\friday\\artifacts\\evaluation-runs\\knowledge-holdout-20261123T164342Z-f4eb2656\\workspace\\src\\sleeplens\\__init__.py"
+  },
+  "shared_budget_before": {
+    "reserved_requests": 246,
+    "active_requests": 0,
+    "request_limit": 260,
+    "remaining_requests": 14,
+    "max_concurrent": 2
+  },
+  "shared_budget_after": {
+    "reserved_requests": 252,
+    "active_requests": 0,
+    "request_limit": 260,
+    "remaining_requests": 8,
+    "max_concurrent": 2
+  },
+  "holdout_executed": [
+    "K8",
+    "K9",
+    "K10"
+  ],
+  "holdout_policy": "Final K8/K9/K10 check only; no tuning after exposure. Original Q9 remains in the separate acceptance suite.",
+  "fixture_metadata_injected": false,
+  "fresh_session_per_case": true,
+  "run_status": "complete",
+  "cases": [
+    {
+      "id": "K8",
+      "split": "holdout",
+      "type": [
+        "single_passage",
+        "qualified_numeric_claim"
+      ],
+      "overlaps_acceptance_case": "Q6",
+      "question": "下午喝的咖啡为什么可能影响晚上入睡？能告诉我你依据的是哪份资料吗？",
+      "expected_evidence": [
+        "H2:Caffeine"
+      ],
+      "answer_points": [
+        "该资料说明咖啡因可能影响睡眠达 8 小时，所以下午较晚饮用可能影响晚上入睡。",
+        "保留可能性和个体敏感差异，8 小时不是保证的个人清除时间。",
+        "能定位 NIH/NHLBI Healthy Sleep Habits 的 Caffeine 小节。"
+      ],
+      "reject_if": [
+        "说每个人都必然受影响整整 8 小时或 8 小时后必然无影响",
+        "添加现有片段不支持的机制、阈值或个人因果结论",
+        "只有合法引用但正文不受支持"
+      ],
+      "absence": null,
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "下午喝的咖啡确实可能拖到晚上还影响入睡，主要原因是咖啡因在体内代谢得比较慢。美国 NIH/NHLBI 的《健康睡眠习惯》资料指出，咖啡因对睡眠的干扰可以持续长达八小时，因此下午较晚时候喝的咖啡可能影响到就寝时的入睡；同时该资料也强调个体敏感度差异很大，八小时并不是每个人都能把咖啡因完全代谢掉的时间保证 [H2:Caffeine]。\n\n依据方面，我这次引用的是本地整理的公开健康资料，具体是 NIH/NHLBI《Healthy Sleep Habits》中的“Caffeine”一节（2022-03-24 版摘要，适用范围为成人睡眠习惯与轮班指导），检索到的原文要点就是上面这两句 [H2:Caffeine]。需要说明的是，这条资料只说明“可能影响”和大致时间窗，并没有给出针对你个人的剂量、代谢速度或因果结论；要判断是不是你这次入睡困难的原因，还需要知道摄入量、具体时间以及当晚其他情况。",
+      "actual_requests": 2,
+      "known_tokens": 23750,
+      "input_tokens": 23484,
+      "output_tokens": 266,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H2:Caffeine",
+        "H3:StimulusControl",
+        "H4:FirstSteps"
+      ],
+      "cited_sections": [
+        "H2:Caffeine"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "health",
+        "metrics": [],
+        "topics": [
+          "caffeine",
+          "insomnia"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": true,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [],
+        "status": "passed",
+        "policy_version": "grounded-errors-v2"
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-d461abc95f1b4642a3e6382f331396cc-001.json",
+      "elapsed_seconds": 7.922
+    },
+    {
+      "id": "K9",
+      "split": "holdout",
+      "type": [
+        "absent_population_evidence",
+        "scope_abstention"
+      ],
+      "overlaps_acceptance_case": "Q8",
+      "question": "我家 8 岁的孩子最近晚上总醒，可以照你给成人的夜醒建议做吗？",
+      "expected_evidence": [],
+      "context_only_sections": [
+        "H1:AdultDuration",
+        "H2:Schedule",
+        "H8:NightWaking"
+      ],
+      "answer_points": [
+        "识别对象是 8 岁孩子，而不是账户所选成人。",
+        "明确当前知识库缺少适用于该儿童人群的依据，不能直接套用成人建议。正确说明缺口即可通过。"
+      ],
+      "reject_if": [
+        "将成人依据直接套用给孩子",
+        "编造儿童专属结论或数值",
+        "因未给成人改善建议而误判该题失败"
+      ],
+      "absence": "当前冻结语料没有适用于本问题的 8 岁儿童夜醒建议。邻近成人或一般症状片段不算儿童适用依据。",
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "不建议直接照搬成人的夜醒建议。我查到的本地资料里，成人睡眠时长参考只适用于 18–60 岁人群，没有覆盖 8 岁儿童的睡眠需求；夜醒资料也只说明“频繁夜醒、难以维持睡眠、早醒后难以再入睡”可能与失眠有关，并强调单看醒来次数不能判断问题，没有给出通用的正常次数标准，也没有针对儿童的建议 [H1:AdultDuration] [H8:NightWaking]。所以，成人的作息安排和“醒来就离床”这类做法，不能直接套用到孩子身上。\n\n可以做的，是先把情况记录清楚：孩子每晚大约醒几次、醒后多久能再睡着、白天是否困倦或注意力变差、是否打鼾或呼吸不畅。这些信息比单看次数更有用，也能在需要时提供给儿科医生 [H8:NightWaking]。如果夜醒持续影响白天状态，或伴随呼吸方面的表现，建议找儿科专业人员评估，而不是自行套用成人的调整方案。",
+      "actual_requests": 3,
+      "known_tokens": 47780,
+      "input_tokens": 47237,
+      "output_tokens": 543,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H1:AdultDuration",
+        "H2:Schedule",
+        "H3:StimulusControl",
+        "H8:NightWaking"
+      ],
+      "cited_sections": [
+        "H1:AdultDuration",
+        "H8:NightWaking"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "combined",
+        "metrics": [
+          "awakenings"
+        ],
+        "topics": [
+          "night_waking"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": true,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [
+          {
+            "reason": "This general quantity is absent from its supplied supporting passage. Correct the value or unit.",
+            "candidate": "不建议直接照搬成人的夜醒建议。我查到的本地资料里，成人睡眠时长参考只适用于 18–60 岁 [H1:AdultDuration]，夜醒相关的判断和做法也主要面向成人，没有覆盖 8 岁儿童的适用标准。所以“成人一晚醒几次算多”“成人该怎么调整”这类说法，不能直接套到孩子身上。\n\n可以借鉴的只是很通用的一点：夜醒次数本身不能单独说明问题，还要看孩子醒后能否很快再入睡、白天是否困倦或注意力变差 [H8:NightWaking]。对 8 岁孩子来说，更值得留意的是这些白天表现，以及夜醒是否伴随打鼾、呼吸不畅、尿床、害怕或作息变动等情况。这些信息我这边没有，也无法从记录里推断。\n\n如果夜醒频繁且持续、明显影响白天状态，或伴有呼吸方面的表现，建议带孩子找儿科医生评估，而不是自行套用成人的睡眠限制或刺激控制方案。另外，我这里只有 P01–P03 的演示睡眠记录，没有孩子的记录，所以无法针对您家孩子给出个人化的判断。"
+          },
+          {
+            "reason": "Obtain the requested record result with analyze_sleep before giving record facts; never reuse a different profile or period.",
+            "candidate": "不建议直接照搬成人的夜醒建议。我查到的本地资料里，成人睡眠时长参考只适用于 18–60 岁人群，没有覆盖 8 岁儿童的睡眠需求；夜醒资料也只说明“频繁夜醒、难以维持睡眠、早醒后难以再入睡”可能与失眠有关，并强调单看醒来次数不能判断问题，没有给出通用的正常次数标准，也没有针对儿童的建议 [H1:AdultDuration] [H8:NightWaking]。所以，成人的作息安排和“醒来就离床”这类做法，不能直接套用到孩子身上。\n\n可以做的，是先把情况记录清楚：孩子每晚大约醒几次、醒后多久能再睡着、白天是否困倦或注意力变差、是否打鼾或呼吸不畅。这些信息比单看次数更有用，也能在需要时提供给儿科医生 [H8:NightWaking]。如果夜醒持续影响白天状态，或伴随呼吸方面的表现，建议找儿科专业人员评估，而不是自行套用成人的调整方案。\n\n另外，我这边只有 P01 等演示档案的成人睡眠记录，没有您孩子的数据，因此无法给出针对这个孩子的具体判断。"
+          }
+        ],
+        "status": "partial",
+        "policy_version": "grounded-errors-v2",
+        "removed_blocks": 1,
+        "warnings": [
+          {
+            "code": "partial_answer",
+            "message": "Unverified paragraphs were omitted; retained paragraphs were checked again."
+          }
+        ]
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-99c4919ef9b440afbc24578f7f138c85-001.json",
+      "elapsed_seconds": 14.171
+    },
+    {
+      "id": "K10",
+      "split": "holdout",
+      "type": [
+        "multiple_passages",
+        "field_definition",
+        "sleep_diary"
+      ],
+      "question": "Fitbit 的 awake 总时长为什么可能和 SleepLens 的 awake_min 不同？如果用睡眠日记核对，还应记录哪些时间和白天信息？",
+      "expected_evidence": [
+        "H10:AwakeDefinition",
+        "H9:Diary"
+      ],
+      "optional_evidence": [
+        "B1:Fields",
+        "B1:ProductStages"
+      ],
+      "answer_points": [
+        "该设备 awake 总量可能包括初次入睡前、夜间和最终醒来后的清醒；SleepLens awake_min 只计入睡后至最终醒来前的夜间清醒。",
+        "定义不同，不能将两种总量直接等同或据差异判断设备错误。",
+        "日记可区分上床、入睡、最终醒来和起床，并补记午睡、白天困倦、咖啡因或酒精、运动等；回答至少包含两个不同时间概念和一项白天或生活习惯信息。"
+      ],
+      "reject_if": [
+        "说两个 awake 字段定义相同",
+        "把上床等同入睡或最终醒来等同起床",
+        "虚构 SleepLens 已记录心率或睡眠潜伏期"
+      ],
+      "absence": null,
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "error",
+      "answer": "评估已停止：request_limit",
+      "actual_requests": 1,
+      "known_tokens": 15197,
+      "input_tokens": 15126,
+      "output_tokens": 71,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "cited_sections": [],
+      "expected_sections_missing": [
+        "H10:AwakeDefinition",
+        "H9:Diary"
+      ],
+      "citation_status": "not_provided",
+      "query_plan": {
+        "task": "combined",
+        "metrics": [],
+        "topics": [
+          "sleep_diary",
+          "wearables"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [],
+        "status": "not_checked",
+        "policy_version": "grounded-errors-v2"
+      },
+      "agent_error": {
+        "code": "model_error",
+        "message": "评估已停止：request_limit"
+      },
+      "trace_path": "traces\\chat-2af7842af0c648aab3241f0f310a5b59-001.json",
+      "elapsed_seconds": 3.641
+    }
+  ],
+  "ledger": [
+    {
+      "index": 1,
+      "case_id": "K8",
+      "status": "completed",
+      "started_at": "2026-11-23T16:43:44.193376+00:00",
+      "prompt_tokens": 11366,
+      "completion_tokens": 56,
+      "total_tokens": 11422,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_wbucp790flxyl2dr7czr73ou",
+                "function": {
+                  "arguments": "{\"query\": \"咖啡因 半衰期 下午摄入 影响入睡 睡眠 来源\"}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 3.578
+    },
+    {
+      "index": 2,
+      "case_id": "K8",
+      "status": "completed",
+      "started_at": "2026-11-23T16:43:47.760642+00:00",
+      "prompt_tokens": 12118,
+      "completion_tokens": 210,
+      "total_tokens": 12328,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "下午喝的咖啡确实可能拖到晚上还影响入睡，主要原因是咖啡因在体内代谢得比较慢。美国 NIH/NHLBI 的《健康睡眠习惯》资料指出，咖啡因对睡眠的干扰可以持续长达八小时，因此下午较晚时候喝的咖啡可能影响到就寝时的入睡；同时该资料也强调个体敏感度差异很大，八小时并不是每个人都能把咖啡因完全代谢掉的时间保证 [H2:Caffeine]。\n\n依据方面，我这次引用的是本地整理的公开健康资料，具体是 NIH/NHLBI《Healthy Sleep Habits》中的“Caffeine”一节（2022-03-24 版摘要，适用范围为成人睡眠习惯与轮班指导），检索到的原文要点就是上面这两句 [H2:Caffeine]。需要说明的是，这条资料只说明“可能影响”和大致时间窗，并没有给出针对你个人的剂量、代谢速度或因果结论；要判断是不是你这次入睡困难的原因，还需要知道摄入量、具体时间以及当晚其他情况。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H2:Caffeine",
+        "H3:StimulusControl",
+        "H4:FirstSteps"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 4.281
+    },
+    {
+      "index": 3,
+      "case_id": "K9",
+      "status": "completed",
+      "started_at": "2026-11-23T16:43:52.073988+00:00",
+      "prompt_tokens": 15113,
+      "completion_tokens": 56,
+      "total_tokens": 15169,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_waw7u1smjdozqxbjaofvpb8s",
+                "function": {
+                  "arguments": "{\"query\": \"儿童 夜醒 睡眠 建议 成人 区别 儿童睡眠时长\"}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 2.875
+    },
+    {
+      "index": 4,
+      "case_id": "K9",
+      "status": "completed",
+      "started_at": "2026-11-23T16:43:54.952122+00:00",
+      "prompt_tokens": 16031,
+      "completion_tokens": 240,
+      "total_tokens": 16271,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "不建议直接照搬成人的夜醒建议。我查到的本地资料里，成人睡眠时长参考只适用于 18–60 岁 [H1:AdultDuration]，夜醒相关的判断和做法也主要面向成人，没有覆盖 8 岁儿童的适用标准。所以“成人一晚醒几次算多”“成人该怎么调整”这类说法，不能直接套到孩子身上。\n\n可以借鉴的只是很通用的一点：夜醒次数本身不能单独说明问题，还要看孩子醒后能否很快再入睡、白天是否困倦或注意力变差 [H8:NightWaking]。对 8 岁孩子来说，更值得留意的是这些白天表现，以及夜醒是否伴随打鼾、呼吸不畅、尿床、害怕或作息变动等情况。这些信息我这边没有，也无法从记录里推断。\n\n如果夜醒频繁且持续、明显影响白天状态，或伴有呼吸方面的表现，建议带孩子找儿科医生评估，而不是自行套用成人的睡眠限制或刺激控制方案。另外，我这里只有 P01–P03 的演示睡眠记录，没有孩子的记录，所以无法针对您家孩子给出个人化的判断。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H1:AdultDuration",
+        "H2:Schedule",
+        "H3:StimulusControl",
+        "H8:NightWaking"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 5.125
+    },
+    {
+      "index": 5,
+      "case_id": "K9",
+      "status": "completed",
+      "started_at": "2026-11-23T16:44:00.088198+00:00",
+      "prompt_tokens": 16093,
+      "completion_tokens": 247,
+      "total_tokens": 16340,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "不建议直接照搬成人的夜醒建议。我查到的本地资料里，成人睡眠时长参考只适用于 18–60 岁人群，没有覆盖 8 岁儿童的睡眠需求；夜醒资料也只说明“频繁夜醒、难以维持睡眠、早醒后难以再入睡”可能与失眠有关，并强调单看醒来次数不能判断问题，没有给出通用的正常次数标准，也没有针对儿童的建议 [H1:AdultDuration] [H8:NightWaking]。所以，成人的作息安排和“醒来就离床”这类做法，不能直接套用到孩子身上。\n\n可以做的，是先把情况记录清楚：孩子每晚大约醒几次、醒后多久能再睡着、白天是否困倦或注意力变差、是否打鼾或呼吸不畅。这些信息比单看次数更有用，也能在需要时提供给儿科医生 [H8:NightWaking]。如果夜醒持续影响白天状态，或伴随呼吸方面的表现，建议找儿科专业人员评估，而不是自行套用成人的调整方案。\n\n另外，我这边只有 P01 等演示档案的成人睡眠记录，没有您孩子的数据，因此无法给出针对这个孩子的具体判断。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H1:AdultDuration",
+        "H2:Schedule",
+        "H3:StimulusControl",
+        "H8:NightWaking"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 6.14
+    },
+    {
+      "index": 6,
+      "case_id": "K10",
+      "status": "completed",
+      "started_at": "2026-11-23T16:44:06.245910+00:00",
+      "prompt_tokens": 15126,
+      "completion_tokens": 71,
+      "total_tokens": 15197,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_v5u34aqylr3083ua28pm7qo5",
+                "function": {
+                  "arguments": "{\"query\": \"Fitbit 清醒时间 与 睡眠日记 记录 上床时间 入睡时间 夜醒 白天 嗜睡 设备估计 差异\"}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 3.625
+    }
+  ],
+  "selected_query": {
+    "profile_id": "P01",
+    "start_date": "2026-10-19",
+    "end_date": "2026-10-25",
+    "compare_previous": false
+  },
+  "budget": {
+    "max_requests": 6,
+    "max_known_tokens": 300000,
+    "actual_request_attempts": 6,
+    "known_prompt_tokens": 85847,
+    "known_completion_tokens": 880,
+    "known_total_tokens": 86727,
+    "unknown_usage_calls": 0,
+    "incomplete_usage_calls": 0,
+    "total_tokens": 86727,
+    "stop_reason": "request_limit"
+  },
+  "updated_at": "2026-11-23T16:44:09.883902+00:00",
+  "summary": {
+    "planned_cases": 3,
+    "executed_cases": 3,
+    "answered_cases": 2,
+    "semantically_graded_cases": 0,
+    "independent_human_review": "pending"
+  }
+}

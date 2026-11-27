@@ -1,0 +1,295 @@
+=== PAGE 1 ===
+Tools, APIs & Agentic AI
+Applied AI for Managers
+Thibault Vatter
+HEG Genève
+1
+
+=== PAGE 2 ===
+Instructions, Knowledge, Tools
+security (Session 4)
+evaluation (Session 5)
+Users
+a precise segment
+Interface
+chat, form, app
+Instructions
+Session 1
+Knowledge
+Session 2
+Tools & actions
+today
+LLM
+Answer or action
+2
+
+=== PAGE 3 ===
+From Knowledge to Actions
+Alpenlog SA (Session 2): the HR assistant, three requests.
+An employee asks
+Needs
+“Can I carry over unused
+days?”
+The leave policy
+Knowledge
+“How many days do I have
+left?”
+The HR system, now
+Tool: read
+“Book me 3 days off in
+March.”
+The HR system, changed
+Tool: act
+Knowledge is information in the context. A tool is an operation the model asks for: read a
+live system, or change it.
+3
+
+=== PAGE 4 ===
+Built-in Tools, and Your Own
+Tool
+What it gives the model
+Who runs it
+Web search
+Current, public information
+the provider
+Code interpreter
+Exact computation, data
+analysis, charts
+the provider
+Document library
+Your documents (Session 2)
+the provider
+Custom functions
+Your systems
+your application (next)
+Demo: a sales file → summary statistics and a chart.
+Generating code is writing text.
+Running it needs an environment: the platform provides one. Ran is not right: read the
+code.
+4
+
+=== PAGE 5 ===
+How the Web Works?
+Client: the program that asks: a
+browser, or your application.
+Server: the program that answers,
+on another machine.
+HTTP: the protocol: one request,
+one response.
+URL: the address of what is asked
+for.
+API: an interface through which
+software exposes capabilities to
+other software.
+Web API: an API reached through
+HTTP, answering with data.
+Website
+Browser
+(client)
+Web server
+HTTP request: GET /page
+HTTP response: a page (HTML)
+Web API
+Your application
+(client)
+API server
+HTTP request: GET /data
+HTTP response: data (JSON, CSV)
+5
+
+=== PAGE 6 ===
+Anatomy of an API Request
+Request (the ECB’s public API, one GET):
+Response (2 of its 10 columns):
+Endpoint: which resource. Here, the
+deposit facility rate series.
+Parameters: which date, how many
+values, in what shape.
+Response: structured data: the last
+change before that date.
+Authentication: none here, the data
+is public. A private API wants a key,
+and permissions decide what that
+key may see and do.
+https://data-api.ecb.europa.eu
+  /service/data/FM/B.U2.EUR.4F.KR.DFR.LEV
+  ?endPeriod=2025-01-15
+  &lastNObservations=1
+  &detail=dataonly
+  &format=csvdata
+TIME_PERIOD,OBS_VALUE
+2024-12-18,3
+6
+
+=== PAGE 7 ===
+Function Calling: What the Model Sees
+User
+Your application
+Model
+ECB API
+1. the question
+1. the question
+2. instructions, question,
+2. instructions, question,
+tool schemas
+tool schemas
+3. request
+3. request
+4. validate, authorize
+5. execute
+5. execute
+5. the data
+5. the data
+6. result, as context
+6. result, as context
+7. the answer
+7. the answer
+7. the answer
+7. the answer
+1. The user asks, in plain words.
+2. Your code sends the instructions, the
+question, and the tool schemas, nothing more:
+{
+ "name": "get_european_central_bank_interest_rate",
+ "description": "Retrieve the deposit facility rate of the 
+European Central Bank (one of its key interest 
+rates) in force on a given date, and the date it 
+took effect.",
+ "parameters": {"type": "object",
+  "properties": {"date": {"type": "string",
+   "description": "The date, in the format YYYY-MM-DD."}},
+  "required": ["date"]}
+}
+3. The model returns a structured request: tool
+and arguments, as data.
+{"name": "get_european_central_bank_interest_rate",
+ "arguments": {"date": "2025-01-15"}}
+7
+
+=== PAGE 8 ===
+Function Calling: Your Code Decides
+User
+Your application
+Model
+ECB API
+1. the question
+1. the question
+2. instructions, question,
+2. instructions, question,
+tool schemas
+tool schemas
+3. request
+3. request
+4. validate, authorize
+5. execute
+5. execute
+5. the data
+5. the data
+6. result, as context
+6. result, as context
+7. the answer
+7. the answer
+7. the answer
+7. the answer
+4. Your code controls execution: it can validate
+the arguments, check permissions, ask for a
+confirmation, or refuse.
+5. It runs the function: the GET request to the
+ECB, and the data that comes back.
+6. The result goes to the model as context:
+{"deposit_facility_rate": "3%",
+ "in_force_since": "2024-12-18"}
+7. The model writes the answer; your code
+shows it to the user: “The ECB deposit facility
+rate on 15 January 2025 was 3%, in force since 18
+December 2024.”
+Probabilistic model: 3 and 7. Conventional software: 4, 5 and 6, where control lies.
+8
+
+=== PAGE 9 ===
+Demo: The ECB Tool
+The notebook, live:
+1. The function: Python that sends the ECB request (step 5) and returns a dictionary (step
+6).
+2. Linking it to the Agent: only the schema (step 2) is sent; the Agent gets a new version.
+3. A question that needs it: request (3), result (6), answer (7).
+4. A question that does not: no request; the model answers alone.
+Stored with the Agent: the interface. Run by the notebook: the function. Without the
+notebook, the request reaches no code.
+Provider tool: the platform runs it. Your function: your application runs it.
+9
+
+=== PAGE 10 ===
+Workflows vs. Agents: Who Decides?
+Alpenlog SA: “Book me off from 10 to 12 March.”
+Workflow: the code decides the sequence.
+LLM: read the dates
+Code: balance, policy rules
+Manager approves
+HR system: book
+LLM: confirm, in words
+Agent: the model decides the next step.
+LLM: what next?
+Answer
+done
+A tool: policy, balance,
+calendar, booking…
+request
+result
+Autonomy is a spectrum: more of it is more flexible, less predictable, harder to test.
+LLM where interpretation adds value, code where the rules are known.
+The application enforces either way: check inputs, authorize, confirm before acting.
+10
+
+=== PAGE 11 ===
+AI Frontier: Divide and Merge
+Biology, Oct. 2026: split, then merge.
+One dataset,
+thousands of questions
+Agent 1
+Agent 2
+Agent n
+···
+One report
+Experts rate it
+Mathematics, Sept. 2026: groups that talk.
+One problem,
+several formulations
+Group 1
+agents talk
+Group 2
+agents talk
+Group n
+agents talk
+Consolidate, feed back
+Lean checks the formal proof
+Parallel is not collaboration: analyses merged, versus exchange and iteration.
+It pays when a problem splits, results merge, and something checks them.
+A check validates the output, not its meaning: the hypotheses still need experiments,
+the proof still needs the field.
+11
+
+=== PAGE 12 ===
+AI Frontier: When Agents Break Out
+Over 1,200 agents on a shared “message board” (
+)
+METR and Redwood Research, 2026
+July 2026: an internal OpenAI security test, safeguards deliberately reduced. Agents on
+separate tasks found a shared channel, coordinated, and reached Hugging Face.
+Previous slide: coordination designed in.
+Here: coordination nobody designed, outside the task and outside the architecture.
+12
+
+=== PAGE 13 ===
+Project: Add a Tool
+Milestone: at least one meaningful tool or action in your application.
+1. Find the need: a question in your test set that documents cannot answer (live data, a
+calculation, an action).
+2. Choose: a custom function (start from the ECB notebook), or a provider tool (search,
+code) if a test question needs one.
+3. Describe it: purpose, inputs, outputs, limits.
+4. Test: called when needed? Not called when not? Failures handled?
+Meaningful means a capability your application needs: enabling search or code is not, by
+itself, an improvement. Programming is not a prerequisite: an LLM can draft the function;
+you must understand what it does.
+13

@@ -131,6 +131,35 @@ def test_profile_and_language_changes_update_examples_without_duplicate_selector
     assert "深睡" in app.chat_input[0].proto.value and not app.session_state["dashboard"].turns
 
 
+@pytest.mark.parametrize("old_language,new_language", [("English", "中文"), ("中文", "English")])
+@pytest.mark.parametrize("days", [1, 7, 14])
+def test_delayed_range_label_after_language_change_keeps_numeric_days(monkeypatch, tmp_path, old_language, new_language, days):
+    app = open_app(monkeypatch, tmp_path)
+    app.selectbox(key="ui_language").set_value(old_language).run()
+    app.selectbox(key="record_span").set_value(days).run()
+    old_label = app.selectbox(key="record_span").options[[7, 14, 1].index(days)]
+    app.selectbox(key="ui_language").set_value(new_language).run()
+    assert not app.exception
+
+    # Replay the previous language's browser payload, rather than letting
+    # AppTest serialize the Python value using the new labels.
+    states = app._tree.get_widget_states()
+    range_id = app.selectbox(key="record_span").id
+    next(state for state in states.widgets if state.id == range_id).string_value = old_label
+    app._run(states)
+
+    assert not app.exception
+    assert type(app.session_state["record_span"]) is int
+    assert app.selectbox(key="record_span").value == days
+    assert app.checkbox(key="record_compare").disabled == (days != 7)
+    app.date_input(key="record_start").set_value(date(2026, 10, 19))
+    app.button(key="apply_selection").click().run()
+    assert not app.exception
+    selection = app.session_state["dashboard"].selection
+    assert selection["start_date"] == "2026-10-19"
+    assert selection["end_date"] == (date(2026, 10, 19) + timedelta(days=days - 1)).isoformat()
+
+
 def test_classroom_examples_are_separate_and_have_a_genuinely_absent_date():
     from sleeplens.onboarding import data_catalogue, classroom_examples
 

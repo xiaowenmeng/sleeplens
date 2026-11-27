@@ -12,7 +12,7 @@
 
 ### 计算口径
 
-以下计算由 `analysis._stats`、`detail_statistics` 和 `analyze_sleep` 完成，展示方式见 `query_policy.render_facts`。
+以下计算由 `analysis._stats`、`detail_statistics` 和 `analyze_sleep` 完成，展示方式见 `presentation.render_facts`。
 
 | 字段或结果 | 怎么计算、怎么理解 |
 |---|---|

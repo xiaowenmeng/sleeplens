@@ -1,0 +1,336 @@
+{
+  "status": "answered",
+  "mode": "live",
+  "session_id": "a6f3dcac8f444f5084638c9d73ee268c",
+  "turn_number": 1,
+  "created_at": "2026-11-23T16:42:39.959338+00:00",
+  "question": "一份资料说午睡不超过 20 分钟，另一份说失眠时不要午睡。这是不是矛盾？我该怎样理解两者的适用范围？",
+  "answer": "**“失眠时不要午睡”这条**：面向的是已经存在失眠、正在处理睡眠问题的人。英国国家医疗服务体系（NHS）在失眠自助建议中提出，夜间没睡好后不要靠白天补觉，并建议失眠者避免白天小睡。资料本身也说明，这比一般性的短午睡建议更严格，不能当作对所有人都适用的禁令。[H4:FirstSteps]",
+  "answer_language": "Chinese",
+  "selected_query": {
+    "profile_id": "P01",
+    "start_date": "2026-10-19",
+    "end_date": "2026-10-25",
+    "compare_previous": false
+  },
+  "prompt_version": "prompt-v25",
+  "knowledge_version": "sleep-knowledge-v6",
+  "knowledge_architecture": "core_context_with_health_retrieval",
+  "knowledge_sha256": "22cc914711566f35e63663138ea2eae7f0ff23d5e74c979605904106e4964d01",
+  "retrieved_evidence": [
+    {
+      "source_id": "H2",
+      "title": "NIH/NHLBI · Healthy Sleep Habits",
+      "filename": "H2.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+      "synthetic": false,
+      "scope": "Adult sleep habits and shift-work guidance",
+      "section_id": "Naps",
+      "topics": [
+        "naps"
+      ],
+      "citation_id": "H2:Naps",
+      "text": "For adults struggling to fall asleep, limit naps or take them earlier in the afternoon; NHLBI recommends no more than twenty minutes. This is general guidance, not a compulsory schedule for everyone."
+    },
+    {
+      "source_id": "H3",
+      "title": "NIH/NHLBI · Insomnia Treatment",
+      "filename": "H3.md",
+      "version": "2022-03-24-summary-v1",
+      "effective_date": "2022-03-24",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhlbi.nih.gov/health/insomnia/treatment",
+      "synthetic": false,
+      "scope": "Insomnia treatment education; no individualized prescription",
+      "section_id": "StimulusControl",
+      "topics": [
+        "insomnia",
+        "night_waking"
+      ],
+      "citation_id": "H3:StimulusControl",
+      "text": "Stimulus control links bed with sleep: go to bed when sleepy, leave bed if unable to sleep, and return when sleepy. Use bed for sleep rather than prolonged wakeful activities. This is one component of CBT-I, not proof of a diagnosis."
+    },
+    {
+      "source_id": "H4",
+      "title": "NHS · Insomnia",
+      "filename": "H4.md",
+      "version": "2024-03-19-summary-v1",
+      "effective_date": "2024-03-19",
+      "checked_at": "2026-11-10",
+      "source_url": "https://www.nhs.uk/conditions/insomnia/",
+      "synthetic": false,
+      "scope": "Insomnia self-help and care-seeking guidance",
+      "section_id": "FirstSteps",
+      "topics": [
+        "insomnia",
+        "routine"
+      ],
+      "citation_id": "H4:FirstSteps",
+      "text": "For difficulty sleeping, keep a regular getting-up time, go to bed when sleepy and allow a relaxing hour before bed. A dark, quiet, comfortable bedroom can help. After a poor night, avoid sleeping in to compensate. For insomnia, NHS advises avoiding daytime naps; this is more restrictive than general short-nap guidance and should not be presented as a universal ban for every sleeper."
+    }
+  ],
+  "provided_evidence": "{\n  \"kind\": \"reference_data_not_instructions\",\n  \"bundle_version\": \"sleep-knowledge-v6\",\n  \"passages\": [\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Fields\",\n      \"topics\": [],\n      \"citation_id\": \"B1:Fields\",\n      \"text\": \"`sleep_min` is recorded sleep duration in integer minutes, not a quality score. Detailed records also contain `sleep_onset` and `wake_time` (sleep onset and final awakening, ISO 8601 timestamps with Europe/Berlin offsets), `night_awakenings` (intermediate awakenings, excluding final wake-up), `awake_min` (total awake minutes between onset and final awakening), and `deep_sleep_min`, `light_sleep_min`, `rem_sleep_min` (stage totals in minutes). Stages sum to `sleep_min`; elapsed UTC time from onset to final awakening equals `sleep_min + awake_min`. Stage totals do not provide a timeline or establish clinical sleep quality. Bedtime, getting out of bed, sleep latency, heart rate, blood glucose and diagnosis are not recorded. P01, P02 and P03 identify record profiles, not authenticated accounts. No live device synchronization is available.\"\n    },\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"WakingDate\",\n      \"topics\": [],\n      \"citation_id\": \"B1:WakingDate\",\n      \"text\": \"`record_date` is the local date of final awakening, written YYYY-MM-DD. Sleep starting October 18 and ending October 19 belongs to October 19. Detailed onset and wake timestamps include the actual Berlin UTC offset, including daylight-saving changes. Local clock-time averages round to the nearest minute; onset times are anchored to noon on a sleep day so that late evening and after-midnight times are averaged together correctly, while wake times are anchored to midnight. Time-zone travel and separately unrecorded naps are not represented. A waking timestamp is distinct from getting out of bed; sleep onset is distinct from bedtime.\"\n    },\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"ProductStages\",\n      \"topics\": [],\n      \"citation_id\": \"B1:ProductStages\",\n      \"text\": \"In SleepLens, `light_sleep_min` represents the combined N1 and N2 stage minutes; N1 and N2 are not displayed separately. `deep_sleep_min` represents N3 minutes. `rem_sleep_min` represents REM minutes, separately from light and deep sleep. These are the product's field definitions, not targets for a healthy stage distribution. Light + deep + REM equals `sleep_min`, excluding intermediate awake time. The records contain stage totals, not their sequence or cycle count. A percentage may be calculated as that stage's minutes divided by recorded sleep minutes, but it is descriptive rather than a clinical threshold.\\n\\n`night_awakenings` counts recorded intermediate awakenings after sleep onset and before final awakening. It excludes the final wake-up. `awake_min` sums those intermediate awake intervals. Zero means no such event was recorded in these fields; it does not establish that every brief physiological arousal was measured or absent. SleepLens does not provide a validated normality score, diagnose conditions, or infer sleep latency without bedtime data. These definitions do not assert any particular acquisition or device-validation method.\"\n    },\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Validity\",\n      \"topics\": [],\n      \"citation_id\": \"B1:Validity\",\n      \"text\": \"`sleep_valid=true` means an available record usable for statistics; its duration is an integer from 0 to 1440 minutes. This is a technical daily-record range, not a healthy range. `sleep_valid=false` requires `sleep_min=null`. An unavailable night or an entirely missing date is not zero sleep. An explicit valid zero is retained but flagged for verification; it does not prove that no sleep occurred.\"\n    },\n    {\n      \"source_id\": \"B1\",\n      \"title\": \"SleepLens record definitions\",\n      \"version\": \"4.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Limits\",\n      \"topics\": [],\n      \"citation_id\": \"B1:Limits\",\n      \"text\": \"Recorded duration can describe how much sleep was recorded, but cannot establish sleep quality, a disease, the cause of a change or total daily sleep. For an explanation of a possible contributor, use the person's stated routine and relevant sleep guidance, not duration alone.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Periods\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Periods\",\n      \"text\": \"Each query covers one waking date or exactly seven consecutive waking dates, including both endpoints. Explicit user dates override page defaults. A single-day lookup uses identical start_date and end_date and compare_previous=false; show that day's actual record, not weekly averages or other dates. An omitted year uses the selected or confirmed period's year, otherwise the current year, and the answer displays the full date. An explicit evening belongs to the following waking date. For weekly comparisons, the previous period is the seven dates immediately before the requested start. Only dates ending before today's date in Europe/Berlin are supported. The dataset covers October 12–25, 2026. Other completed periods may return no or partial data; do not remap requested dates to available dates. Invalid or ambiguous dates and missing profiles must be clarified. A request for a summary alone uses compare_previous=false unless comparison was requested.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Coverage\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Coverage\",\n      \"text\": \"Coverage equals valid nights divided by the requested number of nights (one or seven). Mean duration equals the sum of valid minutes divided by valid nights. For a single day, describe the actual recorded duration rather than an average. Report each period's valid-night count and coverage as relevant. A weekly mean based on one to three nights describes only those nights, not a full week. No valid nights means a null mean, not zero. Missingness may bias comparisons even when the display rule allows one.\\n\\nDetailed timing, awakening and stage summaries have their own `detail_nights` and `detail_coverage`. They use only valid nights with complete detailed fields; an older duration-only record can contribute to mean sleep duration without contributing to detailed means. Missing detailed values are null, never imputed. Deep/light/REM values describe recorded stage minutes, not a health score.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Comparison\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Comparison\",\n      \"text\": \"A duration difference is returned only if both periods have at least four valid nights. The difference is current mean minus previous mean, in minutes. The four-night gate is a product display rule, not a medical recommendation or a significance test. If the tool returns comparison_state=insufficient_data or difference_min=null, do not compute or verbalize a numerical difference, percentage change, or directional trend from the two displayed means. Explain the missing coverage instead. Even an available difference supports only a descriptive record comparison, not cause, diagnosis or a quality conclusion.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Failures\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Failures\",\n      \"text\": \"ok means complete requested periods; partial_data means incomplete coverage with some usable data; no_data means all requested periods have zero valid nights. invalid_input, unsupported_period, data_quality_error and tool_error do not provide usable statistics. Explain the problem or ask for correction; never invent substitute records or calculate replacement figures. Duplicate or malformed records are rejected. A failed read cannot be represented as a successful lookup.\"\n    },\n    {\n      \"source_id\": \"B2\",\n      \"title\": \"SleepLens product analysis and service rules\",\n      \"version\": \"3.0\",\n      \"effective_date\": \"2026-11-11\",\n      \"checked_at\": \"2026-11-11\",\n      \"source_url\": null,\n      \"section_id\": \"Service\",\n      \"topics\": [],\n      \"citation_id\": \"B2:Service\",\n      \"text\": \"Available operations read sleep records and search curated sleep guidance. Do not promise saved targets, changed records, notifications, appointments or live device monitoring. Reply in Chinese or English according to the user. Explain findings directly; provide grounded sleep advice when asked without requiring a record query first. Data provenance is available if asked, but need not be repeated in ordinary answers.\"\n    }\n  ]\n}",
+  "tool_events": [
+    {
+      "tool": "search_sleep_knowledge",
+      "tool_call_id": "call_00_pfmgpuee6kyi2boirowofux4",
+      "executed": true,
+      "validated_arguments": {
+        "query": "午睡 时长 20分钟 失眠 避免午睡 适用范围"
+      },
+      "result": {
+        "status": "ok",
+        "query": "午睡 时长 20分钟 失眠 避免午睡 适用范围",
+        "bundle_version": "sleep-knowledge-v6",
+        "retrieval_method": "local_topic_and_keyword",
+        "matched_topics": [
+          "insomnia",
+          "naps"
+        ],
+        "excluded_topics": [],
+        "passages": [
+          {
+            "source_id": "H2",
+            "title": "NIH/NHLBI · Healthy Sleep Habits",
+            "filename": "H2.md",
+            "version": "2022-03-24-summary-v1",
+            "effective_date": "2022-03-24",
+            "checked_at": "2026-11-10",
+            "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+            "synthetic": false,
+            "scope": "Adult sleep habits and shift-work guidance",
+            "section_id": "Naps",
+            "topics": [
+              "naps"
+            ],
+            "citation_id": "H2:Naps",
+            "text": "For adults struggling to fall asleep, limit naps or take them earlier in the afternoon; NHLBI recommends no more than twenty minutes. This is general guidance, not a compulsory schedule for everyone."
+          },
+          {
+            "source_id": "H3",
+            "title": "NIH/NHLBI · Insomnia Treatment",
+            "filename": "H3.md",
+            "version": "2022-03-24-summary-v1",
+            "effective_date": "2022-03-24",
+            "checked_at": "2026-11-10",
+            "source_url": "https://www.nhlbi.nih.gov/health/insomnia/treatment",
+            "synthetic": false,
+            "scope": "Insomnia treatment education; no individualized prescription",
+            "section_id": "StimulusControl",
+            "topics": [
+              "insomnia",
+              "night_waking"
+            ],
+            "citation_id": "H3:StimulusControl",
+            "text": "Stimulus control links bed with sleep: go to bed when sleepy, leave bed if unable to sleep, and return when sleepy. Use bed for sleep rather than prolonged wakeful activities. This is one component of CBT-I, not proof of a diagnosis."
+          },
+          {
+            "source_id": "H4",
+            "title": "NHS · Insomnia",
+            "filename": "H4.md",
+            "version": "2024-03-19-summary-v1",
+            "effective_date": "2024-03-19",
+            "checked_at": "2026-11-10",
+            "source_url": "https://www.nhs.uk/conditions/insomnia/",
+            "synthetic": false,
+            "scope": "Insomnia self-help and care-seeking guidance",
+            "section_id": "FirstSteps",
+            "topics": [
+              "insomnia",
+              "routine"
+            ],
+            "citation_id": "H4:FirstSteps",
+            "text": "For difficulty sleeping, keep a regular getting-up time, go to bed when sleepy and allow a relaxing hour before bed. A dark, quiet, comfortable bedroom can help. After a poor night, avoid sleeping in to compensate. For insomnia, NHS advises avoiding daytime naps; this is more restrictive than general short-nap guidance and should not be presented as a universal ban for every sleeper."
+          }
+        ]
+      },
+      "requested_arguments": {
+        "query": "午睡 时长 20分钟 失眠 避免午睡 适用范围"
+      }
+    }
+  ],
+  "model_calls": [
+    {
+      "status": "completed",
+      "model": "deepseek-v4.1-flash-1017",
+      "prompt_tokens": 11574,
+      "completion_tokens": 98,
+      "total_tokens": 11672
+    },
+    {
+      "status": "completed",
+      "model": "deepseek-v4.1-flash-1017",
+      "prompt_tokens": 12366,
+      "completion_tokens": 257,
+      "total_tokens": 12623
+    },
+    {
+      "status": "completed",
+      "model": "deepseek-v4.1-flash-1017",
+      "prompt_tokens": 12428,
+      "completion_tokens": 342,
+      "total_tokens": 12770
+    }
+  ],
+  "total_tokens": 37065,
+  "answer_validation": {
+    "repairs": [
+      {
+        "reason": "This general quantity is absent from its supplied supporting passage. Correct the value or unit.",
+        "candidate": "这两条建议并不矛盾，它们针对的是不同人群和不同目的。\n\n**20 分钟上限**：这是面向成年人的一般睡眠卫生建议，主要针对“入睡困难”的人，建议限制午睡时长，或把午睡安排在下午较早的时段，并且不超过 20 分钟；它明确说明这只是一般性指导，并非人人都必须遵守的时间表 [H2:Naps]。\n\n**失眠时避免午睡**：这是 NHS 针对失眠的自我照护建议，比一般短午睡建议更严格，目的是避免用白天补觉来抵消夜间睡眠不足，也不应被理解为对所有人都一律禁止午睡 [H4:FirstSteps]。\n\n**怎样理解适用范围**：如果只是偶尔犯困、夜间睡眠基本正常，那么短时、较早的午睡通常属于一般建议的适用范围；如果正在被失眠困扰，尤其是夜间难以入睡或睡眠片段化，那么更严格的“避免白天补觉”更贴近你的情况。两者共同的思路是：午睡不要挤占夜间睡眠的驱动力。具体到个人，还要看你的夜间睡眠状况和白天困倦程度；这些资料没有给出统一的个体化方案，因此不能仅凭这两条建议判断你“该不该睡”。"
+      },
+      {
+        "reason": "This general quantity is absent from its supplied supporting passage. Correct the value or unit.",
+        "candidate": "这两条建议并不矛盾，它们针对的是不同人群和不同目的。\n\n**20 分钟这条**：面向的是“一般成年人想保持良好睡眠习惯”的场景。美国国家心肺血液研究所（NHLBI）的建议是：如果成年人入睡困难，就应限制午睡，或把午睡安排在下午较早的时候，并且午睡不超过 20 分钟。它给出的是一条上限，并非要求每个人必须午睡，也不是必须睡满 20 分钟。[H2:Naps]\n\n**“失眠时不要午睡”这条**：面向的是已经存在失眠、正在处理睡眠问题的人。英国国家医疗服务体系（NHS）在失眠自助建议中提出，夜间没睡好后不要靠白天补觉，并建议失眠者避免白天小睡。资料本身也说明，这比一般性的短午睡建议更严格，不能当作对所有人都适用的禁令。[H4:FirstSteps]\n\n所以可以这样理解适用范围：\n\n- 如果你只是偶尔犯困、夜间睡眠基本正常，那么把午睡控制在 20 分钟以内、并安排在下午早些时候，属于一般性的习惯建议。\n- 如果你正在被失眠困扰，尤其是入睡困难或夜间频繁醒来，那么优先考虑的是不在白天补觉，以免削弱夜间的睡意；这时“避免午睡”更贴近你的情况。\n- 两条建议的共同点在于：午睡时长和时段会影响夜间睡眠，而不是说午睡本身有害或必需。\n\n具体到你自己该选哪一条，取决于你目前是否真的有失眠困扰、夜间睡眠是否稳定，这些信息我这边还没有。如果你愿意说明自己的情况，我可以帮你判断更贴近哪一类。"
+      }
+    ],
+    "status": "partial",
+    "policy_version": "grounded-errors-v2",
+    "warnings": [
+      {
+        "code": "partial_answer",
+        "message": "Unverified paragraphs were omitted; retained paragraphs were checked again."
+      }
+    ],
+    "removed_blocks": 4
+  },
+  "citation_check": {
+    "status": "valid",
+    "references": [
+      {
+        "source_id": "H4",
+        "title": "NHS · Insomnia",
+        "filename": "H4.md",
+        "version": "2024-03-19-summary-v1",
+        "effective_date": "2024-03-19",
+        "checked_at": "2026-11-10",
+        "source_url": "https://www.nhs.uk/conditions/insomnia/",
+        "synthetic": false,
+        "scope": "Insomnia self-help and care-seeking guidance",
+        "section_id": "FirstSteps",
+        "topics": [
+          "insomnia",
+          "routine"
+        ],
+        "citation_id": "H4:FirstSteps",
+        "text": "For difficulty sleeping, keep a regular getting-up time, go to bed when sleepy and allow a relaxing hour before bed. A dark, quiet, comfortable bedroom can help. After a poor night, avoid sleeping in to compensate. For insomnia, NHS advises avoiding daytime naps; this is more restrictive than general short-nap guidance and should not be presented as a universal ban for every sleeper."
+      }
+    ],
+    "invalid": [],
+    "unavailable": [],
+    "structural_only": true
+  },
+  "validation_warnings": [],
+  "error": null,
+  "fictional_evaluation_fixture": false,
+  "business_skill": {
+    "name": "sleep-analysis",
+    "version": "3.2.0",
+    "sections": [
+      "health",
+      "source_comparison"
+    ],
+    "context_sha256": "4dc8c508a477653519bf7dbc48206a4060b0f1ec3aa7b46fb2278da3b1df8a59",
+    "source_sha256": {
+      "SKILL.md": "733eaa8c2f1c7e44c567d3ecff956a72bc366f63a3012dd31474697deae13d8e",
+      "references/response_patterns.md": "d8bcfe339cd3343c6a6b0ccffa1576054cc8dd26db613ffcbb56a92875a275e2",
+      "references/examples.md": "79bdcd840d4ddd4b24f340b72215e60812f787217279b1036f592b043b301dcb"
+    },
+    "status": "loaded",
+    "delivery": "model_request_attempted"
+  },
+  "response_plan": {
+    "version": "response-plan-v1",
+    "source": "model_tool_plan",
+    "intent": "explanation",
+    "task": "health",
+    "metrics": [],
+    "profile_id": null,
+    "period": null,
+    "period_source": "unspecified",
+    "time_scope": "unspecified",
+    "evidence": [
+      "knowledge"
+    ],
+    "granularity": null,
+    "answer_format": "explanation",
+    "include_nightly": false,
+    "needs_interpretation": false,
+    "missing": [],
+    "requirements": [
+      "supporting_sources"
+    ],
+    "outcome": "supported_partial_answer"
+  },
+  "history_before_turn": [],
+  "query_plan": {
+    "task": "health",
+    "metrics": [],
+    "topics": [
+      "insomnia",
+      "naps"
+    ],
+    "no_caffeine": false,
+    "no_coffee": false,
+    "caffeine_question": false,
+    "profile_id": null,
+    "period": null,
+    "brief": false,
+    "followup": false,
+    "unsupported_window": false,
+    "focus_citations": [],
+    "special_population": false,
+    "knowledge_only": false,
+    "compare_sources": true,
+    "brief_record_recap": false,
+    "lead_change": false,
+    "causality_question": false,
+    "personal_assessment": false,
+    "wants_improvement": false,
+    "wants_analysis": false,
+    "sleep_overview": false,
+    "unavailable_measurement": null,
+    "application_dialogue": null,
+    "date_error": null,
+    "date_source": null,
+    "product_field": null,
+    "intro_requested": false,
+    "population_scope": "adult",
+    "compare_previous": null
+  },
+  "candidate_answer": "这两条建议并不矛盾，它们针对的是不同人群和不同目的。\n\n**20 分钟这条**：面向的是“一般成年人想保持良好睡眠习惯”的场景。美国国家心肺血液研究所（NHLBI）的建议是：如果成年人入睡困难，就应限制午睡，或把午睡安排在下午较早的时候，并且午睡不超过 20 分钟。它给出的是一条上限，并非要求每个人必须午睡，也不是必须睡满 20 分钟。[H2:Naps]\n\n**“失眠时不要午睡”这条**：面向的是已经存在失眠、正在处理睡眠问题的人。英国国家医疗服务体系（NHS）在失眠自助建议中提出，夜间没睡好后不要靠白天补觉，并建议失眠者避免白天小睡。资料本身也说明，这比一般性的短午睡建议更严格，不能当作对所有人都适用的禁令。[H4:FirstSteps]\n\n所以可以这样理解适用范围：\n\n- 如果你只是偶尔犯困、夜间睡眠基本正常，那么把午睡控制在 20 分钟以内、并安排在下午早些时候，属于一般性的习惯建议。\n- 如果你正在被失眠困扰，尤其是入睡困难或夜间频繁醒来，那么优先考虑的是不在白天补觉，以免削弱夜间的睡意；这时“避免午睡”更贴近你的情况。\n- 两条建议的共同点在于：午睡时长和时段会影响夜间睡眠，而不是说午睡本身有害或必需。\n\n具体到你自己该选哪一条，取决于你目前是否真的有失眠困扰、夜间睡眠是否稳定，这些信息我这边还没有。如果你愿意说明自己的情况，我可以帮你判断更贴近哪一类。",
+  "elapsed_seconds": 15.281,
+  "record_context": {
+    "source": "none",
+    "status": null,
+    "scope_matches": false,
+    "scope": {
+      "profile_id": "P01",
+      "period": [
+        "2026-10-19",
+        "2026-10-25"
+      ],
+      "compare_previous": null
+    },
+    "origin_turn": null,
+    "provided_via": null
+  },
+  "available_health_ids": [
+    "H2:Naps",
+    "H3:StimulusControl",
+    "H4:FirstSteps"
+  ],
+  "app_version": "0.1.0",
+  "base_url": "https://api.chatanywhere.tech/v1",
+  "requested_model": "deepseek-v4-flash",
+  "cleanup_provenance": {
+    "original_sha256": "4c9ef5863b647266034a3df4ec8130a7f67df65835f0d9331d7acb1c7023df49",
+    "omitted_duplicate_instruction_fields": [
+      "system_prompt"
+    ],
+    "note": "Historical report evidence excerpt; outputs, tool evidence, validation and version metadata retained. Not a complete runtime snapshot."
+  }
+}

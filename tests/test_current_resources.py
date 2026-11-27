@@ -33,12 +33,12 @@ def test_test_suite_blocks_production_model_requests():
 def test_current_runtime_versions_and_only_supported_prompt_are_packaged():
     session = ChatSession(object())
     skill = load_business_skill(plan_query("Explain my sleep records."))
-    assert PROMPT_VERSION == session.prompt_version == "prompt-v30"
+    assert PROMPT_VERSION == session.prompt_version == "prompt-v1"
     assert skill.version == "3.6.0"
-    assert load_knowledge().version == "sleep-knowledge-v7"
+    assert load_knowledge().version == "sleep-knowledge-v1"
     prompts = files("sleeplens").joinpath("resources/prompts")
-    assert sorted(p.name for p in prompts.iterdir() if p.name.endswith(".md")) == ["system_v30.md"]
-    assert session.prompt.startswith("# SleepLens — prompt-v30")
+    assert sorted(p.name for p in prompts.iterdir() if p.name.endswith(".md")) == ["system_v1.md"]
+    assert session.prompt.startswith("# SleepLens — prompt-v1")
 
 
 def test_current_checks_work_without_historical_evidence(tmp_path):

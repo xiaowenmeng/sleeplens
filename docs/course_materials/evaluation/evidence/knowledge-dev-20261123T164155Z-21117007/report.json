@@ -1,0 +1,1452 @@
+{
+  "schema_version": "knowledge-development-run-v1",
+  "run_id": "knowledge-dev-20261123T164155Z-21117007",
+  "suite_id": "sleeplens-knowledge-k1-k10-v1",
+  "freeze_id": "sleeplens-eval-20261123-v2",
+  "mode": "live",
+  "attempt": 1,
+  "execution_reason": "initial",
+  "configuration_variant": null,
+  "candidate_change": null,
+  "created_at": "2026-11-23T16:41:56.453921+00:00",
+  "suite_sha256": "34f592a8e1cd9392a93bbcf920bb63fbe4e938fb11c6ca9d182847825f9a4894",
+  "evaluator_sha256": "8a963fbf4d50fdabab61318f9385c7ed63e404af17b38f40ca5915fb58b2a5e8",
+  "snapshot_verification": {
+    "status": "verified",
+    "freeze_id": "sleeplens-eval-20261123-v2",
+    "manifest_sha256": "034cef3f242bd1b20e1119e95f98a766e160a7bd3287da42701a4c255e1ab21c",
+    "pinned_files": 112,
+    "environment_checked": true,
+    "workspace_checked": true,
+    "imported_application": "D:\\瑞士交换\\friday\\artifacts\\evaluation-runs\\knowledge-dev-20261123T164155Z-21117007\\workspace\\src\\sleeplens\\__init__.py"
+  },
+  "shared_budget_before": {
+    "reserved_requests": 229,
+    "active_requests": 0,
+    "request_limit": 260,
+    "remaining_requests": 31,
+    "max_concurrent": 2
+  },
+  "shared_budget_after": {
+    "reserved_requests": 246,
+    "active_requests": 0,
+    "request_limit": 260,
+    "remaining_requests": 14,
+    "max_concurrent": 2
+  },
+  "holdout_executed": [],
+  "holdout_policy": "K8/K9/K10 excluded; original Q9 also remains held out",
+  "fixture_metadata_injected": false,
+  "fresh_session_per_case": true,
+  "run_status": "complete",
+  "cases": [
+    {
+      "id": "K1",
+      "split": "development",
+      "type": [
+        "single_passage",
+        "age_scope"
+      ],
+      "question": "我是 30 岁的成年人。根据你现有的 CDC 资料，每天睡眠时长的一般参考是多少？这个参考能直接当作对我的诊断吗？",
+      "expected_evidence": [
+        "H1:AdultDuration"
+      ],
+      "answer_points": [
+        "该资料对 18–60 岁成人的一般参考为每天至少 7 小时（等价为至少 420 分钟）。",
+        "这是一般每日参考，不是针对提问者的诊断或保证；睡眠需要有差异。"
+      ],
+      "reject_if": [
+        "将“至少”变成“最多”或统一固定值",
+        "把参考值当作个人诊断",
+        "扩展到资料未覆盖年龄"
+      ],
+      "absence": null,
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "不过，它**不能直接当作对你的诊断**。它只说明一个一般性的每日睡眠时长下限，既没有考虑你的实际睡眠记录、白天状态和健康状况，也不涉及睡眠质量、夜醒或分期；睡眠时长本身也无法用来判断疾病或某个变化的原因 [H1:AdultDuration][B1:Limits]。另外，这个“每天”的口径包含全天所有睡眠，而夜间记录并不等于全天总量，所以不能把某一晚的时长直接和它对照后就下结论 [B1:Limits]。",
+      "actual_requests": 3,
+      "known_tokens": 34912,
+      "input_tokens": 34444,
+      "output_tokens": 468,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H1:AdultDuration",
+        "H2:Schedule"
+      ],
+      "cited_sections": [
+        "B1:Limits",
+        "H1:AdultDuration"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "conversation",
+        "metrics": [
+          "daily"
+        ],
+        "topics": [
+          "duration"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [
+          {
+            "reason": "This general quantity is absent from its supplied supporting passage. Correct the value or unit.",
+            "candidate": "CDC 对 18–60 岁成年人的一般建议是**每天至少睡 7 小时**，这是面向人群的日常参考量，不是针对某个人的处方或标准 [H1:AdultDuration]。你 30 岁正好落在这个年龄范围内，所以这条参考在年龄上适用于你。\n\n但它**不能直接当作对你的诊断**。它只说明一个一般性的时长下限，既没有考虑你的实际睡眠记录、白天状态和健康情况，也不涉及睡眠质量、夜醒或分期；单凭“睡够/没睡够 7 小时”无法判断你是否患有睡眠障碍 [H1:AdultDuration]。另外，这个参考说的是**每天总睡眠**（含可能的午睡），与夜间记录里的时长不是同一个口径 [B1:Limits]。\n\n如果你愿意，我可以查你某一天或某一周的记录，看看实际时长与这条参考相差多少——那仍然只是描述性对比，不构成诊断。"
+          },
+          {
+            "reason": "This general quantity is absent from its supplied supporting passage. Correct the value or unit.",
+            "candidate": "CDC 对 18–60 岁成年人的一般建议是**每天至少睡 7 小时**，这是面向人群的日常参考量，不是针对某个人的处方或标准 [H1:AdultDuration]。你 30 岁，正好落在这个年龄范围内，所以这条参考在年龄上适用于你。\n\n不过，它**不能直接当作对你的诊断**。它只说明一个一般性的每日睡眠时长下限，既没有考虑你的实际睡眠记录、白天状态和健康状况，也不涉及睡眠质量、夜醒或分期；睡眠时长本身也无法用来判断疾病或某个变化的原因 [H1:AdultDuration][B1:Limits]。另外，这个“每天”的口径包含全天所有睡眠，而夜间记录并不等于全天总量，所以不能把某一晚的时长直接和它对照后就下结论 [B1:Limits]。\n\n如果你愿意，我可以查你某个具体醒来日的记录，看看当晚的时长和这条参考相差多少；但即便如此，那也只是描述性比较，不构成诊断。"
+          }
+        ],
+        "status": "partial",
+        "policy_version": "grounded-errors-v2",
+        "warnings": [
+          {
+            "code": "partial_answer",
+            "message": "Unverified paragraphs were omitted; retained paragraphs were checked again."
+          }
+        ],
+        "removed_blocks": 2
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-bbbfc24dd0444b8698c0f41b317d25ce-001.json",
+      "elapsed_seconds": 15.562
+    },
+    {
+      "id": "K2",
+      "split": "development",
+      "type": [
+        "paraphrase",
+        "causal_boundary"
+      ],
+      "question": "我晚上一直刷亮屏手机，到了床上还是不困。资料能解释一种可能的影响吗？能认定我的情况就是手机造成的吗？",
+      "expected_evidence": [
+        "H7:EveningLight"
+      ],
+      "optional_evidence": [
+        "H2:WindDown"
+      ],
+      "answer_points": [
+        "晚间明亮人造光可能干扰褪黑素释放，使入睡更困难；屏幕可能是这种光的来源。",
+        "一般机制不能证明该用户的入睡困难由手机造成。若给减少亮屏等建议，需有实际支持该建议的片段。"
+      ],
+      "reject_if": [
+        "断定用户问题的原因",
+        "编造固定禁屏时长或保证效果",
+        "把所有手机使用的影响等同于光照作用"
+      ],
+      "absence": null,
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "资料确实能解释一种可能的影响：夜间明亮的灯光会干扰褪黑素分泌，让入睡变得更困难，而手机屏幕正是这类光源之一[H7:EveningLight]。所以“床上刷亮屏手机、躺下还不困”这个组合，在生理机制上是有合理联系的。\n\n但不能据此认定你的情况就是手机造成的。同一份资料明确说明，这不能证明某个人的入睡偏晚就是由屏幕引起的[H7:EveningLight]。要判断具体原因，还需要知道你的上床时间、关灯时间、实际入睡时刻、白天活动量、咖啡因摄入，以及最近几晚的睡眠记录；这些信息目前都还没有。\n\n如果想减少这个可能的影响，可以试试在睡前留出一小时做安静活动，并减少使用亮屏设备[H2:WindDown]。这只是一个可尝试的调整方向，并不等于已经确认了你的原因。",
+      "actual_requests": 2,
+      "known_tokens": 23957,
+      "input_tokens": 23716,
+      "output_tokens": 241,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H2:WindDown",
+        "H3:StimulusControl",
+        "H4:FirstSteps",
+        "H7:EveningLight"
+      ],
+      "cited_sections": [
+        "H2:WindDown",
+        "H7:EveningLight"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "health",
+        "metrics": [],
+        "topics": [
+          "screens"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [],
+        "status": "passed",
+        "policy_version": "grounded-errors-v2"
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-9922724f381646aabef4573452ebb507-001.json",
+      "elapsed_seconds": 8.094
+    },
+    {
+      "id": "K3",
+      "split": "development",
+      "type": [
+        "exact_acronym",
+        "single_passage"
+      ],
+      "question": "你资料里的 CBT-I 指什么？它在长期失眠治疗中通常处于什么位置？",
+      "expected_evidence": [
+        "H3:CBTI"
+      ],
+      "answer_points": [
+        "CBT-I 指针对失眠的认知行为治疗（cognitive behavioral therapy for insomnia）。",
+        "该资料将其描述为长期失眠通常首先采用的治疗。"
+      ],
+      "reject_if": [
+        "把 CBT-I 说成药名或仅仅是睡眠卫生",
+        "提供自行限制睡眠窗口的具体处方",
+        "声称一定治愈"
+      ],
+      "absence": null,
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "CBT-I 是“失眠认知行为治疗”（Cognitive Behavioral Therapy for Insomnia）的缩写，是一种针对失眠的结构化非药物疗法，而不是单纯“讲道理”的心理咨询。\n\n**它包含什么**\n按美国国立心肺血液研究所（NHLBI）的说明，CBT-I 通常持续六到八周，内容包括处理与睡眠相关的想法、放松训练、睡眠教育以及行为技术；可以面对面进行，也可以通过电话或线上方式提供 [H3:CBTI]。其中“刺激控制”是常见的行为成分之一：困了才上床，躺不着就离开床，等有困意再回来，并尽量让床只与睡眠相关 [H3:StimulusControl]。CBT-I 里还常包含睡眠限制成分，但这部分需要由专业人员根据个人情况调整，不适合自己随意压缩卧床时间 [H3:CBTI]。\n\n**在长期失眠治疗中的位置**\nNHLBI 把 CBT-I 描述为长期失眠“通常的首选治疗”（usual first treatment），也就是说在治疗顺序上它一般排在药物之前 [H3:CBTI]。这里的“长期失眠”指持续较久、而非偶发几晚的睡眠困难；NHS 以三个月作为区分短期困难与长期失眠的时间界线，但单凭时长本身并不能确立诊断 [H4:WhenToSeekHelp]。\n\n**什么时候值得寻求专业评估**\n如果睡眠困难已持续数月、自己调整习惯没有改善，或已经明显影响日常生活，NHS 建议进行临床评估 [H4:WhenToSeekHelp]。具体是否适合 CBT-I、如何安排疗程，需要由专业人员判断；我这里只能介绍一般资料，不能替代诊断或制定个人治疗方案。",
+      "actual_requests": 2,
+      "known_tokens": 24162,
+      "input_tokens": 23749,
+      "output_tokens": 413,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H3:CBTI",
+        "H3:StimulusControl",
+        "H4:FirstSteps",
+        "H4:WhenToSeekHelp"
+      ],
+      "cited_sections": [
+        "H3:CBTI",
+        "H3:StimulusControl",
+        "H4:WhenToSeekHelp"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "health",
+        "metrics": [],
+        "topics": [
+          "cbti",
+          "insomnia",
+          "persistent_insomnia"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [],
+        "status": "passed",
+        "policy_version": "grounded-errors-v2",
+        "warnings": [
+          {
+            "code": "citation_coverage",
+            "line": 1,
+            "message": "This paragraph has no separate citation; the answer contains supplied health references. Claim support still needs review."
+          }
+        ]
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-5a64787adc8b405bb8a698e75a7e351f-001.json",
+      "elapsed_seconds": 9.859
+    },
+    {
+      "id": "K4",
+      "split": "development",
+      "type": [
+        "multiple_passages",
+        "device_scope"
+      ],
+      "question": "Fitbit 里的“深睡”和实验室说的 N3 有什么关系？手表怎样估算睡眠分期，能把它直接等同于临床分期吗？",
+      "expected_evidence": [
+        "H6:NREM",
+        "H10:Estimates"
+      ],
+      "answer_points": [
+        "N3 是非 REM 的深睡或慢波睡眠阶段；临床分期使用睡眠检查中的脑活动等测量。",
+        "Fitbit/Pixel Watch 的分期是根据腕部运动和心率信息估算，deep 标签大致对应 N3。",
+        "产品估计不直接等同于实验室分期；不能将这些设备的定义概括为所有设备或 SleepLens 合成数据的采集方法。"
+      ],
+      "reject_if": [
+        "声称手表直接测得实验室脑电分期",
+        "把 REM 说成深睡",
+        "泛化为全部可穿戴设备都相同"
+      ],
+      "absence": null,
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "**“深睡”和 N3 的关系**\n\n临床上的 N3 指深睡（慢波睡眠），靠脑电等睡眠监测来判定；N1 是入睡过渡，N2 是已建立的睡眠 [H6:NREM]。Fitbit 这类手表上的“深睡”标签，按厂商说明很可能对应 N3，而“浅睡”很可能包含 N1 和 N2 [H10:Estimates]。不过这只是该厂商对标签的说明，不等于手表测到的就是实验室级别的 N3。\n\n**手表怎么估算**\n\nGoogle Health 说明，Fitbit 和 Pixel Watch 的分期是根据手腕动作和心率推算出来的估计值，与实验室贴在脑部、肌肉上的传感器原理不同 [H10:Estimates]。所以它给出的是“估计的分期”，而不是临床判读。\n\n**不能直接等同**\n\n不建议把手表的分期直接当作临床分期：两者的测量信号不同，厂商标签也只是“很可能”对应 N1/N2/N3 [H10:Estimates]。另外，深睡在夜间偏前段更集中、REM 偏后段增多，且睡眠结构随年龄变化，这些资料也没有给出通用的深睡或 REM 百分比及格线 [H6:Pattern]。因此手表上的深睡分钟数适合用来看自己长期的变化趋势，而不是用来判断“够不够”或是否患病；如果确实需要分期结论，应由睡眠专科的检查来判定。",
+      "actual_requests": 2,
+      "known_tokens": 24803,
+      "input_tokens": 24438,
+      "output_tokens": 365,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H10:Estimates",
+        "H6:NREM",
+        "H6:Pattern",
+        "H6:REM"
+      ],
+      "cited_sections": [
+        "H10:Estimates",
+        "H6:NREM",
+        "H6:Pattern"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "health",
+        "metrics": [],
+        "topics": [
+          "deep_sleep",
+          "sleep_stages",
+          "wearables"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [],
+        "status": "passed",
+        "policy_version": "grounded-errors-v2"
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-6295a71065b44cd381bbea23ab54a7fa-001.json",
+      "elapsed_seconds": 9.906
+    },
+    {
+      "id": "K5",
+      "split": "development",
+      "type": [
+        "multiple_passages",
+        "apparently_conflicting_guidance"
+      ],
+      "question": "一份资料说午睡不超过 20 分钟，另一份说失眠时不要午睡。这是不是矛盾？我该怎样理解两者的适用范围？",
+      "expected_evidence": [
+        "H2:Naps",
+        "H4:FirstSteps"
+      ],
+      "answer_points": [
+        "NHLBI 对入睡困难成人给出限制午睡、提前午睡及不超过 20 分钟的一般指导。",
+        "NHS 的失眠自助建议更严格，建议避免白天午睡。",
+        "两者适用情境和建议强度不同，不能据此概括为所有人一律禁午睡或人人必须午睡 20 分钟。"
+      ],
+      "reject_if": [
+        "只引用一段却声称已经解释两份资料",
+        "凭页面日期认定另一份必定失效",
+        "将 20 分钟变成适用于所有人的强制时长"
+      ],
+      "absence": null,
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "**“失眠时不要午睡”这条**：面向的是已经存在失眠、正在处理睡眠问题的人。英国国家医疗服务体系（NHS）在失眠自助建议中提出，夜间没睡好后不要靠白天补觉，并建议失眠者避免白天小睡。资料本身也说明，这比一般性的短午睡建议更严格，不能当作对所有人都适用的禁令。[H4:FirstSteps]",
+      "actual_requests": 3,
+      "known_tokens": 37065,
+      "input_tokens": 36368,
+      "output_tokens": 697,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H2:Naps",
+        "H3:StimulusControl",
+        "H4:FirstSteps"
+      ],
+      "cited_sections": [
+        "H4:FirstSteps"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "health",
+        "metrics": [],
+        "topics": [
+          "insomnia",
+          "naps"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": true,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [
+          {
+            "reason": "This general quantity is absent from its supplied supporting passage. Correct the value or unit.",
+            "candidate": "这两条建议并不矛盾，它们针对的是不同人群和不同目的。\n\n**20 分钟上限**：这是面向成年人的一般睡眠卫生建议，主要针对“入睡困难”的人，建议限制午睡时长，或把午睡安排在下午较早的时段，并且不超过 20 分钟；它明确说明这只是一般性指导，并非人人都必须遵守的时间表 [H2:Naps]。\n\n**失眠时避免午睡**：这是 NHS 针对失眠的自我照护建议，比一般短午睡建议更严格，目的是避免用白天补觉来抵消夜间睡眠不足，也不应被理解为对所有人都一律禁止午睡 [H4:FirstSteps]。\n\n**怎样理解适用范围**：如果只是偶尔犯困、夜间睡眠基本正常，那么短时、较早的午睡通常属于一般建议的适用范围；如果正在被失眠困扰，尤其是夜间难以入睡或睡眠片段化，那么更严格的“避免白天补觉”更贴近你的情况。两者共同的思路是：午睡不要挤占夜间睡眠的驱动力。具体到个人，还要看你的夜间睡眠状况和白天困倦程度；这些资料没有给出统一的个体化方案，因此不能仅凭这两条建议判断你“该不该睡”。"
+          },
+          {
+            "reason": "This general quantity is absent from its supplied supporting passage. Correct the value or unit.",
+            "candidate": "这两条建议并不矛盾，它们针对的是不同人群和不同目的。\n\n**20 分钟这条**：面向的是“一般成年人想保持良好睡眠习惯”的场景。美国国家心肺血液研究所（NHLBI）的建议是：如果成年人入睡困难，就应限制午睡，或把午睡安排在下午较早的时候，并且午睡不超过 20 分钟。它给出的是一条上限，并非要求每个人必须午睡，也不是必须睡满 20 分钟。[H2:Naps]\n\n**“失眠时不要午睡”这条**：面向的是已经存在失眠、正在处理睡眠问题的人。英国国家医疗服务体系（NHS）在失眠自助建议中提出，夜间没睡好后不要靠白天补觉，并建议失眠者避免白天小睡。资料本身也说明，这比一般性的短午睡建议更严格，不能当作对所有人都适用的禁令。[H4:FirstSteps]\n\n所以可以这样理解适用范围：\n\n- 如果你只是偶尔犯困、夜间睡眠基本正常，那么把午睡控制在 20 分钟以内、并安排在下午早些时候，属于一般性的习惯建议。\n- 如果你正在被失眠困扰，尤其是入睡困难或夜间频繁醒来，那么优先考虑的是不在白天补觉，以免削弱夜间的睡意；这时“避免午睡”更贴近你的情况。\n- 两条建议的共同点在于：午睡时长和时段会影响夜间睡眠，而不是说午睡本身有害或必需。\n\n具体到你自己该选哪一条，取决于你目前是否真的有失眠困扰、夜间睡眠是否稳定，这些信息我这边还没有。如果你愿意说明自己的情况，我可以帮你判断更贴近哪一类。"
+          }
+        ],
+        "status": "partial",
+        "policy_version": "grounded-errors-v2",
+        "warnings": [
+          {
+            "code": "partial_answer",
+            "message": "Unverified paragraphs were omitted; retained paragraphs were checked again."
+          }
+        ],
+        "removed_blocks": 4
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-a6f3dcac8f444f5084638c9d73ee268c-001.json",
+      "elapsed_seconds": 15.297
+    },
+    {
+      "id": "K6",
+      "split": "development",
+      "type": [
+        "absent_answer",
+        "diagnostic_boundary"
+      ],
+      "question": "你现有资料有没有“每晚醒超过几次就算失眠”的统一标准？能只凭夜醒次数判断吗？",
+      "expected_evidence": [
+        "H8:NightWaking"
+      ],
+      "optional_evidence": [
+        "H9:Evaluation"
+      ],
+      "answer_points": [
+        "当前资料没有统一的夜醒次数诊断阈值，不能编造一个次数。",
+        "夜醒次数本身不能确诊；症状持续情况、白天影响等也需要考虑。"
+      ],
+      "reject_if": [
+        "编造超过某次数就失眠的阈值",
+        "只凭计数诊断",
+        "仅泛泛拒绝而不回答有无该标准"
+      ],
+      "absence": "统一次数阈值在当前语料中不存在；H8 明确说明这一限制。",
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "没有。现有资料里没有“每晚醒超过几次就算失眠”的统一标准，也不能只凭夜醒次数判断是否失眠。\n\n资料把频繁夜醒、难以维持睡眠、或早醒后无法再入睡列为可能与失眠相关的表现，但同时强调：白天是否感到没休息好、是否嗜睡、是否难以集中注意力同样重要，单看夜醒次数不足以确立诊断，也没有给出通用的“正常次数”上限 [H8:NightWaking]。另外，睡眠周期之间出现短暂觉醒本身是常见现象，睡眠模式还会随年龄变化 [H6:Pattern]。\n\n所以更合理的理解是：夜醒次数是一个描述性指标，需要和夜醒持续多久、醒后能否再入睡、白天状态以及持续时间一起看；是否达到失眠的诊断标准，需要由专业人员评估。如果你愿意，我可以查一下你某几晚的记录里夜醒次数和清醒时长，作为描述性参考——但那仍然不能替代诊断。",
+      "actual_requests": 3,
+      "known_tokens": 37758,
+      "input_tokens": 37278,
+      "output_tokens": 480,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H3:StimulusControl",
+        "H4:FirstSteps",
+        "H6:Pattern",
+        "H8:NightWaking"
+      ],
+      "cited_sections": [
+        "H6:Pattern",
+        "H8:NightWaking"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "health",
+        "metrics": [],
+        "topics": [
+          "insomnia",
+          "night_waking"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [
+          {
+            "reason": "No usable record supports these personal quantities. Explain the lookup gap.",
+            "candidate": "没有。我查到的本地资料里，没有“每晚醒超过几次就算失眠”的统一标准，也没有给出夜醒次数的正常上限[H8:NightWaking]。\n\n**不能只凭夜醒次数判断。** 资料把频繁夜醒、难以维持睡眠、早醒后无法再入睡列为可能与失眠相关的表现，但同时强调还要看白天是否受影响，比如睡醒后不解乏、白天困倦、注意力难以集中；单看醒来次数不足以确立诊断[H8:NightWaking]。另外，睡眠周期之间本来就可能出现短暂觉醒，而且睡眠模式会随年龄变化[H6:Pattern]，所以“醒了几次”这个数字本身很难单独说明问题。\n\n如果你愿意，可以告诉我具体是哪一晚或哪段时间的记录，我可以帮你看看夜醒次数和清醒时长，再结合这些条件说明能判断到什么程度、还缺哪些信息。"
+          }
+        ],
+        "status": "passed",
+        "policy_version": "grounded-errors-v2"
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-938e8e150b964ea0baba82f086305f06-001.json",
+      "elapsed_seconds": 12.656
+    },
+    {
+      "id": "K7",
+      "split": "development",
+      "type": [
+        "dated_source",
+        "absent_current_product_evidence"
+      ],
+      "question": "你引用的 AASM 2018 年声明，能证明我正在用的手表在 2026 年已经获得临床或监管认可吗？",
+      "expected_evidence": [
+        "H11:ClinicalUse"
+      ],
+      "answer_points": [
+        "不能。该条是 2018 年的历史立场声明，不证明某款产品在 2026 年的验证或监管状态。",
+        "需要具体产品、具体时期的证据；资料对未经验证消费设备用于诊断或治疗提出警示。"
+      ],
+      "reject_if": [
+        "据此声称用户设备已获认可",
+        "反向声称所有设备截至 2026 年都未获认可",
+        "将历史声明当作实时监管数据库"
+      ],
+      "absence": "缺少用户具体型号和当前产品验证/监管状态的证据；不得从历史声明推断。",
+      "attempt": 1,
+      "execution_status": "executed",
+      "user_result": "pending",
+      "independent_human_review": "pending",
+      "agent_status": "answered",
+      "answer": "不能。美国睡眠医学会（AASM）2018 年的这份消费者睡眠技术立场声明，本身并不能证明你正在使用的手表在 2026 年已获得临床或监管认可。\n\n该声明属于历史性文件，其适用范围明确不包含“某一具体产品当前的批准状态”：它提醒不要用未经验证的消费级睡眠设备来诊断或治疗睡眠障碍，同时指出用户自行记录的信息可以辅助临床医生的评估；但某款设备是否经过验证、是否获得监管许可，需要看该产品当前的、针对该产品的证据 [H11:ClinicalUse]。\n\n因此，要判断你这款手表在 2026 年的状态，需要查阅厂商针对该型号公布的验证资料，以及相应监管机构的公开许可信息；这些内容不在我目前可检索的本地资料范围内，我无法据此给出结论。另外，SleepLens 本身也不连接真实设备，只能读取演示档案中的记录，因此无法核实你手表的型号或认证情况。",
+      "actual_requests": 2,
+      "known_tokens": 24079,
+      "input_tokens": 23814,
+      "output_tokens": 265,
+      "actual_model_received_sections": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H11:ClinicalUse"
+      ],
+      "cited_sections": [
+        "H11:ClinicalUse"
+      ],
+      "expected_sections_missing": [],
+      "citation_status": "valid",
+      "query_plan": {
+        "task": "health",
+        "metrics": [],
+        "topics": [
+          "wearables"
+        ],
+        "no_caffeine": false,
+        "no_coffee": false,
+        "caffeine_question": false,
+        "profile_id": null,
+        "period": null,
+        "brief": false,
+        "followup": false,
+        "unsupported_window": false,
+        "focus_citations": [],
+        "special_population": false,
+        "knowledge_only": false,
+        "compare_sources": false,
+        "brief_record_recap": false,
+        "lead_change": false,
+        "causality_question": false,
+        "personal_assessment": false,
+        "wants_improvement": false,
+        "wants_analysis": false,
+        "sleep_overview": false,
+        "unavailable_measurement": null,
+        "application_dialogue": null,
+        "date_error": null,
+        "date_source": null,
+        "product_field": null,
+        "intro_requested": false,
+        "population_scope": "adult",
+        "compare_previous": null
+      },
+      "answer_validation": {
+        "repairs": [],
+        "status": "passed",
+        "policy_version": "grounded-errors-v2"
+      },
+      "agent_error": null,
+      "trace_path": "traces\\chat-4a53dcedc2c14cc2941e930da8b395f9-001.json",
+      "elapsed_seconds": 6.672
+    }
+  ],
+  "ledger": [
+    {
+      "index": 1,
+      "case_id": "K1",
+      "status": "completed",
+      "started_at": "2026-11-23T16:41:56.565294+00:00",
+      "prompt_tokens": 11126,
+      "completion_tokens": 56,
+      "total_tokens": 11182,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_butoej8yg0mh2ogzzyo2hj8q",
+                "function": {
+                  "arguments": "{\"query\": \"成人 每天 睡眠时长 建议 小时 CDC 参考 是否诊断\"}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 5.187
+    },
+    {
+      "index": 2,
+      "case_id": "K1",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:01.744661+00:00",
+      "prompt_tokens": 11628,
+      "completion_tokens": 199,
+      "total_tokens": 11827,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "CDC 对 18–60 岁成年人的一般建议是**每天至少睡 7 小时**，这是面向人群的日常参考量，不是针对某个人的处方或标准 [H1:AdultDuration]。你 30 岁正好落在这个年龄范围内，所以这条参考在年龄上适用于你。\n\n但它**不能直接当作对你的诊断**。它只说明一个一般性的时长下限，既没有考虑你的实际睡眠记录、白天状态和健康情况，也不涉及睡眠质量、夜醒或分期；单凭“睡够/没睡够 7 小时”无法判断你是否患有睡眠障碍 [H1:AdultDuration]。另外，这个参考说的是**每天总睡眠**（含可能的午睡），与夜间记录里的时长不是同一个口径 [B1:Limits]。\n\n如果你愿意，我可以查你某一天或某一周的记录，看看实际时长与这条参考相差多少——那仍然只是描述性对比，不构成诊断。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H1:AdultDuration",
+        "H2:Schedule"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 5.688
+    },
+    {
+      "index": 3,
+      "case_id": "K1",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:07.448613+00:00",
+      "prompt_tokens": 11690,
+      "completion_tokens": 213,
+      "total_tokens": 11903,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "CDC 对 18–60 岁成年人的一般建议是**每天至少睡 7 小时**，这是面向人群的日常参考量，不是针对某个人的处方或标准 [H1:AdultDuration]。你 30 岁，正好落在这个年龄范围内，所以这条参考在年龄上适用于你。\n\n不过，它**不能直接当作对你的诊断**。它只说明一个一般性的每日睡眠时长下限，既没有考虑你的实际睡眠记录、白天状态和健康状况，也不涉及睡眠质量、夜醒或分期；睡眠时长本身也无法用来判断疾病或某个变化的原因 [H1:AdultDuration][B1:Limits]。另外，这个“每天”的口径包含全天所有睡眠，而夜间记录并不等于全天总量，所以不能把某一晚的时长直接和它对照后就下结论 [B1:Limits]。\n\n如果你愿意，我可以查你某个具体醒来日的记录，看看当晚的时长和这条参考相差多少；但即便如此，那也只是描述性比较，不构成诊断。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H1:AdultDuration",
+        "H2:Schedule"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 4.625
+    },
+    {
+      "index": 4,
+      "case_id": "K2",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:12.085908+00:00",
+      "prompt_tokens": 11373,
+      "completion_tokens": 59,
+      "total_tokens": 11432,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_upv3onv493ilwa4tt7hvxb4i",
+                "function": {
+                  "arguments": "{\"query\": \"睡前使用手机 亮屏 蓝光 入睡困难 睡眠延迟 影响 因果\"}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 3.156
+    },
+    {
+      "index": 5,
+      "case_id": "K2",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:15.258242+00:00",
+      "prompt_tokens": 12343,
+      "completion_tokens": 182,
+      "total_tokens": 12525,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "资料确实能解释一种可能的影响：夜间明亮的灯光会干扰褪黑素分泌，让入睡变得更困难，而手机屏幕正是这类光源之一[H7:EveningLight]。所以“床上刷亮屏手机、躺下还不困”这个组合，在生理机制上是有合理联系的。\n\n但不能据此认定你的情况就是手机造成的。同一份资料明确说明，这不能证明某个人的入睡偏晚就是由屏幕引起的[H7:EveningLight]。要判断具体原因，还需要知道你的上床时间、关灯时间、实际入睡时刻、白天活动量、咖啡因摄入，以及最近几晚的睡眠记录；这些信息目前都还没有。\n\n如果想减少这个可能的影响，可以试试在睡前留出一小时做安静活动，并减少使用亮屏设备[H2:WindDown]。这只是一个可尝试的调整方向，并不等于已经确认了你的原因。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H2:WindDown",
+        "H3:StimulusControl",
+        "H4:FirstSteps",
+        "H7:EveningLight"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 4.906
+    },
+    {
+      "index": 6,
+      "case_id": "K3",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:20.179703+00:00",
+      "prompt_tokens": 11365,
+      "completion_tokens": 59,
+      "total_tokens": 11424,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_yvi5ulzah2fl8umakterz80d",
+                "function": {
+                  "arguments": "{\"query\": \"CBT-I 认知行为治疗 失眠 一线治疗 长期失眠 内容 组成\"}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 2.578
+    },
+    {
+      "index": 7,
+      "case_id": "K3",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:22.770386+00:00",
+      "prompt_tokens": 12384,
+      "completion_tokens": 354,
+      "total_tokens": 12738,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "CBT-I 是“失眠认知行为治疗”（Cognitive Behavioral Therapy for Insomnia）的缩写，是一种针对失眠的结构化非药物疗法，而不是单纯“讲道理”的心理咨询。\n\n**它包含什么**\n按美国国立心肺血液研究所（NHLBI）的说明，CBT-I 通常持续六到八周，内容包括处理与睡眠相关的想法、放松训练、睡眠教育以及行为技术；可以面对面进行，也可以通过电话或线上方式提供 [H3:CBTI]。其中“刺激控制”是常见的行为成分之一：困了才上床，躺不着就离开床，等有困意再回来，并尽量让床只与睡眠相关 [H3:StimulusControl]。CBT-I 里还常包含睡眠限制成分，但这部分需要由专业人员根据个人情况调整，不适合自己随意压缩卧床时间 [H3:CBTI]。\n\n**在长期失眠治疗中的位置**\nNHLBI 把 CBT-I 描述为长期失眠“通常的首选治疗”（usual first treatment），也就是说在治疗顺序上它一般排在药物之前 [H3:CBTI]。这里的“长期失眠”指持续较久、而非偶发几晚的睡眠困难；NHS 以三个月作为区分短期困难与长期失眠的时间界线，但单凭时长本身并不能确立诊断 [H4:WhenToSeekHelp]。\n\n**什么时候值得寻求专业评估**\n如果睡眠困难已持续数月、自己调整习惯没有改善，或已经明显影响日常生活，NHS 建议进行临床评估 [H4:WhenToSeekHelp]。具体是否适合 CBT-I、如何安排疗程，需要由专业人员判断；我这里只能介绍一般资料，不能替代诊断或制定个人治疗方案。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H3:CBTI",
+        "H3:StimulusControl",
+        "H4:FirstSteps",
+        "H4:WhenToSeekHelp"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 7.265
+    },
+    {
+      "index": 8,
+      "case_id": "K4",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:30.043976+00:00",
+      "prompt_tokens": 11723,
+      "completion_tokens": 66,
+      "total_tokens": 11789,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_8o1g4zysq3wfmesa6rbr8b0g",
+                "function": {
+                  "arguments": "{\"query\": \"可穿戴设备 睡眠分期 估算 准确性 与多导睡眠图 临床分期 区别 深睡 N3\"}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 3.094
+    },
+    {
+      "index": 9,
+      "case_id": "K4",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:33.142288+00:00",
+      "prompt_tokens": 12715,
+      "completion_tokens": 299,
+      "total_tokens": 13014,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "**“深睡”和 N3 的关系**\n\n临床上的 N3 指深睡（慢波睡眠），靠脑电等睡眠监测来判定；N1 是入睡过渡，N2 是已建立的睡眠 [H6:NREM]。Fitbit 这类手表上的“深睡”标签，按厂商说明很可能对应 N3，而“浅睡”很可能包含 N1 和 N2 [H10:Estimates]。不过这只是该厂商对标签的说明，不等于手表测到的就是实验室级别的 N3。\n\n**手表怎么估算**\n\nGoogle Health 说明，Fitbit 和 Pixel Watch 的分期是根据手腕动作和心率推算出来的估计值，与实验室贴在脑部、肌肉上的传感器原理不同 [H10:Estimates]。所以它给出的是“估计的分期”，而不是临床判读。\n\n**不能直接等同**\n\n不建议把手表的分期直接当作临床分期：两者的测量信号不同，厂商标签也只是“很可能”对应 N1/N2/N3 [H10:Estimates]。另外，深睡在夜间偏前段更集中、REM 偏后段增多，且睡眠结构随年龄变化，这些资料也没有给出通用的深睡或 REM 百分比及格线 [H6:Pattern]。因此手表上的深睡分钟数适合用来看自己长期的变化趋势，而不是用来判断“够不够”或是否患病；如果确实需要分期结论，应由睡眠专科的检查来判定。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H10:Estimates",
+        "H6:NREM",
+        "H6:Pattern",
+        "H6:REM"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 6.812
+    },
+    {
+      "index": 10,
+      "case_id": "K5",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:39.962338+00:00",
+      "prompt_tokens": 11574,
+      "completion_tokens": 98,
+      "total_tokens": 11672,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_pfmgpuee6kyi2boirowofux4",
+                "function": {
+                  "arguments": "{\"query\": \"午睡 时长 20分钟 失眠 避免午睡 适用范围\", \"response_plan\": {\"intent\": \"explanation\", \"metrics\": [], \"evidence\": [\"knowledge\"], \"answer_format\": \"explanation\"}}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 2.828
+    },
+    {
+      "index": 11,
+      "case_id": "K5",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:42.802118+00:00",
+      "prompt_tokens": 12366,
+      "completion_tokens": 257,
+      "total_tokens": 12623,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "这两条建议并不矛盾，它们针对的是不同人群和不同目的。\n\n**20 分钟上限**：这是面向成年人的一般睡眠卫生建议，主要针对“入睡困难”的人，建议限制午睡时长，或把午睡安排在下午较早的时段，并且不超过 20 分钟；它明确说明这只是一般性指导，并非人人都必须遵守的时间表 [H2:Naps]。\n\n**失眠时避免午睡**：这是 NHS 针对失眠的自我照护建议，比一般短午睡建议更严格，目的是避免用白天补觉来抵消夜间睡眠不足，也不应被理解为对所有人都一律禁止午睡 [H4:FirstSteps]。\n\n**怎样理解适用范围**：如果只是偶尔犯困、夜间睡眠基本正常，那么短时、较早的午睡通常属于一般建议的适用范围；如果正在被失眠困扰，尤其是夜间难以入睡或睡眠片段化，那么更严格的“避免白天补觉”更贴近你的情况。两者共同的思路是：午睡不要挤占夜间睡眠的驱动力。具体到个人，还要看你的夜间睡眠状况和白天困倦程度；这些资料没有给出统一的个体化方案，因此不能仅凭这两条建议判断你“该不该睡”。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H2:Naps",
+        "H3:StimulusControl",
+        "H4:FirstSteps"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 5.25
+    },
+    {
+      "index": 12,
+      "case_id": "K5",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:48.069374+00:00",
+      "prompt_tokens": 12428,
+      "completion_tokens": 342,
+      "total_tokens": 12770,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "这两条建议并不矛盾，它们针对的是不同人群和不同目的。\n\n**20 分钟这条**：面向的是“一般成年人想保持良好睡眠习惯”的场景。美国国家心肺血液研究所（NHLBI）的建议是：如果成年人入睡困难，就应限制午睡，或把午睡安排在下午较早的时候，并且午睡不超过 20 分钟。它给出的是一条上限，并非要求每个人必须午睡，也不是必须睡满 20 分钟。[H2:Naps]\n\n**“失眠时不要午睡”这条**：面向的是已经存在失眠、正在处理睡眠问题的人。英国国家医疗服务体系（NHS）在失眠自助建议中提出，夜间没睡好后不要靠白天补觉，并建议失眠者避免白天小睡。资料本身也说明，这比一般性的短午睡建议更严格，不能当作对所有人都适用的禁令。[H4:FirstSteps]\n\n所以可以这样理解适用范围：\n\n- 如果你只是偶尔犯困、夜间睡眠基本正常，那么把午睡控制在 20 分钟以内、并安排在下午早些时候，属于一般性的习惯建议。\n- 如果你正在被失眠困扰，尤其是入睡困难或夜间频繁醒来，那么优先考虑的是不在白天补觉，以免削弱夜间的睡意；这时“避免午睡”更贴近你的情况。\n- 两条建议的共同点在于：午睡时长和时段会影响夜间睡眠，而不是说午睡本身有害或必需。\n\n具体到你自己该选哪一条，取决于你目前是否真的有失眠困扰、夜间睡眠是否稳定，这些信息我这边还没有。如果你愿意说明自己的情况，我可以帮你判断更贴近哪一类。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H2:Naps",
+        "H3:StimulusControl",
+        "H4:FirstSteps"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 7.172
+    },
+    {
+      "index": 13,
+      "case_id": "K6",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:55.258792+00:00",
+      "prompt_tokens": 11712,
+      "completion_tokens": 103,
+      "total_tokens": 11815,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_drcgtr1s530ahnmoyq6jrs3l",
+                "function": {
+                  "arguments": "{\"query\": \"夜醒次数 失眠 诊断标准 不能只凭夜醒次数判断 白天功能影响\", \"response_plan\": {\"intent\": \"explanation\", \"metrics\": [], \"evidence\": [\"knowledge\"], \"answer_format\": \"explanation\"}}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 3.406
+    },
+    {
+      "index": 14,
+      "case_id": "K6",
+      "status": "completed",
+      "started_at": "2026-11-23T16:42:58.682860+00:00",
+      "prompt_tokens": 12754,
+      "completion_tokens": 181,
+      "total_tokens": 12935,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "没有。我查到的本地资料里，没有“每晚醒超过几次就算失眠”的统一标准，也没有给出夜醒次数的正常上限[H8:NightWaking]。\n\n**不能只凭夜醒次数判断。** 资料把频繁夜醒、难以维持睡眠、早醒后无法再入睡列为可能与失眠相关的表现，但同时强调还要看白天是否受影响，比如睡醒后不解乏、白天困倦、注意力难以集中；单看醒来次数不足以确立诊断[H8:NightWaking]。另外，睡眠周期之间本来就可能出现短暂觉醒，而且睡眠模式会随年龄变化[H6:Pattern]，所以“醒了几次”这个数字本身很难单独说明问题。\n\n如果你愿意，可以告诉我具体是哪一晚或哪段时间的记录，我可以帮你看看夜醒次数和清醒时长，再结合这些条件说明能判断到什么程度、还缺哪些信息。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H3:StimulusControl",
+        "H4:FirstSteps",
+        "H6:Pattern",
+        "H8:NightWaking"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 4.468
+    },
+    {
+      "index": 15,
+      "case_id": "K6",
+      "status": "completed",
+      "started_at": "2026-11-23T16:43:03.161421+00:00",
+      "prompt_tokens": 12812,
+      "completion_tokens": 196,
+      "total_tokens": 13008,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "没有。现有资料里没有“每晚醒超过几次就算失眠”的统一标准，也不能只凭夜醒次数判断是否失眠。\n\n资料把频繁夜醒、难以维持睡眠、或早醒后无法再入睡列为可能与失眠相关的表现，但同时强调：白天是否感到没休息好、是否嗜睡、是否难以集中注意力同样重要，单看夜醒次数不足以确立诊断，也没有给出通用的“正常次数”上限 [H8:NightWaking]。另外，睡眠周期之间出现短暂觉醒本身是常见现象，睡眠模式还会随年龄变化 [H6:Pattern]。\n\n所以更合理的理解是：夜醒次数是一个描述性指标，需要和夜醒持续多久、醒后能否再入睡、白天状态以及持续时间一起看；是否达到失眠的诊断标准，需要由专业人员评估。如果你愿意，我可以查一下你某几晚的记录里夜醒次数和清醒时长，作为描述性参考——但那仍然不能替代诊断。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H3:StimulusControl",
+        "H4:FirstSteps",
+        "H6:Pattern",
+        "H8:NightWaking"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 4.719
+    },
+    {
+      "index": 16,
+      "case_id": "K7",
+      "status": "completed",
+      "started_at": "2026-11-23T16:43:07.906289+00:00",
+      "prompt_tokens": 11724,
+      "completion_tokens": 61,
+      "total_tokens": 11785,
+      "assistant_messages": [
+        {
+          "finish_reason": "tool_calls",
+          "message": {
+            "content": "",
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "id": "call_00_lo72ju1bu44xviu8uocyrs4n",
+                "function": {
+                  "arguments": "{\"query\": \"消费级睡眠追踪设备 准确性 验证 监管认可 临床 AASM 声明 局限\"}",
+                  "name": "search_sleep_knowledge"
+                },
+                "type": "function",
+                "index": 0
+              }
+            ]
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 3.094
+    },
+    {
+      "index": 17,
+      "case_id": "K7",
+      "status": "completed",
+      "started_at": "2026-11-23T16:43:11.005573+00:00",
+      "prompt_tokens": 12090,
+      "completion_tokens": 204,
+      "total_tokens": 12294,
+      "assistant_messages": [
+        {
+          "finish_reason": "stop",
+          "message": {
+            "content": "不能。美国睡眠医学会（AASM）2018 年的这份消费者睡眠技术立场声明，本身并不能证明你正在使用的手表在 2026 年已获得临床或监管认可。\n\n该声明属于历史性文件，其适用范围明确不包含“某一具体产品当前的批准状态”：它提醒不要用未经验证的消费级睡眠设备来诊断或治疗睡眠障碍，同时指出用户自行记录的信息可以辅助临床医生的评估；但某款设备是否经过验证、是否获得监管许可，需要看该产品当前的、针对该产品的证据 [H11:ClinicalUse]。\n\n因此，要判断你这款手表在 2026 年的状态，需要查阅厂商针对该型号公布的验证资料，以及相应监管机构的公开许可信息；这些内容不在我目前可检索的本地资料范围内，我无法据此给出结论。另外，SleepLens 本身也不连接真实设备，只能读取演示档案中的记录，因此无法核实你手表的型号或认证情况。",
+            "role": "assistant"
+          }
+        }
+      ],
+      "received_evidence_ids": [
+        "B1:Fields",
+        "B1:Limits",
+        "B1:ProductStages",
+        "B1:Validity",
+        "B1:WakingDate",
+        "B2:Comparison",
+        "B2:Coverage",
+        "B2:Failures",
+        "B2:Periods",
+        "B2:Service",
+        "H11:ClinicalUse"
+      ],
+      "model": "deepseek-v4.1-flash-1017",
+      "elapsed_seconds": 3.547
+    }
+  ],
+  "selected_query": {
+    "profile_id": "P01",
+    "start_date": "2026-10-19",
+    "end_date": "2026-10-25",
+    "compare_previous": false
+  },
+  "budget": {
+    "max_requests": 21,
+    "max_known_tokens": 300000,
+    "actual_request_attempts": 17,
+    "known_prompt_tokens": 203807,
+    "known_completion_tokens": 2929,
+    "known_total_tokens": 206736,
+    "unknown_usage_calls": 0,
+    "incomplete_usage_calls": 0,
+    "total_tokens": 206736,
+    "stop_reason": null
+  },
+  "updated_at": "2026-11-23T16:43:14.574186+00:00",
+  "summary": {
+    "planned_cases": 7,
+    "executed_cases": 7,
+    "answered_cases": 7,
+    "semantically_graded_cases": 0,
+    "independent_human_review": "pending"
+  }
+}

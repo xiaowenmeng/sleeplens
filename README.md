@@ -95,7 +95,9 @@ SleepLens 面向成年用户，提供记录查询、计算、近期比较及有�
 
 ## 校验与回归
 
-当前版本：**prompt-v30 / sleep-analysis 3.6.0 / sleep-knowledge-v7 / classified-replies-v2**。当前提示词文件虽带版本号，仍由运行代码直接加载，必须保留。
+当前版本：**prompt-v1 / sleep-analysis 3.6.0 / sleep-knowledge-v1 / classified-replies-v2**。当前交付基线的 prompt 与 knowledge 从 v1 开始编号；提示词文件 `src/sleeplens/resources/prompts/system_v1.md` 由运行代码直接加载，必须保留。
+
+课程历史报告、改进证据、既有运行日志和 Git 历史仍保留各自的原始版本标识；这些记录不属于当前 v1 的评测结果。
 首次使用测试时安装测试依赖：`.\.venv\Scripts\python.exe -m pip install -e ".[test]"`。
 随后在项目根目录运行以下命令，均不调用付费模型：
 

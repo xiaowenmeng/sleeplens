@@ -23,7 +23,7 @@ from sleeplens.onboarding import (
 )
 
 
-APP_BEHAVIOR_REVISION = "display-data-v1-prompt-v30-first-use-v1"
+APP_BEHAVIOR_REVISION = "display-data-v1-prompt-v1-first-use-v1"
 
 
 TEXT = {
@@ -166,6 +166,14 @@ h3 { font-size: 1.1rem !important; font-weight:600 !important; }
 
 def _change_language():
     st.session_state["ui_language"] = st.session_state["header_language"]
+
+
+def _normalize_record_span():
+    # A delayed browser update can carry a label from the previous language.
+    value = st.session_state["record_span"]
+    value = {"One day": 1, "单日": 1, "Seven days": 7, "连续七天": 7,
+             "Fourteen days": 14, "连续十四天": 14}.get(value, value)
+    st.session_state["record_span"] = value if type(value) is int and value in (1, 7, 14) else 7
 
 
 def _sync_controls(view):
@@ -458,6 +466,7 @@ def main():
     st.session_state.setdefault("record_start", date.fromisoformat(initial_start) if initial_start else None)
     st.session_state.setdefault("record_compare", view.selection.get("compare_previous", False))
     st.session_state.setdefault("record_span", selection_days(view.selection) if view.selection else 7)
+    _normalize_record_span()
     with st.sidebar:
         st.markdown("### ◔ SleepLens")
         language = st.selectbox("Language / 语言", ["English", "中文"], key="ui_language")
@@ -467,7 +476,8 @@ def main():
         span_labels = ({1: "单日", 7: "连续七天", 14: "连续十四天"} if language == "中文" else
                        {1: "One day", 7: "Seven days", 14: "Fourteen days"})
         span = st.selectbox("查询范围" if language == "中文" else "Record range", [7, 14, 1],
-                            format_func=span_labels.get, key="record_span")
+                            format_func=span_labels.__getitem__,
+                            key="record_span", on_change=_normalize_record_span)
         with st.form("record_selection"):
             profile = st.selectbox(text["profile"], PROFILE_IDS, key="record_profile")
             start = st.date_input(text["start"], value=None, min_value=min(date(2026, 1, 1), st.session_state["record_start"] or date(2026, 1, 1)),

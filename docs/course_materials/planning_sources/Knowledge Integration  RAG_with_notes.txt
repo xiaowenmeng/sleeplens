@@ -1,0 +1,998 @@
+=== PAGE 1 ===
+Knowledge Integration & RAG
+Applied AI for Managers
+Thibault Vatter
+HEG Genève
+1
+
+=== PAGE 2 ===
+Today’s Topics
+Why Models Need External Knowledge
+How Retrieval Works
+When RAG Fails
+The Frontier
+Project Work
+2
+
+=== PAGE 3 ===
+Today: integrating external knowledge into an AI application.
+RAG is one important strategy for selecting that knowledge, not the default answer to every knowledge problem.
+Block 1: what the model knows, the choice between full context and retrieval, and how retrieval works when it is the right choice.
+Block 2: why answers fail even with retrieval, current techniques, and the reference platform.
+Blocks 3 and 4: project work on your application’s knowledge component.
+Speaker notes
+
+=== PAGE 4 ===
+Why Models Need
+External Knowledge
+3
+
+=== PAGE 5 ===
+Ground, Abstain, Verify
+Hallucinations: a model produces plausible text, not
+checked facts. Rare or outdated facts, missing context, and
+training that rewards guessing all contribute.
+Ground: give the model the source (documents, data, search
+results).
+Abstain: allow “I don’t know”, and say what to do instead.
+Verify: ask for sources and check them; a human reviews
+what matters.
+4
+
+=== PAGE 6 ===
+There is no single cause.
+One: training and benchmarks score “I don’t know” like a wrong answer, so models learn to guess.
+On one benchmark, a model that abstains half the time is wrong 26% of the time; one that almost never abstains is wrong 75%
+of the time, at similar accuracy (
+; 
+).
+Others: facts missing, rare, or wrong in the training data; a training cutoff; ambiguous questions.
+Where each comes in the course:
+grounding: this session (and search, Session 3);
+abstention: an instruction-design choice (Session 1);
+verification: Sessions 4 and 5.
+Speaker notes
+Kalai et al., 2025 OpenAI
+
+=== PAGE 7 ===
+Grounding: sufficient, relevant,
+authoritative context
+security (Session 4)
+evaluation (Session 5)
+Users
+a precise segment
+Interface
+chat, form, app
+Instructions
+Session 1
+Knowledge
+Session 2
+Tools & actions
+Session 3
+LLM
+Answer or action
+5
+
+=== PAGE 8 ===
+The architecture from Session 1.
+Today we work on the knowledge component; tools and actions come in Session 3.
+Grounding means putting sufficient, relevant, authoritative information in front of the model, in its context.
+It is the first of ground, abstain, verify (Session 1).
+Grounding addresses only part of the reliability problem.
+Abstention and verification still matter, and come back at the end of today’s lecture.
+Speaker notes
+
+=== PAGE 9 ===
+What the Model Knows, and What It
+Doesn’t
+Alpenlog SA: 2,000 employees, ~3,000 internal documents.
+“Can I carry my unused vacation days over to next year?”
+Parametric: general HR knowledge; not Alpenlog’s policy; no
+source.
+External: Alpenlog’s current policy + reference. Today.
+Tools and actions: this employee’s balance; a leave request.
+Session 3.
+6
+
+=== PAGE 10 ===
+Running example: an HR assistant at Alpenlog SA, a (fictional) Swiss logistics company.
+Parametric knowledge is in the model’s weights: general knowledge of labour law and HR practice, possibly outdated, with no
+source.
+External knowledge is given at use time: Alpenlog’s current leave policy, with its reference.
+Tools and actions fetch data or act at use time: this employee’s remaining balance, a leave request.
+An LLM’s parametric knowledge is not a database: it cannot be updated quickly, does not contain your company’s documents, and cannot
+say where an answer came from.
+Business applications typically need information that is
+private (internal policies),
+current (this year’s version),
+authoritative (the official text, not a forum post),
+traceable (which document, which section).
+The question mixes general rules (what the law allows), company policy (what Alpenlog allows), and personal data (how many days this
+employee has left). Each needs a different source.
+Speaker notes
+
+=== PAGE 11 ===
+Three Ways to Add Knowledge
+Fine-tuning
+Context
+injection
+Retrieval
+(RAG)
+What
+Change
+weights
+Put material
+in prompt
+Select
+passages first
+Best for
+Behaviour,
+style
+Small corpus
+Large,
+changing
+corpus
+Updating
+Retrain
+Replace
+material
+Re-index
+At use time: give it directly, or select first.
+7
+
+=== PAGE 12 ===
+The three ways:
+Fine-tuning: change the model’s weights, by training it further.
+Context injection: put the documents themselves in the prompt (a few documents, or one long one).
+Retrieval (RAG): select the relevant passages first, then put them in the prompt.
+Fine-tuning is poorly suited to adding facts:
+it is expensive and slow to update;
+the model still cannot cite where an answer came from;
+it is better at teaching behaviour (tone, format, a specialized task).
+Context injection and retrieval both put evidence in front of the model at use time; they differ in what is sent, and who selects it.
+Providing source material at inference time makes citations to current documents directly verifiable; fine-tuning alone does not.
+Main cost:
+fine-tuning: training effort;
+context injection: tokens per request;
+retrieval: building and tuning the pipeline.
+Retrieval-augmented generation combines a search step with a language model: retrieve passages, then generate an answer conditioned
+on them.
+The term comes from 
+, who combined a model’s “parametric” memory with a searchable index of
+Wikipedia.
+“Upload files” or “knowledge” features may use context injection, retrieval, or a mix, often without saying so.
+Claude Projects, for example, use the documents in context when possible and switch automatically to retrieval when they approach
+the context limit (
+).
+Most vendors do not document the mechanism. Do not assume an upload means RAG.
+Speaker notes
+Lewis et al., NeurIPS 2020
+Anthropic help
+
+=== PAGE 13 ===
+Full Context or Retrieval?
+Full context when:
+the corpus fits comfortably;
+same material for all users;
+changes are manageable;
+cost and latency acceptable.
+Retrieval when:
+too large, or changes often;
+access differs by user;
+most content irrelevant per
+question;
+selecting saves cost, or
+needs several searches.
+More context is not free. Start with the simplest architecture
+that works.
+8
+
+=== PAGE 14 ===
+Speaker notes
+
+=== PAGE 15 ===
+Full context when:
+the authoritative material fits comfortably;
+all relevant users may see all of it;
+it changes rarely enough to manage;
+cost and latency are acceptable.
+Retrieval when:
+the corpus is too large or changes often;
+users have different access rights;
+most of it is irrelevant to each question;
+sending everything costs too much or is too slow;
+evidence must be selected iteratively, across many sources.
+More context is not free: distractors and contradictions make reasoning harder as the context grows.
+The two are complementary, and often combined (Self-Route, below).
+Use the simplest architecture that meets the application’s requirements.
+Alpenlog:
+one policy (10 pages) goes into the context;
+ten policies (200 pages) probably still fit, at a higher cost per question;
+3,000 documents in four languages, changing every week, with access rights per employee: select what matters for each question.
+Context size and cost:
+Some frontier models support context windows around one million tokens (about 750,000 English words).
+Caching makes repeated context cheaper: for example, Anthropic bills cached input at a tenth of the normal price or less (
+).
+A rough guide from Anthropic: under about 200,000 tokens (about 500 pages), consider skipping RAG (
+).
+A study comparing both on the same tasks: “when resourced sufficiently, LC [long context] consistently outperforms RAG in terms of
+average performance. However, RAG’s significantly lower cost remains a distinct advantage” (
+).
+Their hybrid, Self-Route, first tries RAG and lets the model decide whether the retrieved passages suffice, falling back to the full
+context otherwise.
+Most questions were answered at the RAG step (82% for Gemini 1.5 Pro), and cost fell by 65% for Gemini 1.5 Pro and 39% for GPT-
+4o, compared with long context alone (arXiv v1 figures).
+Position and length:
+2023 finding: models used information best at the beginning or end of a long context and worse in the middle (“lost in the middle”;
+prompt
+caching docs
+Anthropic, 2024
+Li et al., EMNLP 2024 Industry Track
+
+=== PAGE 16 ===
+How Retrieval Works
+Suppose retrieval is the right architecture. What actually
+happens?
+9
+2023 finding: models used information best at the beginning or end of a long context, and worse in the middle ( lost in the middle ;
+).
+Newer models: for simple fact lookups, the position effect has largely disappeared; a Google note finds it absent for Gemini 2.5
+Flash even near the context limit (
+).
+But performance still degrades with length on harder tasks: on NoLiMa, where the question and the answer share few words, GPT-
+4o drops from 99.3% to 69.7% at 32,000 tokens (
+).
+A study of 18 models finds performance “increasingly unreliable as input length grows” (
+, technical
+report).
+How much context to send is a design parameter: test it with the context sizes your application will actually use.
+Liu et al., TACL 2024
+McKinnon, 2025
+NoLiMa, ICML 2025
+Chroma, “Context Rot”, 2025
+
+=== PAGE 17 ===
+
+=== PAGE 18 ===
+The Reference Pipeline
+Documents
+Chunks
++ metadata
+Index
+Question
+Retrieve
+candidates
+Select
+evidence
+LLM
+Answer
++ sources
+Offline (blue, when documents change): split, describe,
+index.
+Online (green, every question): retrieve, select, answer with
+sources.
+10
+
+=== PAGE 19 ===
+This diagram is the reference for the session: every technique today improves one of its boxes.
+Offline: split the documents, describe each piece (metadata), build an index.
+Done once and repeated when documents change; it is where most of the design effort goes.
+Online: find candidate passages, keep the best, give them to the model with the question, answer with sources.
+Happens at every question, and determines latency and cost per request.
+“Select evidence” covers reranking and filtering (later in this block); the model only sees what comes out of it.
+Speaker notes
+
+=== PAGE 20 ===
+Chunking
+A chunk that lost its context:
+Whose rule? Which country?
+Which year?
+The same chunk, with its
+context:
+Unused days may be carried over until
+31 March of the following year, up to
+a maximum of 10 days.
+Alpenlog SA - Leave Policy HR-POL-117
+(2026) - Section 4: Carry-over
+(employees in Switzerland)
+Unused days may be carried over until
+31 March of the following year, up to
+a maximum of 10 days.
+Design: size · boundaries · overlap · headings and metadata
+11
+
+=== PAGE 21 ===
+Most RAG systems split documents into chunks, to retrieve the relevant parts rather than whole documents.
+Design choices:
+Size: too large, and retrieval is coarse and the model receives a lot of irrelevant text; too small, and the passage loses the context
+needed to understand it.
+Boundaries: split along the document’s structure (sections, articles, clauses), not every 500 words, nor in the middle of a sentence or
+a table.
+Overlap: repeating a few lines between neighbouring chunks avoids cutting a rule in two.
+Metadata (document title, version, date, country, department, access rights): used both to find chunks and to filter them.
+The fix shown on the right is the idea behind contextual retrieval (Block 2).
+Speaker notes
+
+=== PAGE 22 ===
+Embeddings, Intuitively
+Chunks and question become vectors: similar meanings are
+close.
+Retrieval ranks chunks by closeness.
+12
+
+=== PAGE 23 ===
+An embedding model turns a piece of text into a list of numbers (a vector), placed so that similar meanings are close.
+Texts with similar meanings get nearby vectors, even with no words in common: “holidays I didn’t take” lands near “carry-over of
+unused days”.
+Real embeddings have hundreds to thousands of dimensions; the 2-D picture is only an intuition, with positions chosen by hand.
+The question is embedded at query time with the same model, and the closest chunks are returned.
+This is called dense or semantic retrieval.
+Speaker notes
+
+=== PAGE 24 ===
+Meaning vs. Exact Words: Hybrid
+Retrieval
+Question
+Semantic
+Lexical
+“Can I keep holidays I
+didn’t take?”
+✓ “carry-over
+of unused
+days”
+✗ no shared
+words
+“What does HR-POL-117
+say about Ticino?”
+✗ other leave
+policies
+✓ exact code
+Semantic → paraphrases · Lexical → codes · Hybrid → both
+13
+
+=== PAGE 25 ===
+Semantic retrieval (embeddings) handles paraphrases.
+Multilingual embedding models can also bridge languages.
+Lexical retrieval (keywords) handles names, codes, acronyms, product numbers, legal references.
+It scores documents by the words they share with the question, weighting rare words more; BM25 is the classic scoring function
+(
+).
+Embeddings are weak on identifiers: “HR-POL-117” and “HR-POL-171” mean nothing to them, but are different documents to the
+business.
+In business corpora, exact identifiers are everywhere: contract numbers, article references, product codes, employee categories.
+Hybrid retrieval runs both and merges the results: a common default.
+On a benchmark of 18 datasets, BM25 “is a robust baseline” that many neural retrievers fail to beat outside their training domain
+(
+).
+Hybrid retrieval “outperforms pure-lexical and pure-semantic retrieval on most datasets” (
+).
+Speaker notes
+Robertson & Zaragoza, 2009
+Thakur et al., NeurIPS 2021
+Bruch et al., ACM TOIS 2023
+
+=== PAGE 26 ===
+Retrieve Broadly, Rerank Precisely
+40,000 chunks
+50 candidates
+hybrid retrieval:
+fast, broad
+5 passages
+reranker:
+slow, precise
+LLM
+Retrieve broadly for recall → rerank fewer candidates for
+precision.
+14
+
+=== PAGE 27 ===
+Two stages:
+first stage: cheap and fast, it aims not to miss anything (recall);
+reranking: slower, but more precise (precision);
+the precise model is too slow to read 40,000 chunks per question, but affordable on 50.
+Similar to the question is not always useful for answering it.
+Many rerankers read the question and a candidate passage together and score how well the passage answers it, instead of
+comparing two separately computed vectors.
+Designs vary; what they share is spending more computation on fewer candidates.
+The numbers are illustrative: how many candidates and how many final passages are design parameters, set by testing.
+Research now trains retrievers and rerankers for usefulness to the answer rather than topical similarity.
+“A retrieved document must not only be relevant but also effectively support the generator in producing correct answers” (
+; see also 
+).
+Speaker notes
+Zhao et al.,
+ACL 2026
+Wu et al., ACL 2026
+
+=== PAGE 28 ===
+One Question, End to End
+What the model actually receives:
+Question: carry-over, from
+Lugano.
+Candidates: 50 chunks: policy,
+Ticino annex, 2023 policy, FAQ.
+Kept evidence: 3 passages.
+Answer: with sources, or “not
+in the documents”.
+[System instructions: role, scope, rules]
+Answer only from the sources below. Cite the
+source ID. If they do not answer, say so.
+<source id="HR-POL-117 §4, 2026">
+Unused days may be carried over until 31 March
+of the following year, up to 10 days.
+</source>
+<source id="HR-POL-117 Annex T (Ticino)">
+For employees in Ticino, the carry-over period
+ends on 30 April.
+</source>
+<source id="FAQ-HR-22">Carry-over requests are
+approved by the line manager.</source>
+Question: Can I carry my unused vacation days over
+to next year? I work in Lugano.
+15
+
+=== PAGE 29 ===
+The model never sees the 3,000 documents: only the instructions, the selected passages, and the question.
+If the right passage is not in this context, the model cannot use it.
+Expected answer: yes, up to 10 days, until 30 April for Ticino, with the manager’s approval.
+It cites HR-POL-117 §4, Annex T, and FAQ-HR-22.
+What was filtered out:
+the 2023 version of the policy (metadata: version date);
+passages about other cantons.
+Combine this with the instructions from Session 1: role, scope, the instruction to abstain, and a fixed citation format.
+Speaker notes
+
+=== PAGE 30 ===
+When RAG Fails
+16
+
+=== PAGE 31 ===
+Block 2:
+why answers go wrong even with retrieval;
+how current systems improve retrieval;
+how to design the knowledge component of your application;
+the reference platform for the project.
+Speaker notes
+
+=== PAGE 32 ===
+Retrieval Failure or Generation
+Failure?
+Answer
+correct
+Answer wrong
+Abstains
+Evidence
+retrieved
+✓ Working
+Generation
+failure
+Too
+cautious
+Evidence
+missing
+Lucky, from
+memory
+Hallucination
+✓ Correct
+RAG grounds the answer; it does not guarantee truth.
+17
+
+=== PAGE 33 ===
+Retrieval is an information-retrieval problem; generation is a language-model problem.
+RAG joins the two: its quality is bounded by both.
+For every bad answer, ask two questions:
+Did the system retrieve sufficient evidence?
+Given that evidence, did the model use it correctly?
+To tell them apart, look at what the model received (the retrieved passages), not only at the answer.
+The fix depends on the cell:
+a retrieval failure is fixed in the pipeline (chunking, hybrid search, reranking, metadata);
+a generation failure (the evidence was there, but the model ignored it, misread it, or mixed up passages) is fixed in the instructions,
+the model, or the format of the context.
+“Correct from memory” is a warning sign, not a success: the answer is unsupported and cannot be cited.
+Failure points, in order: bad chunking → evidence not retrieved → relevant but insufficient → ignored or misread → contradictory or
+outdated sources → absent, and the model guesses.
+Each has its own fix: chunking, retrieval, the amount of context, instructions and model choice, document governance (which version
+is authoritative?), and abstention.
+Document governance is a management problem, not a technical one: if two official policies contradict each other, no retrieval
+system will resolve it.
+Tools such as RAGChecker split errors into retriever and generator components (
+).
+Systematic evaluation is Session 5.
+Speaker notes
+Ru et al., NeurIPS 2024
+
+=== PAGE 34 ===
+Relevant Is Not Sufficient
+Sufficient context: everything needed for a definitive
+answer.
+Relevant but incomplete evidence can still produce
+confident wrong answers.
+Design: check sufficiency, and allow abstention.
+18
+
+=== PAGE 35 ===
+Relevant is not enough: the passage may be incomplete, inconclusive, or contradicted by another.
+In the HR example: the policy passage is relevant, but without the Ticino annex it is not sufficient for an employee in Lugano.
+Definition: context is “sufficient” if it “contains all the necessary information to provide a definitive answer to the query and ‘insufficient’ if it
+lacks the necessary information, is incomplete, inconclusive, or contains contradictory information” (
+).
+Google Research (2025): large models answer well when the context is sufficient, but often answer instead of abstaining when it is not.
+Larger models “(Gemini 1.5 Pro, GPT 4o, Claude 3.5) excel at answering queries when the context is sufficient, but often output
+incorrect answers instead of abstaining when the context is not” (
+).
+Insufficient retrieved context can even make models more willing to answer: Gemma gave incorrect answers on 10.2% of questions
+with no context, but 66.1% with insufficient context.
+The blog puts it this way: adding context “paradoxically reduces the model’s ability to abstain from answering when appropriate”.
+Their “selective generation” method combines a sufficiency check with the model’s confidence to decide when to answer.
+It raised the share of correct answers among those given by 2–10%.
+Google uses these ideas in a re-ranker of its Vertex AI RAG Engine.
+Speaker notes
+Google Research blog, May 2025
+Joren et al., ICLR 2025
+
+=== PAGE 36 ===
+The Frontier
+19
+
+=== PAGE 37 ===
+Four short snapshots: each changes one part of the pipeline.
+Contextual Retrieval is the most directly usable.
+The others are for specific kinds of corpus or question.
+Speaker notes
+
+=== PAGE 38 ===
+Contextual Retrieval
+Before indexing, a model adds a short context to each chunk:
+Before: The company's revenue grew by 3% over the previous quarter.
+After:  This chunk is from an SEC filing on ACME corp's performance in
+        Q2 2023; the previous quarter's revenue was $314 million. The
+        company's revenue grew by 3% over the previous quarter.
+Anthropic (2024): with hybrid search and reranking, top-20
+retrieval failures fell from 5.7% to 1.9%.
+How knowledge is represented matters as much as the
+embedding model.
+20
+
+=== PAGE 39 ===
+Source: 
+. The example chunk is theirs.
+Top-20 retrieval failures:
+embeddings alone: 5.7%;
+with context added to the chunks: 3.7% (−35%);
+plus contextual BM25 (hybrid): 2.9% (−49%);
+plus reranking: 1.9% (−67%).
+These are a vendor’s own experiments, not peer-reviewed:
+averages over codebases, fiction, arXiv and science papers, with their best embedding model and the Cohere reranker;
+the metric is the share of relevant chunks missed in the top 20;
+your corpus will give different numbers.
+Cost: generating the contexts once cost about $1.02 per million document tokens, using prompt caching.
+The same post notes that a knowledge base under about 200,000 tokens (about 500 pages) can simply be put in the prompt (see “Full
+Context or Retrieval?”).
+It combines three ideas from Block 1: chunking with context, hybrid retrieval, and reranking.
+Speaker notes
+Anthropic, “Introducing Contextual Retrieval”, September 2024
+
+=== PAGE 40 ===
+GraphRAG: Local and Global
+Questions
+Local: “What does contract FC-2024-
+019 say about termination?” → a few
+passages.
+Global: “What recurring risks appear
+across 5,000 incident reports?” → the
+whole corpus.
+GraphRAG:
+entities & relations
+→ communities
+→ summaries
+→ answer
+Different representations answer different questions.
+21
+
+=== PAGE 41 ===
+Local questions have their answer in a few passages: classic retrieval works well.
+Global questions (here, recurring supply-chain risks) have no passage containing the answer: it must be assembled from the whole
+corpus.
+Microsoft GraphRAG, simplified (
+, preprint):
+an LLM extracts entities and their relationships into a knowledge graph;
+closely related entities are grouped into communities (themes);
+each community is summarized;
+the answer combines partial answers from the summaries.
+Changing how the corpus is represented changes which questions it can answer, at a higher indexing cost.
+On global questions over corpora of about a million tokens, it gave more comprehensive and diverse answers than vector RAG
+(comprehensiveness win rates of 72–83% on podcast transcripts), while vector RAG gave the most direct answers.
+Cost: building the graph requires many LLM calls. LazyGraphRAG defers that work to query time, with indexing costs “identical to
+vector RAG and 0.1% of the costs of full GraphRAG” (
+, vendor results).
+Not automatically better: “recent studies report that GraphRAG frequently underperforms vanilla RAG on many real-world tasks” (
+).
+Use it for corpus-wide, relational questions; test it against plain RAG.
+Speaker notes
+Edge et al., arXiv 2024, v2 2025
+Microsoft Research blog, November 2024
+“When
+to use Graphs in RAG”, arXiv 2025
+
+=== PAGE 42 ===
+Multimodal RAG
+“Which product had the largest decline in operating margin?”
+The answer is only in the chart: text-only extraction can lose
+it.
+Tables, charts, scans: may need visual retrieval.
+22
+
+=== PAGE 43 ===
+The chart is fictional.
+The text around it might say “margins came under pressure in some segments”: a text-only pipeline retrieves that sentence and
+misses the answer (batteries, from 22% to 13%).
+“OCR-based pipelines feeding Large Language Models […] lose structural detail” (
+).
+Two approaches:
+retrieve pages as images: ColPali embeds the page images directly, instead of extracting text, and “largely outperforms modern
+document retrieval pipelines while being drastically simpler” (
+);
+route each question to the right kind of source: UniversalRAG routes each question to the most appropriate corpus (text, images,
+video) and granularity (
+).
+A broader survey: 
+.
+Practical check for your project: do your documents carry answers in tables or charts?
+Test those questions explicitly.
+Speaker notes
+Gao et al., ACL 2026 survey
+Faysse et al., ICLR 2025
+Yeo et al., ACL 2026
+Abootorabi et al., Findings of ACL 2025
+
+=== PAGE 44 ===
+Agentic Retrieval
+no: reformulate
+yes
+Classic:
+question
+Retrieve once
+Answer
+Agentic:
+question
+Plan
+Search
+Enough?
+Answer
+“Which penalty applies to Rhône Transports’ late deliveries?”
+Supplier register → contract FC-2024-019 → clause 12.3: 0.5%
+per day
+23
+
+=== PAGE 45 ===
+Retrieval itself becomes a reasoning task.
+A multi-hop question needs several documents, where one reveals what to look for in the next (here, a contract number).
+One retrieval step with the original question may not find the clause.
+The example (fictional):
+the supplier register shows that Rhône Transports is under framework contract FC-2024-019;
+searching that contract finds clause 12.3: 0.5% of the invoice per day of delay.
+“Agentic RAG […] enabl[es] LLM agents to actively decompose tasks, issue exploratory queries, and refine evidence through iterative
+retrieval” (
+).
+An early version: Self-RAG trains a model to decide when to retrieve and to critique its own output (
+).
+In production: Google’s enterprise agentic RAG adds a “Sufficient Context Agent” so that the system “knows when it is missing
+information and continues searching”, with accuracy up to 34% higher than standard RAG on factuality datasets (
+, vendor results).
+Other directions:
+routing each question to the best retriever (
+);
+drafting answers with a small model checked by a larger one, for speed (
+);
+broad review: 
+.
+Cost: each extra search step adds latency and tokens.
+Speaker notes
+Deng et al., Findings of ACL 2026
+Asai et al., ICLR 2024
+Google Research
+blog, June 2026
+Zhao et al., ACL 2026
+Speculative RAG, ICLR 2025
+Faridi et al., WIREs 2026
+
+=== PAGE 46 ===
+Evaluating a Knowledge Component
+Dimension
+Test
+Evidence
+Did the model receive the expected
+passage(s)?
+Groundedness
+Is every claim supported by them?
+Abstention
+Does it decline when the evidence is
+absent?
+Answer
+quality
+Does it answer the question correctly?
+24
+
+=== PAGE 47 ===
+A known-answer question is one where you know, before asking, which passage or passages contain the answer, or that none does.
+It lets you check retrieval separately from generation.
+This is the test set you start building in today’s project work.
+How to check today:
+evidence: is the expected passage among those the model received?
+groundedness: check every claim against the cited passage;
+abstention: ask questions the documents do not cover;
+answer quality: compare with the expected answer.
+A fifth, business dimension: cost and latency.
+What did the architecture buy us? Compare time and tokens per answer, before and after a change.
+Speaker notes
+
+=== PAGE 48 ===
+Which Knowledge Architecture?
+If…
+Start with…
+The corpus fits comfortably
+Full context (with
+caching)
+Large, changing, access-
+controlled
+Retrieval
+Exact identifiers matter
+Hybrid retrieval
+Tests expose a specific failure
+The matching technique
+Start simple; add complexity where testing shows that you
+need it.
+25
+
+=== PAGE 49 ===
+Read the table from the top: most applications should stop at one of the first rows.
+Every added component costs development time, money per request, and something else that can fail.
+Matching techniques, for the last row:
+the right passage is found but ranked too low → reranking;
+chunks lose their context → better chunking, metadata, or contextual retrieval;
+questions span the whole corpus → consider GraphRAG;
+tables, charts, or scans carry the answer → multimodal retrieval;
+answers need several steps of search → agentic retrieval.
+The order matches today’s lecture, and the project work that follows: decide first whether you need retrieval at all.
+Speaker notes
+
+=== PAGE 50 ===
+Project Work
+26
+
+=== PAGE 51 ===
+End of Block 2: the reference platform.
+Block 3: a warm-up on a shared example, then the knowledge component of your own application, in your groups.
+Block 4: test, diagnose, and improve it.
+Speaker notes
+
+=== PAGE 52 ===
+A Reference Platform: Mistral
+Concept
+Mistral
+Instructions
+Agent instructions
+Knowledge
+Libraries, or full context
+Tools
+Search, code, functions
+Testing
+Studio, Conversations API
+The reference, not a requirement.
+Managed systems hide some choices: test what you can
+observe.
+27
+
+=== PAGE 53 ===
+We demonstrate with Mistral Studio. You may use any platform that meets the project requirements: the platform is not the learning
+objective.
+On another platform, identify the same elements: where the instructions are, how knowledge is added, which tools exist, and how
+you can test and inspect the behaviour.
+Full mapping:
+model → the Agent’s model;
+instructions → the Agent’s instructions;
+knowledge → Libraries (managed retrieval), or the documents pasted into the instructions;
+web → Web Search; computation → Code Interpreter;
+custom tools → functions, connectors (preview);
+testing → Studio Playground, Conversations API.
+An Agent is a reusable configuration: a model, instructions, parameters, and tools, used in persistent conversations (
+).
+Built-in tools include web search, code interpreter, image generation, and document libraries; you can add your own functions (
+).
+Libraries are one managed implementation of the retrieval ideas from Block 1, not the definition of RAG.
+Mistral extracts the text (with OCR for PDF, Word, and PowerPoint files), splits and indexes it, and the Agent searches it when
+relevant, through the document_library tool (
+).
+Mistral manages most low-level retrieval choices (extraction, chunking, embeddings, ranking, number of passages); the API exposes
+a few controls, while the lower-level search tooling exposes substantially more.
+Managed knowledge systems hide some implementation choices: evaluate the behaviour you can observe.
+What remains yours to test: the corpus, exact vs. paraphrased questions, answers needing several passages, outdated sources,
+absent answers, and grounding.
+Check what was extracted, what was retrieved, and what happens when the answer is absent.
+Answers can include source references, but not always: check which tools the Agent used.
+Test with concrete questions whose answer you know: a vague request such as “tell me something from my library” makes the Agent
+browse the document list instead of searching, and can fail.
+Features and limits vary by plan and account; document processing is billed and rate-limited, so keep your corpus small.
+Speaker notes
+Mistral, Agents
+agent
+tools
+Mistral, Libraries
+
+=== PAGE 54 ===
+Studio and Python: One Agent
+Studio and Python are two interfaces to the same Agent.
+Studio
+Agent
++ Libraries
+Python / API
+Studio
+configure;
+test visually.
+Colab / API (optional)
+settings Studio hides;
+inspect and automate;
+repeatable tests.
+You do not need Python to complete the project.
+28
+
+=== PAGE 55 ===
+An Agent created in Python appears in Studio, and the other way around.
+Studio: build, configure, test, and inspect visually.
+The starter notebook (
+):
+attach a Library if Studio does not offer it;
+inspect the tools and configuration;
+inspect documents and their extracted text;
+run repeatable tests, and go further;
+Sections 1–5 cover what you need in class; the rest is optional.
+Without Python, and if Studio does not let you attach a Library: put small documents into the instructions (context injection), or use
+another platform.
+If you know Python, the API gives finer control and reproducible tests.
+Lower-level tools, to build your own retrieval pipeline: 
+.
+Speaker notes
+open in Colab
+Search Toolkit
+
+=== PAGE 56 ===
+Warm-Up: Rapide SA
+Rapide SA (fictional e-bike shop): three short documents.
+1. Create the Agent.
+2. Choose full context or a Library: both legitimate here.
+3. Test: several documents · another language · exact codes ·
+absent answer.
+4. Diagnose: evidence missing, or present but misused?
+Did retrieval actually buy you anything for three tiny
+documents?
+29
+
+=== PAGE 57 ===
+Materials:
+exercise sheet, documents, and the full test questions: 
+;
+starter notebook: 
+ (Sections 1–5).
+A customer-service assistant for a (fictional) e-bike shop, with three short documents: shop policy, warranty, catalogue.
+Paste the instructions from the exercise sheet.
+Knowledge: either paste the documents into the instructions (context injection), or attach a Library.
+Both are legitimate for such a small corpus: note which one you chose, and why.
+The three documents together are far smaller than any context window, so full context meets every requirement on the “Full Context
+or Retrieval?” slide.
+Compare what you observe with the group that chose the other option.
+The four required questions (full versions in the exercise sheet), more if you have time:
+a battery refund claim (several documents);
+a warranty question in German (another language);
+the C500 and the CS-1 (exact codes);
+monthly instalments for a Cargo 700 (absent answer).
+Diagnosing a failure:
+with a Library (RAG), missing evidence usually means a retrieval failure;
+with context injection, it means the material you provided was incomplete, or the context was badly built;
+evidence that was present but misused is a generation failure.
+Then apply the same workflow to your own project.
+Speaker notes
+02_rapide_sa.md
+open in Colab
+
+=== PAGE 58 ===
+Project: The Knowledge Component
+Milestone: a working knowledge component, and its limits.
+1. Choose authoritative sources, and a small corpus.
+2. Choose the architecture: full context or retrieval? Justify it.
+3. Integrate the knowledge.
+4. Document what you can observe, and what remains
+unknown.
+30
+
+=== PAGE 59 ===
+Start from the documents identified in your Session 1 canvas.
+The session is for integrating, testing, diagnosing, and improving, not for browsing the web for PDFs.
+Identify the authoritative sources your application needs.
+Use public, synthetic, or authorized documents only, and keep gathering and cleaning them short.
+Keep the corpus small enough to know what is in it: you need to know where each answer is, to test retrieval.
+Update your system instructions from Session 1: what to do when the documents do not answer, and how to cite.
+Record what the platform does: what is observable, what is unknown, and the equivalent architecture in the course’s terms.
+If it exposes settings (chunking, metadata, number of passages, retrieval mode, citations), note them.
+“Unknown” is an acceptable answer for an opaque platform, as long as you say so and test accordingly: if you cannot see what was
+retrieved, check whether the answer cites the right passage.
+Reference platform: Mistral Studio + Libraries; any platform that meets the requirements is fine.
+If yours hides how retrieval works, say what you can observe and what remains unknown, test the behaviour rather than assuming
+how it works, and describe the equivalent architecture (context injection, retrieval, hybrid).
+With Mistral:
+build or refine the Agent in Studio;
+either put the documents into the instructions, or create a Library, upload your documents, and attach it (in Studio, or with the starter
+notebook);
+test known-answer and absent-answer questions;
+check the sources and tools used;
+optionally, use the notebook to inspect the extracted text or compare two knowledge configurations.
+Speaker notes
+
+=== PAGE 60 ===
+Test, Diagnose, Improve
+Block 4: build 8–10 known-answer questions. Know the
+expected evidence before you ask.
+Include
+one and several
+passages;
+exact code,
+paraphrase;
+absent or
+conflicting
+evidence.
+Diagnose
+Evidence
+available?
+Used correctly,
+and cited?
+Abstained when
+needed?
+Improve
+Find ≥ 1 failure.
+Change one thing.
+Log change →
+reason → result.
+31
+
+=== PAGE 61 ===
+You are not trying to show that your knowledge system works: find at least one way in which it fails.
+For each question, record the expected evidence (one or more passages), or mark that the answer should be absent.
+Mix:
+an answer in one passage;
+an answer needing two passages;
+an exact name, code, or acronym;
+a paraphrase of the document’s wording;
+an answer absent from the corpus;
+outdated or conflicting sources, if any.
+For each question:
+Was the right evidence retrieved or provided?
+Did the model use it, and cite it?
+Did it abstain when evidence was absent?
+If wrong: was the evidence missing, or present but misused?
+Make at least one improvement, and log what changed, why, and the result.
+Use the revision log from Session 1: version, change, reason, result.
+Keep two or three questions aside, and run them only at the end.
+Results on questions you tuned on overstate the quality on new questions.
+The test set, the diagnosis, and the log are raw material for the implementation and evaluation sections of your technical report.
+Speaker notes
+
+=== PAGE 62 ===
+Before Session 3
+Each group has:
+its project canvas completed (Session 1, “Project Canvas”
+slide);
+its knowledge sources, and a working first integration;
+a short justification: context injection or retrieval, and why;
+a known-answer test set, with at least one diagnosed
+failure;
+an updated revision log;
+a list of improvements to make.
+32
+
+=== PAGE 63 ===
+The canvas is the first draft of your report’s first section and of your pitch.
+Its fields: users, pain point, current process, objectives, knowledge, tool or action, success metrics, risks, why not a chatbot.
+Session 3 adds tools and actions.
+Think about which questions in your test set the documents cannot answer, but a tool could (a calculation, a lookup in a live system).
+Speaker notes
+
+=== PAGE 64 ===

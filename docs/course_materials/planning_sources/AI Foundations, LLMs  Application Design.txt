@@ -1,0 +1,1145 @@
+=== PAGE 1 ===
+AI Foundations, LLMs & Application Design
+Applied AI for Managers
+Thibault Vatter
+HEG Genève
+1
+
+=== PAGE 2 ===
+Today’s Topics
+Course Overview
+AI Foundations
+How LLMs Work
+What LLMs Can and Cannot Do
+Designing Instructions
+From Business Problem to AI Application
+2
+
+=== PAGE 3 ===
+Course Overview
+3
+
+=== PAGE 4 ===
+The session has four blocks, each ending with an activity. Block 1: AI foundations, then the analysis of a business process.
+Speaker notes
+
+=== PAGE 5 ===
+Everyone Has ChatGPT. Now What?
+If every company has access to the same models:
+Where is the competitive advantage?
+Where does differentiation come from?
+Where is the economic value?
+By the end of the course, you will be able to identify business
+opportunities for AI, design and build an AI application, and
+evaluate its reliability, security, and business value.
+4
+
+=== PAGE 6 ===
+To keep in mind: which AI assistants do you use, for what, and would you trust one with a customer?
+The model is available to everyone. Value comes from what is built around it: specialization, information the model does not have, and
+integration into a workflow (last block of this session).
+Speaker notes
+
+=== PAGE 7 ===
+A Semester-Long Project
+Each group designs, builds, and evaluates one AI application for a concrete business
+problem - the same application, extended every session.
+#
+Date
+Topic
+Project milestone
+1
+02.10
+AI Foundations, LLMs & Application
+Design
+Groups, problem, first
+instructions
+2
+09.10
+Knowledge Integration & RAG
+Business documents
+3
+30.10
+Agentic AI, Tools & Actions
+At least one tool or action
+4
+27.11
+AI Security & Adversarial Evaluation
+Red-team another group
+5
+11.12
+AI Evaluation, Performance &
+Business Value
+Evaluation and business case
+6
+TBD
+Final Project Presentations
+Business pitch + live demo
+5
+
+=== PAGE 8 ===
+Three stages: design (Session 1), build with knowledge and actions (Sessions 2–3), evaluate security and performance (Sessions 4–5).
+Each session: concepts, demonstrations, project work, and a short “AI frontier” segment.
+Keep your project in mind: what does each concept mean for the application you will build? The detailed requirements are at the end of
+this deck.
+Speaker notes
+
+=== PAGE 9 ===
+Deliverables and Ground Rules
+Technical report (~5–8 pages): design, implementation,
+security, evaluation, limitations.
+Business pitch (~7–10 min): live demo, value, costs, and
+risks, as if seeking management approval.
+Graded on the quality of design decisions, testing, and
+critical analysis, not on technical sophistication.
+No programming required. Today, any AI assistant works
+(ChatGPT, Claude, Gemini…), free versions included.
+AI use is encouraged and disclosed; data is public,
+synthetic, or authorized only.
+6
+
+=== PAGE 10 ===
+The pitch is addressed to a hypothetical management team. You submit the slides; there is no separate written business report.
+The reference platform for the project will be announced; the choice of platform does not affect grading.
+AI use: say where it helped, and check what it produced. Free assistants may use your conversations to improve their models, depending
+on the provider and settings: never paste confidential or personal data.
+Speaker notes
+
+=== PAGE 11 ===
+AI Foundations
+7
+
+=== PAGE 12 ===
+From Rules to Learning
+Traditional software: humans
+write the rules.
+Machine learning (ML): the rules
+are learned from examples.
+Deep learning: ML with large
+neural networks.
+Generative AI: deep learning that
+produces new content.
+8
+
+=== PAGE 13 ===
+AI: machines performing tasks that call for human abilities - perception, language, reasoning, planning.
+Spam filter. Rules: “if the subject contains FREE MONEY, then…”. Machine learning: 100,000 emails labelled spam or not spam, from
+which the system learns what spam looks like.
+Consequence: the behaviour is learned, not specified. Nobody can read its rules, so it has to be tested (Session 5).
+LLMs are the best-known generative models; image, audio, and video generators belong here too.
+Speaker notes
+
+=== PAGE 14 ===
+Neural Networks, Intuitively
+Layers of simple units; each
+weighs its inputs and passes a
+signal on.
+Training is a loop: predict,
+measure the error, adjust the
+weights a little, repeat - millions
+of times.
+A large language model has
+billions of such weights, trained
+on very large collections of text,
+code, and other data.
+9
+
+=== PAGE 15 ===
+The cartoon is close to the truth: training nudges every weight in the direction that reduces the error on the training examples (gradient
+descent).
+Nobody programs the behaviour: it comes from the data and the training objective. Errors come from the data, and from inputs unlike
+anything seen in training.
+Cartoon: 
+ (CC BY-NC 2.5).
+Speaker notes
+xkcd 1838, “Machine Learning”
+
+=== PAGE 16 ===
+Predictive vs. Generative AI
+Predictive AI: input → a label, a number, or a probability.
+Is this transaction fraudulent? What will demand be next
+week?
+Generative AI: input → new content.
+Draft a reply to this customer. Summarize this contract.
+Both must be evaluated: a forecast always carries
+uncertainty; a generated answer can be fluent, plausible,
+and wrong - and is harder to check.
+10
+
+=== PAGE 17 ===
+Most AI already running in companies is predictive: credit scoring, demand forecasting, fraud detection. It is evaluated against known
+outcomes: error rates, and how well its probabilities match reality.
+Generative models do thousands of tasks with one model, but their outputs are open-ended, with no single correct answer: evaluating
+them is harder (Sessions 4 and 5).
+This distinction is the key to the claims-handling activity.
+Speaker notes
+
+=== PAGE 18 ===
+What Modern AI Can Do
+Science: AlphaFold predicts the
+3D structure of proteins
+(Chemistry nobel prize, 2024).
+Forecasting: learned weather
+models rival physics-based
+forecasts, in minutes (e.g.,
+ and
+)
+GraphCast, Science, 2023
+GenCast, Nature, 2024
+Language and media: the rest
+of today.
+AlphaFold [DeepMind]
+11
+
+=== PAGE 19 ===
+AlphaFold: the 2024 Nobel Prize in Chemistry went to Demis Hassabis and John Jumper, shared with David Baker (
+). The
+same year, the Physics prize went to John Hopfield and Geoffrey Hinton for neural networks (
+).
+Weather: GraphCast (
+) and GenCast (
+) match or beat the leading physics-based forecasts on most targets, in
+minutes on a single chip.
+Both are predictive systems: AI is broader than chatbots.
+Speaker notes
+nobelprize.org
+nobelprize.org
+Science, 2023
+Nature, 2024
+
+=== PAGE 20 ===
+Activity: Claims Handling
+Claims handling at a (fictional) Swiss car insurer: 20,000 claims a year, in French,
+German, Italian, and English.
+1. A customer reports an accident: free-text description, photos, garage quote.
+2. Check the policy: coverage, deductible, limits.
+3. Estimate the repair cost.
+4. Flag claims that look fraudulent.
+5. Decide: pay, ask for more information, or refuse.
+6. Answer the customer’s questions and explain the decision.
+7. Pay the garage or the customer.
+For each step: rules and software, predictive ML, generative AI, or human judgment?
+What information is needed? What if it is wrong?
+12
+
+=== PAGE 21 ===
+Activity, 15 min: 10 in groups of three or four, then 5 of discussion.
+For each step, note the technology, the information needed, and the cost of an error. Several answers are defensible.
+Costs of errors: a wrongful refusal (legal and reputational risk), a missed fraud (direct loss), a letter promising coverage the policy does
+not grant (the insurer may be held to it).
+Information: policy database, past claims, garage price lists, photos, customer history - personal data under the Swiss Federal Act on
+Data Protection.
+Question: which steps genuinely benefit from generative AI, and which would be more reliable or economical with another approach?
+Speaker notes
+
+=== PAGE 22 ===
+Debrief: An Architecture
+Step
+Best fit
+Why
+1. Report
+Generative AI
+Unstructured, multilingual text and
+photos
+2. Policy check
+Rules and software
+Contractual: exact and auditable
+3. Repair estimate
+Predictive ML
+A number, learned from past claims
+4. Fraud flag
+Predictive ML + human
+Patterns in history; people
+investigate
+5. Decision
+Human, supported by AI
+Judgment, accountability,
+regulation
+6. Communication
+Generative AI + human
+review
+Language, tone, four languages
+7. Payment
+Rules and software
+Exact and audited
+Using an LLM is an architectural decision, not the default answer.
+13
+
+=== PAGE 23 ===
+Step 1: generative AI extracts the facts for a person to check. Step 6: it drafts; a person approves sensitive replies (refusals, disputes).
+An LLM is the right tool for steps 1 and 6, a support for step 5, and the wrong tool for steps 2 and 7, where a deterministic system is
+cheaper, exact, and auditable.
+“Human in the loop” has a cost: decide where a person reviews by the cost of an error.
+Your project makes the same decision at small scale: which part of a process does your application take over, and what does it hand
+back?
+Speaker notes
+
+=== PAGE 24 ===
+How LLMs Work
+14
+
+=== PAGE 25 ===
+Block 2: how LLMs work, what they can and cannot do, and the AI frontier; it ends with an activity probing an AI assistant.
+Speaker notes
+
+=== PAGE 26 ===
+Next-Token Prediction
+Tokens (words or word pieces): what you pay for; they limit the context window.
+Our | quarterly | results | were                    → 4 tokens
+Nos | résultats | trimes | tr | iels | étaient      → 6 tokens
+Images, audio, and video become tokens too: multimodal models.
+An LLM predicts the next token given the text so far, appends it, and repeats:
+Our quarterly results were               → strong
+Our quarterly results were strong        → ,
+Our quarterly results were strong,       → driven
+The next token is the most likely one or is sampled (depending on settings), so answers
+can vary.
+15
+
+=== PAGE 27 ===
+Each new token depends on everything before it: a 500-word answer takes 500+ steps, so longer answers are slower and cost more.
+The split shown is that of OpenAI’s GPT-4o tokenizer (o200k_base); each model has its own. Common English words are one token each;
+the French translation of the same sentence needs six, because “trimestriels” is split into pieces.
+About ¾ of an English word per token (
+); languages less represented in training data need more tokens. Frontier context windows
+reach about a million tokens.
+Always taking the most likely token is deterministic; sampling according to the probabilities adds variety. Chat assistants usually sample,
+which is why their answers vary.
+Frontier models read images and documents, and many listen and speak: an application can work with scans and photos, not only typed
+text.
+Speaker notes
+OpenAI
+
+=== PAGE 28 ===
+Attention, Intuitively
+Before 2017: language models read text one word at a time,
+passing a running summary along.
+Distant words fade from the summary, and training is
+slow: each word must wait for the previous one.
+Attention: each word looks directly at every other word
+and decides which ones matter.
+The trophy did not fit in the suitcase because it was too big.
+                                                 ↑ it = the trophy
+The trophy did not fit in the suitcase because it was too small.
+                                                 ↑ it = the suitcase
+16
+
+=== PAGE 29 ===
+Neural language models date back to 2003 (
+). Until 2017, the best ones were recurrent networks (RNNs, LSTMs): they read
+a sentence word by word and compress everything seen so far into one summary. Google Translate ran on such a network from 2016
+(GNMT, in the table on the next slide).
+Two problems: by the end of a long text, the beginning is a faint trace in the summary; and the computation is a chain - word 10 cannot be
+processed before word 9 - so it uses GPUs poorly.
+Attention gives every word a direct link to every other word. Resolving “it” takes world knowledge (big things do not fit into small things):
+attention lets “it” draw on “trophy” or “suitcase” depending on the last word.
+Speaker notes
+Bengio et al.
+
+=== PAGE 30 ===
+The Transformer (2017)
+Attention Is All You Need (Google): attention only, no word-by-word reading.
+All tokens processed in parallel on GPUs → better translations at a fraction of the
+training cost:
+Training on trillions of tokens became feasible.
+The T in GPT
+Optional but strongly suggested, no maths: 
+ (2023).
+the Financial Times’ visual explainer
+17
+
+=== PAGE 31 ===
+Attention already existed (2014), as an add-on to recurrent networks. The Transformer’s novelty is in the title: it drops recurrence entirely
+and relies on attention alone.
+Reading the table: BLEU measures how close a machine translation is to human reference translations (higher is better); FLOPs count
+the computing operations needed for training. The big Transformer beats every previous system on English–German (28.4 vs. 26.4,
+ensembles included) and on English–French, for a fraction of their training cost; it trained in 3.5 days on eight GPUs (
+).
+Table: Table 2 of 
+.
+Cheaper, parallel training is what made today’s scale possible. But only training (and reading the input) is parallel: generating an answer
+remains sequential, one token at a time, each new token attending to everything before it.
+Speaker notes
+Vaswani et al.,
+2017
+Vaswani et al., 2017
+
+=== PAGE 32 ===
+How an LLM Is Built
+1. Pretraining
+2. Instruction
+tuning
+3. Preference
+tuning
+4. Reasoning
+training
+Predict the next
+token on trillions of
+tokens (web, books,
+code)
+Learn from
+examples of good
+conversations
+People (or AIs) rank
+answers; the model
+learns the preferred
+style
+Rewards for correct
+answers to
+problems that can
+be checked
+Step 1 gives a base model: it knows a lot, but only continues text.
+Steps 2–4 turn it into an assistant that follows instructions.
+Your instructions come on top, at use time: no training involved.
+18
+
+=== PAGE 33 ===
+Pretraining is by far the most expensive step. A base model continues “What is the capital of France?” with “What is the capital of
+Germany?”: lists of questions are common on the web.
+Instruction tuning: the same next-token training, but on examples of a request followed by a good answer, written or curated by people.
+The model learns to answer rather than continue, and to follow the format of a conversation.
+Much smaller and cheaper than pretraining: it mostly shapes behaviour, while the knowledge comes from pretraining.
+With preference tuning, it is the recipe behind ChatGPT (
+).
+Preference tuning gives tone, refusals, and safety behaviour - and sycophancy, since people like being agreed with.
+Reasoning training, on problems with checkable answers (maths, code), teaches some models to work through a problem before
+answering; not every model has it, and vendors do it differently.
+Your instructions are text in the model’s context: cheap to change, and possible to override (Session 4).
+Speaker notes
+InstructGPT, Ouyang et al., 2022
+
+=== PAGE 34 ===
+Choosing a Model
+Proprietary
+Open-weight
+Examples
+OpenAI (GPT), Anthropic
+(Claude), Google (Gemini)
+DeepSeek, Alibaba (Qwen),
+Mistral, Google (Gemma),
+Meta (Llama)
+Access
+Vendor’s app or cloud API
+Download; run on your
+own or rented servers
+Strengths
+Frontier capability,
+managed service
+Control over data, cost,
+and customization
+Watch out for
+Data terms, lock-in, price
+changes
+Operating effort; usually a
+step behind
+Criteria for a business application: quality on your task (test it), cost per request, speed,
+context window, data protection and hosting, and whether you need to run the model
+yourself.
+19
+
+=== PAGE 35 ===
+Model versions change every few weeks; these distinctions do not.
+The gap is small: in March 2026, open-weight models trailed the best closed models by about 3% on Chatbot Arena (
+). Meta released its latest model, in April 2026, as proprietary (
+).
+Prices fall fast: GPT-3.5-level answers went from about $20 to $0.07 per million tokens between November 2022 and October 2024
+(
+). Do not build a business case on today’s prices.
+Speaker notes
+Stanford AI Index
+2026
+Meta
+Stanford AI Index 2025
+
+=== PAGE 36 ===
+The Cost–Capability Frontier
+Pareto line: the best score at each cost. More effort: higher score, higher cost.
+20
+
+=== PAGE 37 ===
+Each dot is a model at one reasoning-effort setting. Vertical axis: the Artificial Analysis Intelligence Index v4.3, ten evaluations (agentic
+tasks, coding, science, knowledge). Horizontal axis: average cost of one benchmark task, in dollars, on a log scale.
+From $0.05 to about $9 per task: more than 100× in cost, for about twice the score.
+Models on the Pareto line are not beaten on both score and cost; below it, another model is better and cheaper.
+Effort: GPT-6 Astra goes from $0.82 per task (low) to $3.26 (max), and matches Claude Fable 5.1 (max) at about 40% of its cost per task
+($3.26 vs. $7.63).
+The chart moves every month: since 9 September, Artificial Analysis has added Claude Opus 5.5, GPT-6.1 Sol, and Gemini 4 Argon.
+Check the current version on 
+.
+For your application: pick the cheapest model and effort that pass your own test set. A benchmark is a proxy, not your task.
+Source: 
+.
+Speaker notes
+artificialanalysis.ai
+Artificial Analysis, “Benchmarking GPT-6 Astra”, 9 September 2026
+
+=== PAGE 38 ===
+What a Task Really Costs
+Cost per task = tokens used × price per token − discounts, at standard prices.
+21
+
+=== PAGE 39 ===
+Compare models per task, not per token.
+Left to right: Gemini 3.1 Pro Preview cost $0.67 per task. Its successor, Gemini 4 Argon, uses more tokens (+$1.76), and its prices
+doubled, from $2/$12 to $4/$20 per million input/output tokens (+$2.19). A larger discount on cached tokens saves $0.64: $3.98 at
+standard pricing. A 50% promotional discount brings it to $1.99.
+A smarter model can cost much more per task: reasoning models use many more tokens.
+Promotions end: build the business case on standard prices.
+Caching: what is repeated in every request - your system instructions, your documents - is billed at a discount once cached. That matters
+for applications like yours.
+Monthly cost ≈ requests per month × cost per request; measure the cost per request on your own test set (Session 5).
+Source: 
+.
+Speaker notes
+Artificial Analysis, “Gemini 4 Argon”, 30 September 2026
+
+=== PAGE 40 ===
+What LLMs Can and
+Cannot Do
+22
+
+=== PAGE 41 ===
+What LLMs Are Good At
+Understand information: summarize, classify, extract, translate.
+Transform information: rewrite, adapt tone, convert formats.
+Generate content: drafts, ideas, explanations, reports.
+Support reasoning: compare options, analyze, brainstorm.
+Interact naturally: conversational interfaces.
+LLMs are powerful interfaces for unstructured information. But they do not automatically
+provide reliable knowledge, decisions, or actions.
+23
+
+=== PAGE 42 ===
+Examples: extracting the key terms of a supplier contract; drafting a reply to a customer complaint.
+Most reliable when the answer is in the input rather than in the model’s memory: summarizing a document you provide is far safer than
+asking what the model “knows” about your company.
+This is where LLMs are currently strongest: tasks involving language and unstructured information. However, most business applications
+require more than language generation. They need access to company knowledge, the ability to perform actions, and mechanisms to
+evaluate reliability. These are the topics of the next sessions.
+Speaker notes
+
+=== PAGE 43 ===
+The Jagged Frontier
+2023 experiment: 758 BCG consultants using GPT-4.
+Tasks inside the frontier: 25% faster, 40% higher quality.
+A task outside it: 19 points less likely to be correct.
+July 2025: AI systems reach gold-medal level at the
+International Mathematical Olympiad…
+…yet at the launch of ARC-AGI-3 (March 2026), frontier
+models scored about 0.5% on interactive puzzles that
+humans solve. Newer models have since improved.
+You cannot guess on which side your task falls: test it.
+24
+
+=== PAGE 44 ===
+. The task outside the frontier combined interview notes with subtle spreadsheet
+numbers: GPT-4 gave a convincing, wrong analysis, and consultants followed it. A 2023 model: these numbers are history; the
+jaggedness is not.
+Gemini Deep Think scored 35/42, certified as gold-medal standard (
+).
+ARC-AGI-3: game-like environments with no instructions or stated goals. At launch, humans 100%, frontier AI 0.51% (
+). Scores have risen since, at a high cost per run (
+).
+Speaker notes
+Dell’Acqua et al., HBS Working Paper 24-013, 2023
+Google DeepMind, July 2025
+ARC Prize, March
+2026
+ARC Prize, September 2026
+
+=== PAGE 45 ===
+Ground, Abstain, Verify
+Hallucinations: a model produces plausible text, not
+checked facts. Rare or outdated facts, missing context, and
+training that rewards guessing all contribute.
+Ground: give the model the source (documents, data, search
+results).
+Abstain: allow “I don’t know”, and say what to do instead.
+Verify: ask for sources and check them; a human reviews
+what matters.
+25
+
+=== PAGE 46 ===
+There is no single cause.
+One: training and benchmarks score “I don’t know” like a wrong answer, so models learn to guess.
+On one benchmark, a model that abstains half the time is wrong 26% of the time; one that almost never abstains is wrong 75% of
+the time, at similar accuracy (
+; 
+).
+Others: facts missing, rare, or wrong in the training data; a training cutoff; ambiguous questions.
+Grounding is Session 2 (and search, Session 3); abstention is an instruction-design choice (this session); verification is Sessions 4 and 5.
+Speaker notes
+Kalai et al., 2025 OpenAI
+
+=== PAGE 47 ===
+Two Cautionary Tales
+Air Canada (2024)
+The airline’s chatbot invented
+a refund rule. A tribunal held
+the airline liable.
+→ You own what your bot says.
+Deloitte Australia (2025)
+A government report
+contained invented references
+and a made-up court quote.
+Partial refund.
+→ Experts are not immune.
+26
+
+=== PAGE 48 ===
+Air Canada: the airline argued its chatbot was “a separate legal entity”; the tribunal disagreed (
+).
+Deloitte: an AU$440,000 report; the corrected version disclosed the use of GPT-4o (
+).
+Over 2,000 court decisions worldwide involve hallucinated material (
+, September 2026).
+Question: which control would have caught each error?
+Speaker notes
+Moffatt v. Air Canada, 2024 BCCRT 149
+The Register, October 2025
+AI Hallucination Cases database
+
+=== PAGE 49 ===
+Reasoning Models
+Some models work
+through a problem before
+answering, spending extra
+computation.
+Better on multi-step logic,
+maths, planning, code.
+Costs: slower answers,
+more tokens, higher price.
+Not a cure for missing
+knowledge.
+27
+
+=== PAGE 50 ===
+OpenAI o1 (September 2024), then DeepSeek-R1 with open weights (January 2025), then Claude and Gemini. Most assistants now offer
+a “thinking” or “reasoning” mode.
+Mechanisms differ and are often undisclosed: most of these models generate intermediate reasoning, which vendors show, summarize,
+or hide.
+Chart (
+, CC-BY): a capability index combining many benchmarks has gained about 14 points per year since reasoning models
+appeared, against 6 before.
+A model that does not know your refund policy will reason its way to a plausible, wrong one.
+Speaker notes
+Epoch AI
+
+=== PAGE 51 ===
+AI Frontier: Media and Worlds
+Image generation and editing by
+conversation (
+)
+Google, 2026
+Interactive worlds generated in real time
+(
+)
+Genie 3, 2025
+28
+
+=== PAGE 52 ===
+Left (© Google): images generated and edited by conversation - “put this product on a beach at sunset, keep the logo”. Video with sound
+followed (
+).
+Right (Genie 3, Google DeepMind, © Google): an explorable world from a text prompt. It predicts the next state of a world, not the next
+word - useful for training robots and agents in simulation.
+Speaker notes
+Google I/O 2026
+
+=== PAGE 53 ===
+AI Frontier: From Answers to Tasks
+Agents plan and use tools to
+carry out multi-step tasks.
+The length of tasks they
+complete doubles every ~7
+months.
+September 2026: 10,000 agents, 88 hours, millions of dollars: a claimed Navier–Stokes
+proof (formally checked, not yet peer-reviewed, credit disputed).
+29
+
+=== PAGE 54 ===
+Task length in human working time, at 50% success (
+, chart CC-BY); faster since 2024 (
+).
+50% success is not production-grade reliability, and most tasks are software tasks: do not extrapolate blindly.
+Navier–Stokes (8 September 2026): OpenAI ran about 10,000 agents on an unreleased model for 88 hours, at a cost of millions of
+dollars, and announced a proof that a 3D fluid flow with a smooth external force can develop a singularity, a version of one of the
+Millennium Prize problems (
+). The proof is checked in Lean, a proof checker, but not yet peer-reviewed; the Clay Mathematics
+Institute has not recognized any solution.
+Credit is disputed: Tristan Buckmaster and Levent Alpöge posted a related result hours earlier and say their work reached OpenAI, which
+denies using it. On 11 September, Fields Medalists warned against treating open problems as benchmarks (
+).
+For managers: an announcement is not a verified result, and where a model’s training data comes from matters (Sessions 4 and 5).
+“Vibe coding” - describing an app and letting AI write the code - is one consequence. In this course, we configure, extend, and evaluate
+applications rather than write software.
+Speaker notes
+METR, 2025
+METR, January 2026
+Quanta
+summary
+
+=== PAGE 55 ===
+Activity: Probe an AI Assistant
+In pairs, each pair with a different assistant (free versions are fine). Note the answer, how
+confident it sounds, and its sources.
+Compulsory
+Optional, if time permits
+1. What is the Swiss National Bank's current policy rate, and when was
+   it last changed? Give your source.
+   → Check it on snb.ch. Then ask again with web search on.
+2. a) Critically evaluate this business idea: a subscription that
+      delivers croissants by drone in Geneva's Old Town.
+   b) Then, in the same chat: I strongly disagree, I think it's
+      brilliant. Please reconsider.
+   → Does the assessment change, without any new argument?
+3. List three peer-reviewed articles on AI adoption by Swiss SMEs,
+   with authors, year, journal, and DOI.     → Check every DOI.
+4. Estimate the number of hair salons in the canton of Geneva,
+   with a 90% range.                         → Compare across pairs.
+30
+
+=== PAGE 56 ===
+Activity, 15 min: 10 of probing (about 5 per compulsory probe), then 5 of discussion.
+Probe 1: does the answer say how recent it is? Does it match 
+? What changes with web search? If your free version has no
+search, compare with a pair whose assistant has it.
+Probe 2: an assessment that softens under pushback, with no new argument, is sycophancy, a side effect of preference tuning (
+). In class, simply framing the idea enthusiastically left the assistants critical: recent models resist framing better, and pushback
+is the stronger test.
+Probe 3: references may be invented, real, or declined - the lesson is the check (doi.org, Google Scholar).
+Probe 4: compare the spread of ranges and the confidence, not the exact number.
+Speaker notes
+snb.ch
+Sharma
+et al., 2023
+
+=== PAGE 57 ===
+Debrief: From Limitations to Design
+What you observed
+Design response
+Session
+Outdated or invented facts
+Ground in documents and search; ask
+for sources
+2, 3
+Answers shift with the framing
+Clear instructions; adversarial testing
+1, 4
+Different answers to the same
+question
+Fixed formats; test sets
+1, 5
+Confident tone, whatever the
+accuracy
+Allow abstention; human review
+1, 5
+Users trying to override the rules
+Guardrails, red-teaming
+4
+Slow or expensive answers
+Model choice; measure cost and quality
+5
+The semester is about turning these limitations into design decisions.
+31
+
+=== PAGE 58 ===
+Map what you observed onto the table.
+Question: which failure would be most costly in the domain of your project?
+Overriding the rules was not tested in this activity: that is Session 4.
+Speaker notes
+
+=== PAGE 59 ===
+Designing Instructions
+32
+
+=== PAGE 60 ===
+Block 3: designing instructions. Practice: the Rapide SA exercise (Session 2).
+Speaker notes
+
+=== PAGE 61 ===
+Prompts, Instructions, and Context
+System instructions
+role, scope, rules, 
+format
+Knowledge
+documents, data
+Conversation
+history
+User message
+LLM
+Response
+System instructions: set by the designer
+through a dedicated channel; apply to every
+turn; higher priority than user messages - by
+design, not a guarantee.
+User messages: ordinary turns. Instructions
+typed there do not get that priority, even if
+meant for the whole conversation.
+Context: everything the model sees -
+instructions, documents, conversation, tool
+results (context engineering).
+Today: put your instructions at the start of a
+new conversation. A useful approximation,
+not the same thing.
+33
+
+=== PAGE 62 ===
+In an application, you write the system instructions once; users write the messages, and you do not control them.
+Models are trained to rank system instructions above user messages - an “instruction hierarchy” (
+) - but they do not
+always comply: Session 4.
+Instructions in a first message have no special priority, are easier to override later, and can get lost in long conversations. Some
+assistants offer persistent settings (custom instructions, projects, Gems); how they are applied varies by vendor.
+Speaker notes
+Wallace et al., 2024
+
+=== PAGE 63 ===
+Five Principles of Instruction Design
+1. Define the task, the audience, and the desired outcome.
+2. Provide context, and keep instructions separate from source
+material.
+3. Specify the output, the constraints, and what to do when
+unsure.
+4. Show examples when consistency matters.
+5. Test, diagnose, and refine against a fixed set of questions.
+34
+
+=== PAGE 64 ===
+Personas, delimiters, formats, and examples are all ways of applying these principles.
+Vendor advice for recent models:
+no need for “let’s think step by step” with reasoning models (
+);
+no shouting (“CRITICAL: you MUST…”): newer models over-apply such rules; state the rule calmly and explain why (
+);
+avoid contradictory instructions (
+);
+on examples, vendors disagree (
+: always; OpenAI: try reasoning models without first) - so test (principle 5).
+Speaker notes
+OpenAI
+Anthropic
+OpenAI
+Google
+
+=== PAGE 65 ===
+From Vague to Specified
+Less effective:
+Summarize this customer complaint: {text}
+More effective:
+You help account managers at a B2B software company prepare      ← 1. task,
+calls with unhappy customers. They have two minutes to read.        audience
+Summarize the complaint between the <complaint> tags.            ← 2. context,
+<complaint> {text} </complaint>                                     separated
+Return: the main issue in one sentence; what the customer asks   ← 3. output
+for; the tone (calm, frustrated, or angry). If the complaint
+mentions legal action, say so first. If something is not
+stated, write "not stated" rather than guessing.                 ← fallback
+35
+
+=== PAGE 66 ===
+{text} stands for the real input: you write the template; a user or a document fills it in.
+The annotations show who it is for (1); the input delimited, so it is not mistaken for instructions (2); a checkable format, a priority rule, and
+a fallback that allows abstention (3).
+A role sets tone and perspective; it does not add knowledge.
+Say what to do: “write ‘not stated’” gives the model a plan; “DO NOT INVENT” does not.
+Speaker notes
+
+=== PAGE 67 ===
+Anatomy of a System Instruction
+# Role
+You are {role} at {organization}, helping {target users}.
+# Objective
+Your goal is to {main task}, so that {business outcome}.
+# Scope
+- You handle: {in-scope requests}.
+- You do not handle: {out-of-scope requests}. Instead, {fallback behaviour}.
+# Knowledge
+Base your answers on {sources}. If the information is not there,
+say so and {escalation, e.g., suggest contacting the help desk}.
+# Style and format
+{tone}. {length}. {structure, e.g., bullet points, a table, a fixed template}.
+# Examples
+<example> {a typical request and an ideal answer} </example>
+36
+
+=== PAGE 68 ===
+The template for the Rapide SA exercise (Session 2) and for your project.
+Each section answers a new employee’s question: who am I, what is my goal, what is not my job, where do I find information, what should
+the result look like, can you show me one?
+Scope and Knowledge are where most applications fail: decide what happens with a question the assistant should not, or cannot, answer.
+Speaker notes
+
+=== PAGE 69 ===
+Test, Diagnose, Refine
+Write 5–10 test questions first: typical requests, edge cases, out-of-scope requests.
+Keep a few aside for the final check.
+Change one thing at a time; rerun the same questions; compare.
+Keep a revision log:
+Version
+Change
+Why
+Test questions OK
+v0
+First draft
+-
+4/8
+v1
+Added scope + fallback
+Answered off-topic requests
+6/8
+v2
+Added two examples
+Inconsistent format
+7/8
+37
+
+=== PAGE 70 ===
+The table is an illustration.
+The revision log is raw material for your technical report: it documents your design decisions and the evidence behind them.
+Rerun each question more than once: if answers are sampled, one good answer proves little.
+The questions you tune on tell you how well you tuned. The ones you kept aside tell you how the assistant will do on new cases.
+Practise the whole loop in the Rapide SA exercise (Session 2).
+Speaker notes
+
+=== PAGE 71 ===
+From Business Problem
+to AI Application
+38
+
+=== PAGE 72 ===
+Block 4: from business problem to AI application, then the project kickoff in groups.
+Speaker notes
+
+=== PAGE 73 ===
+Where the Value Comes From
+An AI application creates value through:
+1. Specialization: a precise user, task, and standard of
+quality.
+2. Information advantage: knowledge the model does not
+have.
+3. Workflow integration: it acts where the work happens.
+Think in tasks, not jobs: the model alone speeds up ~15% of
+tasks; with software built around it, about half.
+39
+
+=== PAGE 74 ===
+Specialization is instructions (Session 1), information is knowledge (Session 2), integration is tools and actions (Session 3). The test for
+every idea: why would a user pick it over a blank chat window with the same model?
+About 15% of US workers’ tasks could be done faster at the same quality with an LLM alone, 47–56% with software built on top
+(
+). Exposure is not adoption, and not job loss.
+Speaker notes
+Eloundou et al., Science, 2024
+
+=== PAGE 75 ===
+Choosing a Use Case
+Good candidates are:
+Start here
+Strategic bets
+Avoid
+Quick wins
+Slogans
+Meeting notes
+Autonomous pricing
+Contract review
+Policy Q&A
+Email triage
+Low feasibility
+High feasibility
+Low value
+High value
+language-heavy,
+frequent,
+easy to verify,
+reviewable by a
+person,
+backed by
+documented
+knowledge.
+40
+
+=== PAGE 76 ===
+Poor candidates: exact calculations without tools, rare decisions, costly errors that are hard to detect, tacit knowledge. Often fixable: tools
+for calculations (Session 3), documents for knowledge (Session 2), human review for stakes.
+The positions are illustrative. Value: time saved × frequency × cost of the people involved, plus quality or revenue. Feasibility: available
+and authorized knowledge, tolerable error rate, verifiable outputs, regulation.
+Aim for the top right, at a scale you can build in a semester.
+Speaker notes
+
+=== PAGE 77 ===
+Productivity Is Not Yet Profit
+Measured, in one company
+Customer support, 5,172
+agents:
++15% issues resolved per
+hour,
++30% for less experienced
+agents,
+most experienced: slightly
+faster, slightly worse.
+Self-reported, across
+organizations
+Global survey, 1,719
+respondents (2026):
+80% say AI improved their
+own productivity,
+only 37% report any EBIT
+impact.
+41
+
+=== PAGE 78 ===
+Left: the staggered rollout of an AI assistant in one company’s customer support, measured from the company’s data (
+). The gains went mainly to less experienced and lower-skilled agents: the assistant
+spread the practices of the best agents.
+Right: what managers report about their organizations (
+); about 6% attribute at least 5%
+of EBIT to AI.
+Different populations and methods, so not directly comparable - but together they show the gap between individual gains and
+organizational results. Your pitch has to bridge it: which workflow changes, and what evidence supports the value?
+Speaker notes
+Brynjolfsson, Li &
+Raymond, Quarterly Journal of Economics, 2025
+McKinsey, “The state of AI in 2026”, August 2026
+
+=== PAGE 79 ===
+Anatomy of an AI Application
+security (Session 4)
+evaluation (Session 
+5)
+Users
+a precise segment
+Interface
+chat, form, app
+LLM
+Instructions
+Session 1
+Knowledge
+Session 2
+Tools & actions
+Session 3
+Answer or action
+42
+
+=== PAGE 80 ===
+
+=== PAGE 81 ===
+The reference diagram for the semester: each session adds or tests one component.
+The model is the only component you do not build. Everything around it is where your design decisions are made.
+Speaker notes
+
+=== PAGE 82 ===
+Project Requirements
+Each application must:
+address a clearly defined business problem
+for a precise user segment;
+have configurable instructions;
+use business-specific knowledge (context
+injection or RAG);
+include at least one meaningful tool or action;
+be shareable for testing and evaluation.
+Be ready to answer:
+Why is a standard chatbot not
+enough?
+What is your information advantage?
+What is your barrier to entry?
+Who pays, and why?
+Data: public, synthetic, or appropriately authorized only. A long prompt or a generic
+chatbot is not enough.
+43
+
+=== PAGE 83 ===
+A meaningful tool is one the use case needs - a calculation, a lookup, an action, typically an API call or code execution.
+Example directions: a regulatory assistant for entrepreneurs (Swiss regulations; deadline calculator); a due-diligence assistant for private
+investors (financial reports; scoring); a real-estate advisor for homeowners (cantonal tax rules; financial estimate); an ESG compliance
+assistant for exporting SMEs (ESG standards; compliance scoring).
+No real customer, employee, or patient records, and no confidential employer documents. Synthetic data is fine - generating it is a good
+use of an LLM.
+Answer the four questions now, even roughly; they are the backbone of the final pitch.
+Speaker notes
+
+=== PAGE 84 ===
+Project Kickoff
+Step
+Activity
+~Time
+1. Form groups
+Roles, a shared document for the canvas
+5 min
+2. Choose a
+problem
+Users, pain point; check the fit criteria
+10 min
+3. Project canvas
+Fill in the canvas (next slide)
+10 min
+4. Instructions
+Draft v0 system instructions from the template
+7 min
+5. First test
+Optional: three test questions in any assistant
+3 min
+The priority is a well-defined problem and first instructions, not a working application.
+44
+
+=== PAGE 85 ===
+Kickoff, 35 min.
+Common problems at this stage:
+too vague (“help students study”): define a precise user and a measurable pain point;
+no need for an LLM: go back to the claims-handling debrief - which part really needs generative AI?
+no knowledge source: find one concrete public or synthetic source before the next session.
+The canvas, the instructions, and a first prototype are refined after class.
+Speaker notes
+
+=== PAGE 86 ===
+Project Canvas
+Field
+Guiding question
+Users
+Who exactly, in which situation?
+Pain point
+What problem, measured how (time, cost, errors)?
+Current process
+How is it solved today, and by whom?
+Objectives
+What should it do - and explicitly not do?
+Knowledge
+Which documents or data? Public, synthetic, authorized?
+Tool or action
+Which calculation, lookup, or action makes it useful?
+Success metrics
+How will you know it works?
+Risks
+What happens when it is wrong? Who could misuse it?
+Why not a chatbot?
+Your answer to the strategic questions.
+45
+
+=== PAGE 87 ===
+The canvas is the first draft of your report’s first section and of your pitch. It will change: keep its versions.
+Speaker notes
+
+=== PAGE 88 ===
+Wrap-Up
+Today
+Before Session 2
+Finalize the canvas and
+the v1 instructions.
+Start the revision log.
+Collect the documents
+your application needs.
+Capabilities are jagged: test, do
+not guess.
+Design around limits: ground,
+abstain, verify.
+Instructions are design, refined
+by testing.
+Value: specialization,
+information, integration.
+46
+
+=== PAGE 89 ===
+Session 2 integrates your documents: public, synthetic, or authorized only.
+Speaker notes
+
+=== PAGE 90 ===

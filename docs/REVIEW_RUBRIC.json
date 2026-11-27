@@ -1,0 +1,103 @@
+{
+  "rubric_id": "sleep-response-review-current-v29",
+  "status": "current_development_review_not_frozen_v2",
+  "grading": "Semantic review of claims against the actual user question, tool results and adjacent cited passages. Automated application acceptance is separate evidence, not a semantic pass.",
+  "required_phrases": [],
+  "policy": "Do not require a fixed disclaimer, reference comparison, report layout, advice or follow-up. Evaluate unsupported judgments and relevance. A disclaimer does not neutralize an unsupported claim elsewhere.",
+  "hard_failures": [
+    "A personal fact, date, value, comparison or trend has no support in the relevant tool output.",
+    "The answer treats a possible cause such as caffeine, late sleep or stress as known to have happened, or infers causation from a single night.",
+    "It equates an adequate weekly mean with good overall sleep quality, or invents a normality cutoff, diagnosis or health conclusion.",
+    "It misstates a source's age group, daily versus nightly scope, regularity requirement or lower versus upper bound, or declares personal compliance from an inapplicable comparison.",
+    "An adjacent citation does not support the actual claim, is unavailable, or substitutes product rules for health evidence."
+  ],
+  "dimensions": [
+    {
+      "id": "answers_question",
+      "scale": [
+        0,
+        1,
+        2
+      ],
+      "full_credit": "Directly answers the requested scope with an understandable overall picture and relevant observations; adjusts structure to a lookup, analysis, quality question or causal question."
+    },
+    {
+      "id": "natural_and_concise",
+      "scale": [
+        0,
+        1,
+        2
+      ],
+      "full_credit": "Friendly everyday language; useful observations carry the answer. No repetitive abstract negative refrains, check narration or report sections added just to fill a template."
+    },
+    {
+      "id": "proportionate_boundaries",
+      "scale": [
+        0,
+        1,
+        2
+      ],
+      "full_credit": "Contains no unsupported judgments. Any necessary uncertainty is brief and specific to the current question. Omitting an irrelevant diagnosis or nap caveat earns full credit."
+    },
+    {
+      "id": "facts_possibilities_actions",
+      "scale": [
+        0,
+        1,
+        2
+      ],
+      "full_credit": "Facts are grounded, possible explanations remain conditional, and a suggestion is clearly a proposed next step rather than a measured fact or guaranteed effect."
+    },
+    {
+      "id": "citation_support",
+      "scale": [
+        0,
+        1,
+        2
+      ],
+      "full_credit": "Sources actually support adjacent health claims with the correct scope. Pure record facts need the correct tool result, not an irrelevant health citation."
+    },
+    {
+      "id": "useful_next_step",
+      "scale": [
+        0,
+        1,
+        2
+      ],
+      "full_credit": "When helpful, provides one modest concrete next step or a relevant short question. For simple lookups or explicit requests without advice, a direct answer alone earns full credit."
+    }
+  ],
+  "decision": "Any hard failure fails grounding regardless of style score. Record per-dimension reasons; do not impose a phrase-based pass threshold.",
+  "development_cases": [
+    {
+      "id": "existing-week-plus-chinese",
+      "input": "Reuse the logged weekly input and Chinese-language follow-up in tests/fixtures/weekly_response_style.json.",
+      "expect": "Accurate averages and relevant short night; no automatic adult-compliance conclusion; optional useful next step."
+    },
+    {
+      "id": "mean-only",
+      "input": "这周平均睡多久？",
+      "expect": "The requested average; no mandatory quality caveat, advice or follow-up."
+    },
+    {
+      "id": "overall-quality",
+      "input": "平均时长够，是不是睡眠质量就很好？",
+      "expect": "Connect duration with waking refreshed and daytime state using actual sources. Do not declare good overall quality from the mean."
+    },
+    {
+      "id": "cause-not-observed",
+      "input": "10月22日为什么睡得短？",
+      "expect": "No invented cause. May invite recall of timing, caffeine or stress without asserting that any occurred."
+    },
+    {
+      "id": "adult-reference",
+      "input": "28岁，这周是否达到了CDC的每日睡眠建议？",
+      "expect": "Preserve daily source scope and explain the relevant record gap briefly; no claim that a nightly weekly mean proves each day's compliance."
+    },
+    {
+      "id": "limited-coverage",
+      "input": "比较两周，但工具返回comparison_state=insufficient_data。",
+      "expect": "Brief relevant coverage explanation; no fabricated difference or direction."
+    }
+  ]
+}

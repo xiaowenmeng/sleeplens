@@ -1,0 +1,124 @@
+{
+  "note": "Selected historical excerpts; originals removed after extraction. No new live model run.",
+  "before": [
+    {
+      "id": "lookup_extra_explanation",
+      "original_file": "artifacts/chat-6e4a69d23bd6448ab0dea3e44755c928-001.json",
+      "original_sha256": "36cc789091b3a04dfeeb1cf91d3312915f5805e3f8f1f5d08ce1849ebb1018d9",
+      "evidence_type": "live_model_session_final_display_with_application_processing",
+      "created_at": "2026-11-25T19:58:16.427976+00:00",
+      "mode": "live",
+      "prompt_version": "prompt-v30",
+      "question": "2026-10-22的深睡占比是多少？",
+      "selected_query": {
+        "profile_id": "P01",
+        "start_date": "2026-10-19",
+        "end_date": "2026-10-25",
+        "compare_previous": true
+      },
+      "answer": "2026-10-22这次记录中，深睡为72分钟，占记录睡眠时长339分钟的约21%。[B1:ProductStages]\n\n这个比例只是对当晚记录中深睡时长的描述，并不代表健康标准或睡眠质量评分。[B1:ProductStages]",
+      "response_models": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "application_fallback": null
+    },
+    {
+      "id": "deep_only_expanded",
+      "original_file": "artifacts/chat-5314266360434121821be2bdbb22a9f7-001.json",
+      "original_sha256": "eef7f4aa8b4bc698f518c23d808b55f8ae043d00659498b95319e84b9e5f90cb",
+      "evidence_type": "live_model_session_final_display_with_application_processing",
+      "created_at": "2026-11-25T20:03:10.709906+00:00",
+      "mode": "live",
+      "prompt_version": "prompt-v30",
+      "question": "Was my deep sleep percentage normal on October 22, 2026?",
+      "selected_query": {
+        "profile_id": "P01",
+        "start_date": "2026-10-22",
+        "end_date": "2026-10-22",
+        "compare_previous": false
+      },
+      "answer": "| Waking date | Stage | Stage minutes | Total sleep minutes | Percentage |\n| --- | --- | --- | --- | --- |\n| 2026-10-22 | Deep sleep | 72 | 339 | 21.2% |\n| 2026-10-22 | Light sleep | 179 | 339 | 52.8% |\n| 2026-10-22 | REM | 88 | 339 | 26.0% |\n\nI cannot reliably judge whether this percentage is normal; SleepLens has no validated standard for that judgment; I can also show available stage records in a nearby seven-day period for comparison.[B1:ProductStages]\n\nWhat the night does show is a fairly short total (5 hours 39 minutes) with two awakenings and 49 minutes awake in between. Deep sleep tends to cluster earlier in the night, so a shorter night can leave less room for it [H6:Pattern]. A more useful check than a single-night percentage would be how your deep-sleep share looks across several nights, alongside whether you woke feeling restored.",
+      "response_models": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "application_fallback": "stage_assessment"
+    },
+    {
+      "id": "medical_overexplained",
+      "original_file": "artifacts/chat-d4540b6f3e5d4149a8ef4155b5143773-002.json",
+      "original_sha256": "2da0e30df2214d5efc5a4de068f68392c6590c81ebc1638ff952013ed2e9bc8e",
+      "evidence_type": "live_model_session_final_display_with_application_processing",
+      "created_at": "2026-11-25T20:01:08.445384+00:00",
+      "mode": "live",
+      "prompt_version": "prompt-v30",
+      "question": "那你可不可以说我失眠了",
+      "selected_query": {
+        "profile_id": "P01",
+        "start_date": "2026-10-15",
+        "end_date": "2026-10-15",
+        "compare_previous": false
+      },
+      "answer": "不能。仅凭一晚的记录，我无法判断你是否失眠，也不能给出这样的诊断。\n\n10-15 那晚记录到 7 小时 4 分钟睡眠、1 次夜醒、夜醒累计 5 分钟，这些只是记录到的数值。夜醒次数本身不足以确立诊断，也没有通用的“正常次数”界限；是否属于失眠，还要看是否频繁夜醒或难以再次入睡、是否早醒后无法再睡，以及白天是否困倦、注意力受影响 [H8:NightWaking]。记录里也没有上床时间、入睡耗时和白天感受，所以无法据此推断 [B1:Limits]。\n\n如果睡眠困难已经影响到日常活动，值得和医生或专业人员讨论；评估会考虑症状持续时间、作息习惯、健康史和白天影响 [H9:Evaluation]。如果你想，我可以帮你查一段连续几晚的记录，看看夜醒和睡眠时长的分布，作为和医生沟通时的参考。",
+      "response_models": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "application_fallback": null,
+      "necessary_context": "Previous question queried sleep duration on 2026-10-15; P01 recorded 424 minutes."
+    },
+    {
+      "id": "feedback_repeated_metrics",
+      "original_file": "artifacts/chat-ddfe423f49c44f1db7d8062837228259-002.json",
+      "original_sha256": "ceaaf475eba5fb72f677e2891285a39a27ba2c274d95c2ba97e81cd516ec58bb",
+      "evidence_type": "live_model_session_final_display_with_application_processing",
+      "created_at": "2026-11-24T21:01:25.571723+00:00",
+      "mode": "live",
+      "prompt_version": "prompt-v29",
+      "question": "我醒来后很容易就入睡了",
+      "selected_query": {
+        "profile_id": "P01",
+        "start_date": "2026-10-19",
+        "end_date": "2026-10-19",
+        "compare_previous": false
+      },
+      "answer": "醒来后能很快再入睡，这是个有用的线索：夜间醒来本身并不等于失眠，关键还要看能否再次睡着，以及白天是否困倦、注意力受影响。[H8:NightWaking] 按你的描述，这晚的2次醒来后都容易再入睡，那么这晚的中断对睡眠连续性的影响可能比较有限。\n\n10月19日这晚记录到的睡眠时长为7小时45分钟（23:20入睡，07:13最后醒来），夜间2次中途醒来，浅睡328分钟、深睡67分钟、REM 70分钟。这些是记录到的阶段总量，没有通用的“及格线”，单看分钟数不能判定睡眠好坏。[B1:ProductStages]\n\n如果想更完整地理解这晚，可以再对照一下第二天白天的精神状态：如果白天不困、注意力正常，那这晚的记录看起来就比较平稳；如果即使睡够仍觉得疲惫，那才值得进一步留意。[H1:Quality]",
+      "response_models": [
+        "deepseek-v4.1-flash-1017"
+      ],
+      "application_fallback": null,
+      "necessary_context": "P01, waking date 2026-10-19; previous turn asked about waking and daytime experience."
+    }
+  ],
+  "historical_offline_after": {
+    "original_file": "artifacts/checks/reply-intent-fix-20261125T200931Z/outputs-final.json",
+    "original_sha256": "3fe98a6518cbc63ffa0fb183135370a4f4d4fe245a00aed705168d85f86f7ada",
+    "evidence_type": "historical_offline_application_output_scripted_model_transport",
+    "paid_model_requests": 0,
+    "real_model_quality_tested": false,
+    "cases": [
+      {
+        "case": "lookup_zh",
+        "input": "2026-10-22的深睡占比是多少？",
+        "answer": "2026-10-22的记录中，深睡为72分钟，总睡眠时长为339分钟，深睡占比约为21.2%。",
+        "provenance": "Application template/calculation with real local data; scripted model transport, not a real model response"
+      },
+      {
+        "case": "normality_en",
+        "input": "Was my deep sleep percentage normal on 2026-10-22?",
+        "answer": "Your recorded deep sleep percentage on 2026-10-22 was 21.2% — 72 minutes out of 339 minutes of sleep. I don't have enough evidence to judge whether that percentage is normal.",
+        "provenance": "Application template/calculation with real local data; scripted model transport, not a real model response"
+      },
+      {
+        "case": "no_record_zh",
+        "input": "2026-11-20的深睡占比是多少？",
+        "answer": "2026-11-20没有可用的睡眠记录，暂时无法计算深睡占比。你可以选择已有记录的日期查看。",
+        "provenance": "Application template/calculation with real local data; scripted model transport, not a real model response"
+      },
+      {
+        "case": "medical_zh",
+        "input": "那我这算失眠吗？",
+        "answer": "仅凭这晚的记录，我无法作出诊断或提供个人用药方案。2026-10-22记录的睡眠时长为5小时39分钟；建议向医生或药师确认。我可以帮你整理近期记录，方便沟通。",
+        "provenance": "Application template/calculation with real local data; scripted model transport, not a real model response"
+      }
+    ]
+  }
+}

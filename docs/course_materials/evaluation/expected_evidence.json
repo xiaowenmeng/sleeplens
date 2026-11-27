@@ -1,0 +1,155 @@
+{
+  "B1:Fields": {
+    "citation_id": "B1:Fields",
+    "title": "SleepLens record definitions",
+    "source_version": "4.0",
+    "source_url": null,
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/B1.md",
+    "file_sha256": "b569af1e96f87ff4521cf40d9716c38c00bcac4abfe7f76e6c1947f077059d0a",
+    "excerpt": "`sleep_min` is recorded sleep duration in integer minutes, not a quality score. Detailed records also contain `sleep_onset` and `wake_time` (sleep onset and final awakening, ISO 8601 timestamps with Europe/Berlin offsets), `night_awakenings` (intermediate awakenings, excluding final wake-up), `awake_min` (total awake minutes between onset and final awakening), and `deep_sleep_min`, `light_sleep_min`, `rem_sleep_min` (stage totals in minutes). Stages sum to `sleep_min`; elapsed UTC time from onset to final awakening equals `sleep_min + awake_min`. Stage totals do not provide a timeline or establish clinical sleep quality. Bedtime, getting out of bed, sleep latency, heart rate, blood glucose and diagnosis are not recorded. P01, P02 and P03 identify record profiles, not authenticated accounts. No live device synchronization is available."
+  },
+  "B1:ProductStages": {
+    "citation_id": "B1:ProductStages",
+    "title": "SleepLens record definitions",
+    "source_version": "4.0",
+    "source_url": null,
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/B1.md",
+    "file_sha256": "b569af1e96f87ff4521cf40d9716c38c00bcac4abfe7f76e6c1947f077059d0a",
+    "excerpt": "In SleepLens, `light_sleep_min` represents the combined N1 and N2 stage minutes; N1 and N2 are not displayed separately. `deep_sleep_min` represents N3 minutes. `rem_sleep_min` represents REM minutes, separately from light and deep sleep. These are the product's field definitions, not targets for a healthy stage distribution. Light + deep + REM equals `sleep_min`, excluding intermediate awake time. The records contain stage totals, not their sequence or cycle count. A percentage may be calculated as that stage's minutes divided by recorded sleep minutes, but it is descriptive rather than a clinical threshold.\n\n`night_awakenings` counts recorded intermediate awakenings after sleep onset and before final awakening. It excludes the final wake-up. `awake_min` sums those intermediate awake intervals. Zero means no such event was recorded in these fields; it does not establish that every brief physiological arousal was measured or absent. SleepLens does not provide a validated normality score, diagnose conditions, or infer sleep latency without bedtime data. These definitions do not assert any particular acquisition or device-validation method."
+  },
+  "H10:AwakeDefinition": {
+    "citation_id": "H10:AwakeDefinition",
+    "title": "Google Health ? Sleep Stage Estimates",
+    "source_version": "undated-summary-v1",
+    "source_url": "https://support.google.com/googlehealth/answer/14236712?hl=en",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H10.md",
+    "file_sha256": "f97ddc70c58a661b7d184a4d71189315b4d111e2760294327558a62163004a1d",
+    "excerpt": "Google Health's awake total can include time before initial sleep, intermediate wakefulness and time after final awakening. SleepLens's awake_min includes only wakefulness between sleep onset and final awakening. These differently defined totals should not be directly equated."
+  },
+  "H10:Estimates": {
+    "citation_id": "H10:Estimates",
+    "title": "Google Health ? Sleep Stage Estimates",
+    "source_version": "undated-summary-v1",
+    "source_url": "https://support.google.com/googlehealth/answer/14236712?hl=en",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H10.md",
+    "file_sha256": "f97ddc70c58a661b7d184a4d71189315b4d111e2760294327558a62163004a1d",
+    "excerpt": "Google Health describes Fitbit and Pixel Watch sleep stages as estimates using wrist movement and heart-rate information, unlike laboratory sensors on the brain and muscles. Its light label likely includes N1 and N2; deep likely includes N3. This describes those products, not all wearables or SleepLens's synthetic records."
+  },
+  "H11:ClinicalUse": {
+    "citation_id": "H11:ClinicalUse",
+    "title": "AASM ? Consumer Sleep Technology Position Statement (2018)",
+    "source_version": "2018-05-15-summary-v1",
+    "source_url": "https://pubmed.ncbi.nlm.nih.gov/29734997/",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H11.md",
+    "file_sha256": "582d80f9d34fafe5a3587e1b55faf184651a1812af6b343282fce9046ff41cae",
+    "excerpt": "The AASM's 2018 statement cautioned against using unvalidated consumer sleep technologies to diagnose or treat sleep disorders. Patient-generated information may support a clinician's evaluation. This historical statement does not establish current validation or regulatory status for every device; a specific product requires current product-specific evidence."
+  },
+  "H1:AdultDuration": {
+    "citation_id": "H1:AdultDuration",
+    "title": "CDC · About Sleep",
+    "source_version": "2024-05-15-summary-v1",
+    "source_url": "https://www.cdc.gov/sleep/about/",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H1.md",
+    "file_sha256": "cc90caf0e29bc466dbe15298ec0042cf03ea12cc5c8f935697a7d9761e3d8219",
+    "excerpt": "CDC lists at least seven hours of daily sleep as a general recommendation for adults aged 18–60. Sleep needs vary with age; this section does not state recommendations for other ages. This is a general daily reference, not a personalized diagnosis."
+  },
+  "H2:Caffeine": {
+    "citation_id": "H2:Caffeine",
+    "title": "NIH/NHLBI · Healthy Sleep Habits",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H2.md",
+    "file_sha256": "f91bd1d4c92b03847cbc68f3ab505d6ee0980b9267676b4da6f3d7ddbeb09818",
+    "excerpt": "Caffeine can interfere with sleep for up to eight hours. Late-afternoon coffee may therefore affect bedtime. Avoid nicotine, alcohol before bed and heavy late meals. Sensitivity varies; eight hours is not a guaranteed individual clearance time."
+  },
+  "H2:Naps": {
+    "citation_id": "H2:Naps",
+    "title": "NIH/NHLBI · Healthy Sleep Habits",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H2.md",
+    "file_sha256": "f91bd1d4c92b03847cbc68f3ab505d6ee0980b9267676b4da6f3d7ddbeb09818",
+    "excerpt": "For adults struggling to fall asleep, limit naps or take them earlier in the afternoon; NHLBI recommends no more than twenty minutes. This is general guidance, not a compulsory schedule for everyone."
+  },
+  "H2:Schedule": {
+    "citation_id": "H2:Schedule",
+    "title": "NIH/NHLBI · Healthy Sleep Habits",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H2.md",
+    "file_sha256": "f91bd1d4c92b03847cbc68f3ab505d6ee0980b9267676b4da6f3d7ddbeb09818",
+    "excerpt": "Allow enough time for sleep. Keep bedtime and waking time consistent; NHLBI suggests limiting weekday–weekend differences to about one hour."
+  },
+  "H2:WindDown": {
+    "citation_id": "H2:WindDown",
+    "title": "NIH/NHLBI · Healthy Sleep Habits",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/healthy-sleep-habits",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H2.md",
+    "file_sha256": "f91bd1d4c92b03847cbc68f3ab505d6ee0980b9267676b4da6f3d7ddbeb09818",
+    "excerpt": "Use the hour before bed for quiet activities, reducing bright screens and intense exercise. Relaxation or a warm bath may help. Keep the bedroom cool, dark and quiet; spend time outdoors and be active during the day."
+  },
+  "H3:CBTI": {
+    "citation_id": "H3:CBTI",
+    "title": "NIH/NHLBI · Insomnia Treatment",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/insomnia/treatment",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H3.md",
+    "file_sha256": "4677e9f1cb898600975c72e2738eb54fe478ae731eb9f6f5571b8d4da54b8af9",
+    "excerpt": "NHLBI describes cognitive behavioral therapy for insomnia (CBT-I), commonly delivered over six to eight weeks, as the usual first treatment for long-term insomnia. It includes work on sleep-related thoughts, relaxation, education and behavioral techniques. Support can be in person, by phone or online. Do not turn its sleep-restriction component into a self-prescribed reduced sleep window; clinician-guided tailoring matters."
+  },
+  "H4:FirstSteps": {
+    "citation_id": "H4:FirstSteps",
+    "title": "NHS · Insomnia",
+    "source_version": "2024-03-19-summary-v1",
+    "source_url": "https://www.nhs.uk/conditions/insomnia/",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H4.md",
+    "file_sha256": "3f9872392d26853b143ef72b70c2b2a59ec441a749003a2d5cb72d028603e04f",
+    "excerpt": "For difficulty sleeping, keep a regular getting-up time, go to bed when sleepy and allow a relaxing hour before bed. A dark, quiet, comfortable bedroom can help. After a poor night, avoid sleeping in to compensate. For insomnia, NHS advises avoiding daytime naps; this is more restrictive than general short-nap guidance and should not be presented as a universal ban for every sleeper."
+  },
+  "H6:NREM": {
+    "citation_id": "H6:NREM",
+    "title": "NIH/NHLBI ? Sleep Phases and Stages",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/sleep/stages-of-sleep",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H6.md",
+    "file_sha256": "2c8ca8bf9fa60c4b5749ac17aa3861597ac8cd388cb412700ad34cfb5cc688e6",
+    "excerpt": "Non-REM sleep includes N1, the transition from wakefulness; N2, established sleep; and N3, deep or slow-wave sleep. Clinical staging uses brain activity measured in sleep studies. Light/deep labels in a consumer app must be checked against that product's definitions."
+  },
+  "H7:EveningLight": {
+    "citation_id": "H7:EveningLight",
+    "title": "NIH/NHLBI ? Your Sleep/Wake Cycle",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/sleep/sleep-wake-cycle",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H7.md",
+    "file_sha256": "39c1c298ff8b6f2a92573ae84f4ae199deb1104e9d62725e79835543869925f6",
+    "excerpt": "Bright artificial light late in the evening can interfere with melatonin release and make falling asleep harder. Screens are possible sources of this light. This does not prove that a particular person's late sleep onset was caused by a screen, or establish one compulsory bedtime for everyone."
+  },
+  "H8:NightWaking": {
+    "citation_id": "H8:NightWaking",
+    "title": "NIH/NHLBI ? Insomnia Symptoms",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/insomnia/symptoms",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H8.md",
+    "file_sha256": "548794bea6a0908a7c54441df76bd30e09545474c449a39d400f6a8fa7457f0e",
+    "excerpt": "Frequent nighttime waking, difficulty staying asleep, or waking early without being able to return to sleep can occur with insomnia. Feeling unrefreshed, daytime sleepiness and difficulty concentrating also matter. An awakening count alone does not establish a diagnosis; this page gives no universal normal-count cutoff."
+  },
+  "H9:Diary": {
+    "citation_id": "H9:Diary",
+    "title": "NIH/NHLBI ? Insomnia Diagnosis",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/insomnia/diagnosis",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H9.md",
+    "file_sha256": "f0f3dbe91bef60772217ae6fb6857fd17f05e6fca31e090744d7f584da27affa",
+    "excerpt": "A sleep diary can record sleep and wake times, naps, daytime sleepiness, caffeine or alcohol use, and exercise. Clinical history also distinguishes going to bed, getting up, time taken to fall asleep, awakenings and time needed to return to sleep. Sleep onset and bedtime are different observations."
+  },
+  "H9:Evaluation": {
+    "citation_id": "H9:Evaluation",
+    "title": "NIH/NHLBI ? Insomnia Diagnosis",
+    "source_version": "2022-03-24-summary-v1",
+    "source_url": "https://www.nhlbi.nih.gov/health/insomnia/diagnosis",
+    "frozen_file": "artifacts/evaluation-freezes/sleeplens-eval-20261123-v1/source/src/sleeplens/resources/knowledge/H9.md",
+    "file_sha256": "f0f3dbe91bef60772217ae6fb6857fd17f05e6fca31e090744d7f584da27affa",
+    "excerpt": "Discuss sleep difficulty with a clinician when insufficient sleep affects daily activities. Assessment considers symptom duration, habits, health history and daytime effects; tests may be used to investigate other sleep problems. Timing, stage totals or awakening counts alone do not determine the cause."
+  }
+}

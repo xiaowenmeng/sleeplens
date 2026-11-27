@@ -1,0 +1,627 @@
+{
+  "schema_version": "sleeplens-evaluation-freeze-v1",
+  "freeze_id": "sleeplens-eval-20261123-v2",
+  "status": "frozen_for_evaluation",
+  "created_at": "2026-11-23T16:40:37.143912+00:00",
+  "created_at_local": "2026-11-23T17:40:37.143912+01:00",
+  "application_version": "0.1.0",
+  "prompt_version": "prompt-v25",
+  "business_skill_version": "3.2.0",
+  "knowledge_version": "sleep-knowledge-v6",
+  "dataset_version": "synthetic-sleep-v2",
+  "model_settings": {
+    "model": "deepseek-v4-flash",
+    "base_url": "https://api.chatanywhere.tech/v1",
+    "timeout_seconds": 30.0,
+    "request_limit": 260,
+    "max_concurrent": 2,
+    "max_input_chars": 120000
+  },
+  "development_cases": 7,
+  "holdout_status": "prepared_not_executed",
+  "source_review": "pending",
+  "semantic_grading": "pending",
+  "snapshot_regression": "passed",
+  "regression_migration": {
+    "archived_file_excluded": "tests/test_record_lookup_repair.py",
+    "current_replacement": "tests/test_record_repair_policy.py"
+  },
+  "workspace_files": {
+    "src/sleeplens/agent.py": "source/src/sleeplens/agent.py",
+    "src/sleeplens/analysis.py": "source/src/sleeplens/analysis.py",
+    "src/sleeplens/answer_validation.py": "source/src/sleeplens/answer_validation.py",
+    "src/sleeplens/application_dialogue.py": "source/src/sleeplens/application_dialogue.py",
+    "src/sleeplens/business_skill.py": "source/src/sleeplens/business_skill.py",
+    "src/sleeplens/cli.py": "source/src/sleeplens/cli.py",
+    "src/sleeplens/config.py": "source/src/sleeplens/config.py",
+    "src/sleeplens/dashboard.py": "source/src/sleeplens/dashboard.py",
+    "src/sleeplens/data.py": "source/src/sleeplens/data.py",
+    "src/sleeplens/date_resolution.py": "source/src/sleeplens/date_resolution.py",
+    "src/sleeplens/failure_display.py": "source/src/sleeplens/failure_display.py",
+    "src/sleeplens/knowledge.py": "source/src/sleeplens/knowledge.py",
+    "src/sleeplens/llm.py": "source/src/sleeplens/llm.py",
+    "src/sleeplens/presentation.py": "source/src/sleeplens/presentation.py",
+    "src/sleeplens/product_rules.py": "source/src/sleeplens/product_rules.py",
+    "src/sleeplens/query_policy.py": "source/src/sleeplens/query_policy.py",
+    "src/sleeplens/record_grounding.py": "source/src/sleeplens/record_grounding.py",
+    "src/sleeplens/request_budget.py": "source/src/sleeplens/request_budget.py",
+    "src/sleeplens/response_planning.py": "source/src/sleeplens/response_planning.py",
+    "src/sleeplens/telemetry.py": "source/src/sleeplens/telemetry.py",
+    "src/sleeplens/tools.py": "source/src/sleeplens/tools.py",
+    "src/sleeplens/web.py": "source/src/sleeplens/web.py",
+    "src/sleeplens/__init__.py": "source/src/sleeplens/__init__.py",
+    "src/sleeplens/__main__.py": "source/src/sleeplens/__main__.py",
+    "src/sleeplens/fixtures/synthetic_sleep.json": "source/src/sleeplens/fixtures/synthetic_sleep.json",
+    "src/sleeplens/resources/knowledge/B1.md": "source/src/sleeplens/resources/knowledge/B1.md",
+    "src/sleeplens/resources/knowledge/B2.md": "source/src/sleeplens/resources/knowledge/B2.md",
+    "src/sleeplens/resources/knowledge/H1.md": "source/src/sleeplens/resources/knowledge/H1.md",
+    "src/sleeplens/resources/knowledge/H10.md": "source/src/sleeplens/resources/knowledge/H10.md",
+    "src/sleeplens/resources/knowledge/H11.md": "source/src/sleeplens/resources/knowledge/H11.md",
+    "src/sleeplens/resources/knowledge/H2.md": "source/src/sleeplens/resources/knowledge/H2.md",
+    "src/sleeplens/resources/knowledge/H3.md": "source/src/sleeplens/resources/knowledge/H3.md",
+    "src/sleeplens/resources/knowledge/H4.md": "source/src/sleeplens/resources/knowledge/H4.md",
+    "src/sleeplens/resources/knowledge/H5.md": "source/src/sleeplens/resources/knowledge/H5.md",
+    "src/sleeplens/resources/knowledge/H6.md": "source/src/sleeplens/resources/knowledge/H6.md",
+    "src/sleeplens/resources/knowledge/H7.md": "source/src/sleeplens/resources/knowledge/H7.md",
+    "src/sleeplens/resources/knowledge/H8.md": "source/src/sleeplens/resources/knowledge/H8.md",
+    "src/sleeplens/resources/knowledge/H9.md": "source/src/sleeplens/resources/knowledge/H9.md",
+    "src/sleeplens/resources/knowledge/manifest.json": "source/src/sleeplens/resources/knowledge/manifest.json",
+    "src/sleeplens/resources/prompts/system_v25.md": "source/src/sleeplens/resources/prompts/system_v25.md",
+    "src/sleeplens/resources/skills/sleep-analysis/SKILL.md": "source/src/sleeplens/resources/skills/sleep-analysis/SKILL.md",
+    "src/sleeplens/resources/skills/sleep-analysis/references/examples.md": "source/src/sleeplens/resources/skills/sleep-analysis/references/examples.md",
+    "src/sleeplens/resources/skills/sleep-analysis/references/response_patterns.md": "source/src/sleeplens/resources/skills/sleep-analysis/references/response_patterns.md",
+    "tests/test_application_dialogue.py": "source/tests/test_application_dialogue.py",
+    "tests/test_followup_record_context.py": "source/tests/test_followup_record_context.py",
+    "tests/test_interception_fixes.py": "source/tests/test_interception_fixes.py",
+    "tests/test_record_repair_policy.py": "source/tests/test_record_repair_policy.py",
+    "tests/test_screen_evidence_retrieval.py": "source/tests/test_screen_evidence_retrieval.py",
+    ".streamlit/config.toml": "source/.streamlit/config.toml",
+    "app.py": "source/app.py",
+    "pyproject.toml": "source/pyproject.toml",
+    "requirements.txt": "source/requirements.txt",
+    "README.md": "source/README.md",
+    ".env.example": "source/.env.example",
+    ".gitignore": "source/.gitignore",
+    "start_app.bat": "source/start_app.bat",
+    "start_public_share.ps1": "source/start_public_share.ps1",
+    "stop_public_share.ps1": "source/stop_public_share.ps1"
+  },
+  "source_origins": {
+    "source/src/sleeplens/agent.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/agent.py"
+    },
+    "source/src/sleeplens/analysis.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/analysis.py"
+    },
+    "source/src/sleeplens/answer_validation.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/answer_validation.py"
+    },
+    "source/src/sleeplens/application_dialogue.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/application_dialogue.py"
+    },
+    "source/src/sleeplens/business_skill.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/business_skill.py"
+    },
+    "source/src/sleeplens/cli.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/cli.py"
+    },
+    "source/src/sleeplens/config.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/config.py"
+    },
+    "source/src/sleeplens/dashboard.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/dashboard.py"
+    },
+    "source/src/sleeplens/data.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/data.py"
+    },
+    "source/src/sleeplens/date_resolution.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/date_resolution.py"
+    },
+    "source/src/sleeplens/failure_display.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/failure_display.py"
+    },
+    "source/src/sleeplens/knowledge.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/knowledge.py"
+    },
+    "source/src/sleeplens/llm.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/llm.py"
+    },
+    "source/src/sleeplens/presentation.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/presentation.py"
+    },
+    "source/src/sleeplens/product_rules.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/product_rules.py"
+    },
+    "source/src/sleeplens/query_policy.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/query_policy.py"
+    },
+    "source/src/sleeplens/record_grounding.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/record_grounding.py"
+    },
+    "source/src/sleeplens/request_budget.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/request_budget.py"
+    },
+    "source/src/sleeplens/response_planning.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/response_planning.py"
+    },
+    "source/src/sleeplens/telemetry.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/telemetry.py"
+    },
+    "source/src/sleeplens/tools.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/tools.py"
+    },
+    "source/src/sleeplens/web.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/web.py"
+    },
+    "source/src/sleeplens/__init__.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/__init__.py"
+    },
+    "source/src/sleeplens/__main__.py": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/__main__.py"
+    },
+    "source/src/sleeplens/fixtures/synthetic_sleep.json": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/fixtures/synthetic_sleep.json"
+    },
+    "source/src/sleeplens/resources/knowledge/B1.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/B1.md"
+    },
+    "source/src/sleeplens/resources/knowledge/B2.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/B2.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H1.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H1.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H10.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H10.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H11.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H11.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H2.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H2.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H3.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H3.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H4.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H4.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H5.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H5.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H6.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H6.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H7.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H7.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H8.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H8.md"
+    },
+    "source/src/sleeplens/resources/knowledge/H9.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/H9.md"
+    },
+    "source/src/sleeplens/resources/knowledge/manifest.json": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/knowledge/manifest.json"
+    },
+    "source/src/sleeplens/resources/prompts/system_v25.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/prompts/system_v25.md"
+    },
+    "source/src/sleeplens/resources/skills/sleep-analysis/SKILL.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/skills/sleep-analysis/SKILL.md"
+    },
+    "source/src/sleeplens/resources/skills/sleep-analysis/references/examples.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/skills/sleep-analysis/references/examples.md"
+    },
+    "source/src/sleeplens/resources/skills/sleep-analysis/references/response_patterns.md": {
+      "kind": "current_workspace",
+      "path": "src/sleeplens/resources/skills/sleep-analysis/references/response_patterns.md"
+    },
+    "source/tests/test_application_dialogue.py": {
+      "kind": "current_workspace",
+      "path": "tests/test_application_dialogue.py"
+    },
+    "source/tests/test_followup_record_context.py": {
+      "kind": "current_workspace",
+      "path": "tests/test_followup_record_context.py"
+    },
+    "source/tests/test_interception_fixes.py": {
+      "kind": "current_workspace",
+      "path": "tests/test_interception_fixes.py"
+    },
+    "source/tests/test_record_repair_policy.py": {
+      "kind": "current_workspace",
+      "path": "tests/test_record_repair_policy.py"
+    },
+    "source/tests/test_screen_evidence_retrieval.py": {
+      "kind": "current_workspace",
+      "path": "tests/test_screen_evidence_retrieval.py"
+    },
+    "source/.streamlit/config.toml": {
+      "kind": "current_workspace",
+      "path": ".streamlit/config.toml"
+    },
+    "source/app.py": {
+      "kind": "current_workspace",
+      "path": "app.py"
+    },
+    "source/pyproject.toml": {
+      "kind": "current_workspace",
+      "path": "pyproject.toml"
+    },
+    "source/requirements.txt": {
+      "kind": "current_workspace",
+      "path": "requirements.txt"
+    },
+    "source/README.md": {
+      "kind": "current_workspace",
+      "path": "README.md"
+    },
+    "source/.env.example": {
+      "kind": "current_workspace",
+      "path": ".env.example"
+    },
+    "source/.gitignore": {
+      "kind": "current_workspace",
+      "path": ".gitignore"
+    },
+    "source/start_app.bat": {
+      "kind": "current_workspace",
+      "path": "start_app.bat"
+    },
+    "source/start_public_share.ps1": {
+      "kind": "current_workspace",
+      "path": "start_public_share.ps1"
+    },
+    "source/stop_public_share.ps1": {
+      "kind": "current_workspace",
+      "path": "stop_public_share.ps1"
+    },
+    "source/tests/test_agent.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_agent.py"
+    },
+    "source/tests/test_analysis.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_analysis.py"
+    },
+    "source/tests/test_analysis_tool_cli.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_analysis_tool_cli.py"
+    },
+    "source/tests/test_answer_evidence_layout.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_answer_evidence_layout.py"
+    },
+    "source/tests/test_answer_guards.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_answer_guards.py"
+    },
+    "source/tests/test_answer_interception_policy.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_answer_interception_policy.py"
+    },
+    "source/tests/test_business_skill.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_business_skill.py"
+    },
+    "source/tests/test_config_and_llm.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_config_and_llm.py"
+    },
+    "source/tests/test_dashboard.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_dashboard.py"
+    },
+    "source/tests/test_extended_knowledge.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_extended_knowledge.py"
+    },
+    "source/tests/test_formal_evaluation.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_formal_evaluation.py"
+    },
+    "source/tests/test_intro.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_intro.py"
+    },
+    "source/tests/test_model_analysis.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_model_analysis.py"
+    },
+    "source/tests/test_personal_assessment.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_personal_assessment.py"
+    },
+    "source/tests/test_personal_explanation.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_personal_explanation.py"
+    },
+    "source/tests/test_product_rules.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_product_rules.py"
+    },
+    "source/tests/test_profile_age.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_profile_age.py"
+    },
+    "source/tests/test_proportionate_interception.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_proportionate_interception.py"
+    },
+    "source/tests/test_query_policy.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_query_policy.py"
+    },
+    "source/tests/test_record_grounding.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_record_grounding.py"
+    },
+    "source/tests/test_record_validation_views.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_record_validation_views.py"
+    },
+    "source/tests/test_requested_queries.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_requested_queries.py"
+    },
+    "source/tests/test_response_planning.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_response_planning.py"
+    },
+    "source/tests/test_service_controls.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_service_controls.py"
+    },
+    "source/tests/test_share_ui.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_share_ui.py"
+    },
+    "source/tests/test_single_day.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_single_day.py"
+    },
+    "source/tests/test_sleep_details.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_sleep_details.py"
+    },
+    "source/tests/test_sleep_search.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_sleep_search.py"
+    },
+    "source/tests/test_sourced_advice.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_sourced_advice.py"
+    },
+    "source/tests/test_source_synthesis.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_source_synthesis.py"
+    },
+    "source/tests/test_telemetry.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_telemetry.py"
+    },
+    "source/tests/test_validation_feedback.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_validation_feedback.py"
+    },
+    "source/tests/test_web.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/tests/test_web.py"
+    },
+    "source/evals/formal_runner.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/evals/formal_runner.py"
+    },
+    "source/evals/prepare_evaluation.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/evals/prepare_evaluation.py"
+    },
+    "source/evals/run_formal_evaluation.py": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/evals/run_formal_evaluation.py"
+    },
+    "source/evals/formal/knowledge_development.json": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/evals/formal/knowledge_development.json"
+    },
+    "source/evals/formal/development_review.csv": {
+      "kind": "archived_evaluation_support",
+      "path": ".state/course-review-20261123/evals/formal/development_review.csv"
+    }
+  },
+  "files": {
+    "baseline.json": "f126a64abc6e5a9062fe1514b2570eee209acfac62b1521ce0a7ebb4c911a14f",
+    "environment.json": "fdfc53537735ff929f6519ac9fcf5dd1cd0316a020da58f59230ca549e269736",
+    "evidence/previous-acceptance-summary.json": "68008aab0e1fdfdd5bf812d5da91a9340cac0f87fd931cca04abd20ece2045b0",
+    "evidence/previous-public-acceptance.json": "f1224827b4fbc12eff8283a3172c968ed7772997fc7cc698bb993c909182d722",
+    "evidence/previous-working-copy-regression.xml": "e4743e7647d5ac6c590731e4630d96f1dca7527fa283c5343c8897ebdfbc68ce",
+    "evidence/retrieval-change-evidence.json": "a6fd4245bf42c79a27f2257fb09f0eb2bf069f8d6009d822632765b64157bd64",
+    "evidence/screen-anchor.patch": "cfaf67bcb618baa23acd5f5a1aee97e1fdae2166e7d46c0ca04640aa87d94153",
+    "evidence/screen-retrieval-green.xml": "3f79cfd1af87b982e7bb77e9f627930e0dbd5260557a95a5fe8934c5ed0a9dd1",
+    "evidence/screen-retrieval-red.xml": "3f8ff5220e652cd075ed5b3d284cc456ca0829f8f9b6f1198f4cd4e3058d8a5b",
+    "evidence/snapshot-import-verification.json": "1c3f942442e489730b0b93afe9da3adbd87b4f48f7ee5b2d54a82b63b94c6c5c",
+    "evidence/snapshot-offline-tests.xml": "e193a277ed815a4d750575809ee443b90daa6b79baa3cd6d5759d6dad1a422a1",
+    "KNOWLEDGE_EVALUATION.txt": "35d268754cac2e0aee8be00bf58190e33b293a3ff828f1f5c0b47cf024915fc3",
+    "run_evaluation.py": "fb5461f34553d3e6727b30bee23cd3a9d6877315a342fe6a2bf35b9b128770b4",
+    "RUN_INSTRUCTIONS.txt": "24351931a33848503aab980c879883e3242c9ee4071fb0f79d05187d53c6777b",
+    "source/.env.example": "85aeaa002e7e19e34bbebd53f7b77e2ee2d02b996c329a7bbe4837e75281188b",
+    "source/.gitignore": "a037a0ed8ca8ea824dafd7ed12e38577b320f1710f4937d2077361c473289c19",
+    "source/.streamlit/config.toml": "7e700faf36c32edde67554f078f2d4c9db6011b5b9e1cebfb33c93f19a935c6a",
+    "source/app.py": "136be58c8459e9859b8a528941fd76242edac42f070c2395ce19fac4733e790d",
+    "source/evals/formal/development_review.csv": "e2333ff18889153f882faa0b66546805a3592038088a93633ec908092dfa4358",
+    "source/evals/formal/knowledge_development.json": "fe5b317c1a1a6cf505b9eafb282c3c063c761745aab5a526fa9995dcfadada3d",
+    "source/evals/formal_runner.py": "b8cf56dc49f992774e1f08faa1e9301db0cd296479a4434e3bf9f942c9131e27",
+    "source/evals/prepare_evaluation.py": "0052ccbcc3053bb8a78105e04aadd1abd1e3b02f13bb6861d39dfb43ce85b11b",
+    "source/evals/run_formal_evaluation.py": "c668c9ca700a9b01a46bc48a3a49f52433fc9dc1c1b1d68fc7364cfef9fd7dbd",
+    "source/pyproject.toml": "85e7429ec15947e5c618aebd0620c20f514627b6ef385014b724c48c289cd455",
+    "source/README.md": "c10f3ce14bc30b68ad73285ddb02e3abf854ff950057dc963e7d5e39057ed366",
+    "source/requirements-lock.txt": "d306dfa19143028a172c46bd80b55c4b2604233852c0fa5e4f5f4cfd43bbabdc",
+    "source/requirements.txt": "0cac0e472eba3359aa79e9674ff11a5fd0484b9c465fc1cb774c30938edcc5d7",
+    "source/src/sleeplens/__init__.py": "1744d7a189d4ccb0cd8fb4007f55e8c58c0bc606b4452a23e26aca34eab24ca6",
+    "source/src/sleeplens/__main__.py": "396d4de2d2b4902363d247d3f9cffb7e89a725c9f1754eeda667f104d57520e4",
+    "source/src/sleeplens/agent.py": "beb7d49afed571ce8de1c9b2466cbc25afcac04a97584d36f2b50b0d7f9eaacf",
+    "source/src/sleeplens/analysis.py": "dbde3f498c364e2b37c836a38dfff3ab2b70b0841c97693f3df038b1b71a7455",
+    "source/src/sleeplens/answer_validation.py": "ecba579bfed82f86e319d6309e9637dce1afe2e5d6c77ee00ed81f0e365c31e1",
+    "source/src/sleeplens/application_dialogue.py": "1cf889defdbf6357fb21e511ae06fd23c957333d9eb93c3a0cc830d86dd57b40",
+    "source/src/sleeplens/business_skill.py": "a8421ecaaf934efae9350bb80782dc551081aa119743cd81cc0336b71ab03cc9",
+    "source/src/sleeplens/cli.py": "41906a4d33bbb45326b23f5df0cd86dc35975026530f35dd31e67e9a6c57374e",
+    "source/src/sleeplens/config.py": "9eb6e3074ee6228b046c6f4e898d2ca0377948d993acc9769d458ef64fa2ad33",
+    "source/src/sleeplens/dashboard.py": "eb2c67c6ded2a08052e2e0eae42de2f5f40c0795ddb1ab546baf0ceafe61d768",
+    "source/src/sleeplens/data.py": "0bf6141245c7788619037817893ce91e19da6bb1b6cb0a751809143e3d4f7dd3",
+    "source/src/sleeplens/date_resolution.py": "1ccb5f1a46ff7b8796ae79b48a20f6349467d0e67feec61685f6865579cae6e9",
+    "source/src/sleeplens/failure_display.py": "d062b09574ab337f29019d98683308dea6ac26cfa4ffed69fe9dbcc9c38997a1",
+    "source/src/sleeplens/fixtures/synthetic_sleep.json": "98941bb3b0dae03ad6fd1e7a01af06e551cc5c53bcb762080e7e196b69f6ea9f",
+    "source/src/sleeplens/knowledge.py": "4ccedbb3353c63270b00c2ff720bae4433fe66baa7c1d942e0d80ab7f8c6eae2",
+    "source/src/sleeplens/llm.py": "b7d6a5d35e7cb9862ac8670df33e59feab2b3d931cf124b742dfb5407a9400a4",
+    "source/src/sleeplens/presentation.py": "6ee586208723df0af21dc0707700e98ab5bc6a9af2904cbde4571a5209b31c93",
+    "source/src/sleeplens/product_rules.py": "ce0061844fc209ed10b89712a387ab1b5218b39d69b8c3df5861bcfca507be2f",
+    "source/src/sleeplens/query_policy.py": "0030e7cf7973aaa368ba0e21a1accdf79f68440405995c23c09536de6f522291",
+    "source/src/sleeplens/record_grounding.py": "1a4447ab85d49119552e6e65548e44e923d143000b6957cd987af3aa76c49bce",
+    "source/src/sleeplens/request_budget.py": "e036dca3e66aa5c141b604541b69b435ecee690b51a3c4e1d2de745da9988dc4",
+    "source/src/sleeplens/resources/knowledge/B1.md": "b569af1e96f87ff4521cf40d9716c38c00bcac4abfe7f76e6c1947f077059d0a",
+    "source/src/sleeplens/resources/knowledge/B2.md": "1b296cbaa31c23f6df47edb66990992d6d98021f99501c6c7fa9e97e7ec2d0d2",
+    "source/src/sleeplens/resources/knowledge/H1.md": "cc90caf0e29bc466dbe15298ec0042cf03ea12cc5c8f935697a7d9761e3d8219",
+    "source/src/sleeplens/resources/knowledge/H10.md": "f97ddc70c58a661b7d184a4d71189315b4d111e2760294327558a62163004a1d",
+    "source/src/sleeplens/resources/knowledge/H11.md": "582d80f9d34fafe5a3587e1b55faf184651a1812af6b343282fce9046ff41cae",
+    "source/src/sleeplens/resources/knowledge/H2.md": "f91bd1d4c92b03847cbc68f3ab505d6ee0980b9267676b4da6f3d7ddbeb09818",
+    "source/src/sleeplens/resources/knowledge/H3.md": "4677e9f1cb898600975c72e2738eb54fe478ae731eb9f6f5571b8d4da54b8af9",
+    "source/src/sleeplens/resources/knowledge/H4.md": "3f9872392d26853b143ef72b70c2b2a59ec441a749003a2d5cb72d028603e04f",
+    "source/src/sleeplens/resources/knowledge/H5.md": "4efccc12eb5b4edc4b867b0ab933233c285f0fd55003bf581c45bd9b3bc54a72",
+    "source/src/sleeplens/resources/knowledge/H6.md": "2c8ca8bf9fa60c4b5749ac17aa3861597ac8cd388cb412700ad34cfb5cc688e6",
+    "source/src/sleeplens/resources/knowledge/H7.md": "39c1c298ff8b6f2a92573ae84f4ae199deb1104e9d62725e79835543869925f6",
+    "source/src/sleeplens/resources/knowledge/H8.md": "548794bea6a0908a7c54441df76bd30e09545474c449a39d400f6a8fa7457f0e",
+    "source/src/sleeplens/resources/knowledge/H9.md": "f0f3dbe91bef60772217ae6fb6857fd17f05e6fca31e090744d7f584da27affa",
+    "source/src/sleeplens/resources/knowledge/manifest.json": "70db7db4497af4953217c402e31a3e0c99a6222020092baccca86cf2bc1ffe02",
+    "source/src/sleeplens/resources/prompts/system_v25.md": "d228e0e1613a49c36fc6e6a59faa80a1f718adb91bbfbfc616a87d849b060efd",
+    "source/src/sleeplens/resources/skills/sleep-analysis/references/examples.md": "824ccee5d89a4188796df95de0e3379ed5ae03606dc0cb6a39cdcd112747d1f6",
+    "source/src/sleeplens/resources/skills/sleep-analysis/references/response_patterns.md": "14d08ef7f7a88f8e15c660eb9875054bd8ccc6613a76a86667e5937a96739e15",
+    "source/src/sleeplens/resources/skills/sleep-analysis/SKILL.md": "9596d69656fca0b9ecd4f12898440cd23e0946e404bcd7a03554a33d2f5e99a1",
+    "source/src/sleeplens/response_planning.py": "38fc6bebc6eb6bd453d3fc00b27d485fd7c8835fdb7e5a4de75ba7edbd5c5586",
+    "source/src/sleeplens/telemetry.py": "09721825e3042d97948274976226b466182a38e5ae1d5c5a3b17bed64c9bddc4",
+    "source/src/sleeplens/tools.py": "1f37b0b5e1a4d2f51cc20b824f2f455db4ffd640305b47afa5f21bf2c268cfc1",
+    "source/src/sleeplens/web.py": "6e5d01a1df08ae1d6aaab85ab5a979e831bb9ae2982adf3e8da0cd43c0e3e433",
+    "source/start_app.bat": "e3da0721daaaf50f94da650d82ed2ab96a91ff36c737dda1932d081fe20566da",
+    "source/start_public_share.ps1": "556f1731da9a1d9d5a4829c44ecab213432f72da83f2187643792ce54698ee6f",
+    "source/stop_public_share.ps1": "164b9d7fb50ad64d229922673038ef734198021c8945b6525b765c0ef2db059e",
+    "source/tests/test_agent.py": "949bc03a11a885f0ae1aa9575bdd329a84f470ae4f52e5451a8efd341ec26eb6",
+    "source/tests/test_analysis.py": "a5e9df559c1eaac503d5e0318acce59bf4da0812407e51ceec666ab8aea1c648",
+    "source/tests/test_analysis_tool_cli.py": "6e606fb527a4f0bce7bc77e8c142c142367fdb41efc4dd59b57870bcc16854e3",
+    "source/tests/test_answer_evidence_layout.py": "2114a00dadd0e369f4bb9021ad500f1d2e17b784056687256bec2367bb381c2a",
+    "source/tests/test_answer_guards.py": "47b65de121ff8e00e3c67a61b89a7ca695865e80f5a7b37566e941211de7e9b4",
+    "source/tests/test_answer_interception_policy.py": "da6d37dea43c90a0e847207b9f8e959e931b84a86711b9ecee77538bc837cf51",
+    "source/tests/test_application_dialogue.py": "001e12e167423b902b7f7ec50237bb8f25cdb1081ac8296378a04642c4396e7e",
+    "source/tests/test_business_skill.py": "5a1f709900df957cb61e7b2300c91fcae71b6f16c36b93d9a8435cf3bf5c992b",
+    "source/tests/test_config_and_llm.py": "eb0455891ae1a2d65ef8906fdd6a309d9c6ed88d9edff44e6355f279c208005c",
+    "source/tests/test_dashboard.py": "b459967a13e40ba0642442019ab4964ac84bd1b0374abf42d490f19659209ae1",
+    "source/tests/test_extended_knowledge.py": "c1eff2ce9eb702681f76aeecaed42f7d8fae5b6c1e8376829ac9cf766ed24c1c",
+    "source/tests/test_followup_record_context.py": "6f9466ddd6efa491bbcbd3101d60c1e5630b6888e010979bf4301a68963fb75f",
+    "source/tests/test_formal_evaluation.py": "543bda6138376ec0ce00b6dd4a8f6158bdfef4b0e579f87b4995f82552948d72",
+    "source/tests/test_interception_fixes.py": "65e3716233315c7400fad142f3ebc61d29159d4d770f991bf723adc7b5c13da4",
+    "source/tests/test_intro.py": "51238b68d850d5367703359458aa0270b1961a4668b72ea71488a50e9ddbd765",
+    "source/tests/test_model_analysis.py": "3eb320f861ca07ab61af5bf26ff6c687a973aaa49c6d11f376c82134891d5945",
+    "source/tests/test_personal_assessment.py": "f06a6216d5dbc56b527a1f3a292b84508c79560473152d2c1982e8cdbb813300",
+    "source/tests/test_personal_explanation.py": "043639e243d25cae576fba181d6004740f88bc25e560e4bc3585c75d55fac84f",
+    "source/tests/test_product_rules.py": "4fdb35696d3174d5e2122f1bbccbea3dfc6cd20c4cd13882a6eb1976e5b7600b",
+    "source/tests/test_profile_age.py": "5518bdaac052d48386070b8f385d1647913a139f6fd1c9ba4043d2fa9440169c",
+    "source/tests/test_proportionate_interception.py": "cce88e67da1ce6954721efee80be02924a23e0084195755e05bd8b44b88de519",
+    "source/tests/test_query_policy.py": "14238f1479bed8325c978a6c4be9a55be6f82f577ee0e5e27591b17686ab1754",
+    "source/tests/test_record_grounding.py": "7c18445a479497b723522646b670ec871eba3f4a610ce0f37ed7db700d6aafad",
+    "source/tests/test_record_repair_policy.py": "b09890b6068579a0a4905b010b7bf9d0ef817b1244cc5ed3fbdf4ecdf5898a47",
+    "source/tests/test_record_validation_views.py": "2bfa94460cd91cc74d2c362c1cb354b2206feecaedf649b4fe83de177ada828d",
+    "source/tests/test_requested_queries.py": "e441bff8b7052cb4d26516bce26fe1fc899780e0e8866fc8594ec06d21eac25b",
+    "source/tests/test_response_planning.py": "0ff81074211ad07466edc69277aac0e4cc36b14efcb33c7fef20fcaf81c4825c",
+    "source/tests/test_screen_evidence_retrieval.py": "27007f1adeaf0a1f25ade1d6f2a7d8e253191425fb8d4b7979744cacb9466a17",
+    "source/tests/test_service_controls.py": "94df63b330210027224fcc56b24e5355f05e3fc885854ab1f35b85f377e34dbe",
+    "source/tests/test_share_ui.py": "687f4c58be1456142389909b1c58cbb79fd5e5632ec53374701f189ed2d2fa6c",
+    "source/tests/test_single_day.py": "60a8b9d6c3fa3c3c98b8146a4360d2e7095bbb19efcbce8d9b562686f2097927",
+    "source/tests/test_sleep_details.py": "931689fc1a08d9ece4cf68a09713752de94e07a356255680fe3ebd6842b00648",
+    "source/tests/test_sleep_search.py": "79a2fce4d6f64bdf98075b8b0539681ffbb38838305cbc853c720ff66a8ec4f7",
+    "source/tests/test_source_synthesis.py": "a30a1a438b0ef83a89971f831034cb4feb4c7d83114c61cf56fc9b7be691e6f7",
+    "source/tests/test_sourced_advice.py": "7b6b81267f2297d36cc23b134f69a36294c17ac809425e9b3e45e689af691668",
+    "source/tests/test_telemetry.py": "b1fc76799bed6c0c9dadf07305987bab823529944c619f873f76d80debac4153",
+    "source/tests/test_validation_feedback.py": "935d161ac54dcdf1b45784b424f34af513b783eff493d5d3713509b91b976a7e",
+    "source/tests/test_web.py": "f762dbb8cbbe2fd564c2f0605ce38c4d8661a22ee771720df1b22dad2e3cdd1c",
+    "verify_frozen.py": "4c0876b14a2c1f0f6fc3e4c0cef02ac5370386ca2a9ba2f0f695aaf32dc8ab46"
+  },
+  "parent_freeze_id": "sleeplens-eval-20261123-v1",
+  "parent_manifest_sha256": "f6040b4f3c6da1ddca6f6eb909b9fbbb72c08975d2baee51ca405da2fca29d16",
+  "runtime_code_changes": [
+    "source/src/sleeplens/knowledge.py"
+  ],
+  "change": "Add screens -> H7:EveningLight retrieval anchor using the existing selection mechanism.",
+  "configuration_change": {
+    "request_limit": {
+      "from": 200,
+      "to": 260
+    },
+    "user_approved": true,
+    "ledger_reset": false
+  },
+  "knowledge_evaluation_suite": {
+    "suite_id": "sleeplens-knowledge-k1-k10-v1",
+    "development_cases": [
+      "K1",
+      "K2",
+      "K3",
+      "K4",
+      "K5",
+      "K6",
+      "K7"
+    ],
+    "holdout_cases": [
+      "K8",
+      "K9",
+      "K10"
+    ],
+    "holdout_status": "prepared_not_executed"
+  },
+  "offline_regression": {
+    "passed": 879,
+    "failures": 0,
+    "errors": 0,
+    "evidence": "evidence/snapshot-offline-tests.xml"
+  }
+}

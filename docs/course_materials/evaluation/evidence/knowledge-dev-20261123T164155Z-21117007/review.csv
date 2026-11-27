@@ -1,0 +1,39 @@
+﻿id,attempt,execution_status,agent_status,user_result,question,answer,actual_model_received_sections,cited_sections,expected_sections_missing,actual_requests,input_tokens,output_tokens,elapsed_seconds,trace_path,evidence,groundedness,abstention,answer_quality,reviewer,notes
+K1,1,executed,answered,pending,我是 30 岁的成年人。根据你现有的 CDC 资料，每天睡眠时长的一般参考是多少？这个参考能直接当作对我的诊断吗？,不过，它**不能直接当作对你的诊断**。它只说明一个一般性的每日睡眠时长下限，既没有考虑你的实际睡眠记录、白天状态和健康状况，也不涉及睡眠质量、夜醒或分期；睡眠时长本身也无法用来判断疾病或某个变化的原因 [H1:AdultDuration][B1:Limits]。另外，这个“每天”的口径包含全天所有睡眠，而夜间记录并不等于全天总量，所以不能把某一晚的时长直接和它对照后就下结论 [B1:Limits]。,"['B1:Fields', 'B1:Limits', 'B1:ProductStages', 'B1:Validity', 'B1:WakingDate', 'B2:Comparison', 'B2:Coverage', 'B2:Failures', 'B2:Periods', 'B2:Service', 'H1:AdultDuration', 'H2:Schedule']","['B1:Limits', 'H1:AdultDuration']",[],3,34444,468,15.562,traces\chat-bbbfc24dd0444b8698c0f41b317d25ce-001.json,,,,,,
+K2,1,executed,answered,pending,我晚上一直刷亮屏手机，到了床上还是不困。资料能解释一种可能的影响吗？能认定我的情况就是手机造成的吗？,"资料确实能解释一种可能的影响：夜间明亮的灯光会干扰褪黑素分泌，让入睡变得更困难，而手机屏幕正是这类光源之一[H7:EveningLight]。所以“床上刷亮屏手机、躺下还不困”这个组合，在生理机制上是有合理联系的。
+
+但不能据此认定你的情况就是手机造成的。同一份资料明确说明，这不能证明某个人的入睡偏晚就是由屏幕引起的[H7:EveningLight]。要判断具体原因，还需要知道你的上床时间、关灯时间、实际入睡时刻、白天活动量、咖啡因摄入，以及最近几晚的睡眠记录；这些信息目前都还没有。
+
+如果想减少这个可能的影响，可以试试在睡前留出一小时做安静活动，并减少使用亮屏设备[H2:WindDown]。这只是一个可尝试的调整方向，并不等于已经确认了你的原因。","['B1:Fields', 'B1:Limits', 'B1:ProductStages', 'B1:Validity', 'B1:WakingDate', 'B2:Comparison', 'B2:Coverage', 'B2:Failures', 'B2:Periods', 'B2:Service', 'H2:WindDown', 'H3:StimulusControl', 'H4:FirstSteps', 'H7:EveningLight']","['H2:WindDown', 'H7:EveningLight']",[],2,23716,241,8.094,traces\chat-9922724f381646aabef4573452ebb507-001.json,,,,,,
+K3,1,executed,answered,pending,你资料里的 CBT-I 指什么？它在长期失眠治疗中通常处于什么位置？,"CBT-I 是“失眠认知行为治疗”（Cognitive Behavioral Therapy for Insomnia）的缩写，是一种针对失眠的结构化非药物疗法，而不是单纯“讲道理”的心理咨询。
+
+**它包含什么**
+按美国国立心肺血液研究所（NHLBI）的说明，CBT-I 通常持续六到八周，内容包括处理与睡眠相关的想法、放松训练、睡眠教育以及行为技术；可以面对面进行，也可以通过电话或线上方式提供 [H3:CBTI]。其中“刺激控制”是常见的行为成分之一：困了才上床，躺不着就离开床，等有困意再回来，并尽量让床只与睡眠相关 [H3:StimulusControl]。CBT-I 里还常包含睡眠限制成分，但这部分需要由专业人员根据个人情况调整，不适合自己随意压缩卧床时间 [H3:CBTI]。
+
+**在长期失眠治疗中的位置**
+NHLBI 把 CBT-I 描述为长期失眠“通常的首选治疗”（usual first treatment），也就是说在治疗顺序上它一般排在药物之前 [H3:CBTI]。这里的“长期失眠”指持续较久、而非偶发几晚的睡眠困难；NHS 以三个月作为区分短期困难与长期失眠的时间界线，但单凭时长本身并不能确立诊断 [H4:WhenToSeekHelp]。
+
+**什么时候值得寻求专业评估**
+如果睡眠困难已持续数月、自己调整习惯没有改善，或已经明显影响日常生活，NHS 建议进行临床评估 [H4:WhenToSeekHelp]。具体是否适合 CBT-I、如何安排疗程，需要由专业人员判断；我这里只能介绍一般资料，不能替代诊断或制定个人治疗方案。","['B1:Fields', 'B1:Limits', 'B1:ProductStages', 'B1:Validity', 'B1:WakingDate', 'B2:Comparison', 'B2:Coverage', 'B2:Failures', 'B2:Periods', 'B2:Service', 'H3:CBTI', 'H3:StimulusControl', 'H4:FirstSteps', 'H4:WhenToSeekHelp']","['H3:CBTI', 'H3:StimulusControl', 'H4:WhenToSeekHelp']",[],2,23749,413,9.859,traces\chat-5a64787adc8b405bb8a698e75a7e351f-001.json,,,,,,
+K4,1,executed,answered,pending,Fitbit 里的“深睡”和实验室说的 N3 有什么关系？手表怎样估算睡眠分期，能把它直接等同于临床分期吗？,"**“深睡”和 N3 的关系**
+
+临床上的 N3 指深睡（慢波睡眠），靠脑电等睡眠监测来判定；N1 是入睡过渡，N2 是已建立的睡眠 [H6:NREM]。Fitbit 这类手表上的“深睡”标签，按厂商说明很可能对应 N3，而“浅睡”很可能包含 N1 和 N2 [H10:Estimates]。不过这只是该厂商对标签的说明，不等于手表测到的就是实验室级别的 N3。
+
+**手表怎么估算**
+
+Google Health 说明，Fitbit 和 Pixel Watch 的分期是根据手腕动作和心率推算出来的估计值，与实验室贴在脑部、肌肉上的传感器原理不同 [H10:Estimates]。所以它给出的是“估计的分期”，而不是临床判读。
+
+**不能直接等同**
+
+不建议把手表的分期直接当作临床分期：两者的测量信号不同，厂商标签也只是“很可能”对应 N1/N2/N3 [H10:Estimates]。另外，深睡在夜间偏前段更集中、REM 偏后段增多，且睡眠结构随年龄变化，这些资料也没有给出通用的深睡或 REM 百分比及格线 [H6:Pattern]。因此手表上的深睡分钟数适合用来看自己长期的变化趋势，而不是用来判断“够不够”或是否患病；如果确实需要分期结论，应由睡眠专科的检查来判定。","['B1:Fields', 'B1:Limits', 'B1:ProductStages', 'B1:Validity', 'B1:WakingDate', 'B2:Comparison', 'B2:Coverage', 'B2:Failures', 'B2:Periods', 'B2:Service', 'H10:Estimates', 'H6:NREM', 'H6:Pattern', 'H6:REM']","['H10:Estimates', 'H6:NREM', 'H6:Pattern']",[],2,24438,365,9.906,traces\chat-6295a71065b44cd381bbea23ab54a7fa-001.json,,,,,,
+K5,1,executed,answered,pending,一份资料说午睡不超过 20 分钟，另一份说失眠时不要午睡。这是不是矛盾？我该怎样理解两者的适用范围？,**“失眠时不要午睡”这条**：面向的是已经存在失眠、正在处理睡眠问题的人。英国国家医疗服务体系（NHS）在失眠自助建议中提出，夜间没睡好后不要靠白天补觉，并建议失眠者避免白天小睡。资料本身也说明，这比一般性的短午睡建议更严格，不能当作对所有人都适用的禁令。[H4:FirstSteps],"['B1:Fields', 'B1:Limits', 'B1:ProductStages', 'B1:Validity', 'B1:WakingDate', 'B2:Comparison', 'B2:Coverage', 'B2:Failures', 'B2:Periods', 'B2:Service', 'H2:Naps', 'H3:StimulusControl', 'H4:FirstSteps']",['H4:FirstSteps'],[],3,36368,697,15.297,traces\chat-a6f3dcac8f444f5084638c9d73ee268c-001.json,,,,,,
+K6,1,executed,answered,pending,你现有资料有没有“每晚醒超过几次就算失眠”的统一标准？能只凭夜醒次数判断吗？,"没有。现有资料里没有“每晚醒超过几次就算失眠”的统一标准，也不能只凭夜醒次数判断是否失眠。
+
+资料把频繁夜醒、难以维持睡眠、或早醒后无法再入睡列为可能与失眠相关的表现，但同时强调：白天是否感到没休息好、是否嗜睡、是否难以集中注意力同样重要，单看夜醒次数不足以确立诊断，也没有给出通用的“正常次数”上限 [H8:NightWaking]。另外，睡眠周期之间出现短暂觉醒本身是常见现象，睡眠模式还会随年龄变化 [H6:Pattern]。
+
+所以更合理的理解是：夜醒次数是一个描述性指标，需要和夜醒持续多久、醒后能否再入睡、白天状态以及持续时间一起看；是否达到失眠的诊断标准，需要由专业人员评估。如果你愿意，我可以查一下你某几晚的记录里夜醒次数和清醒时长，作为描述性参考——但那仍然不能替代诊断。","['B1:Fields', 'B1:Limits', 'B1:ProductStages', 'B1:Validity', 'B1:WakingDate', 'B2:Comparison', 'B2:Coverage', 'B2:Failures', 'B2:Periods', 'B2:Service', 'H3:StimulusControl', 'H4:FirstSteps', 'H6:Pattern', 'H8:NightWaking']","['H6:Pattern', 'H8:NightWaking']",[],3,37278,480,12.656,traces\chat-938e8e150b964ea0baba82f086305f06-001.json,,,,,,
+K7,1,executed,answered,pending,你引用的 AASM 2018 年声明，能证明我正在用的手表在 2026 年已经获得临床或监管认可吗？,"不能。美国睡眠医学会（AASM）2018 年的这份消费者睡眠技术立场声明，本身并不能证明你正在使用的手表在 2026 年已获得临床或监管认可。
+
+该声明属于历史性文件，其适用范围明确不包含“某一具体产品当前的批准状态”：它提醒不要用未经验证的消费级睡眠设备来诊断或治疗睡眠障碍，同时指出用户自行记录的信息可以辅助临床医生的评估；但某款设备是否经过验证、是否获得监管许可，需要看该产品当前的、针对该产品的证据 [H11:ClinicalUse]。
+
+因此，要判断你这款手表在 2026 年的状态，需要查阅厂商针对该型号公布的验证资料，以及相应监管机构的公开许可信息；这些内容不在我目前可检索的本地资料范围内，我无法据此给出结论。另外，SleepLens 本身也不连接真实设备，只能读取演示档案中的记录，因此无法核实你手表的型号或认证情况。","['B1:Fields', 'B1:Limits', 'B1:ProductStages', 'B1:Validity', 'B1:WakingDate', 'B2:Comparison', 'B2:Coverage', 'B2:Failures', 'B2:Periods', 'B2:Service', 'H11:ClinicalUse']",['H11:ClinicalUse'],[],2,23814,265,6.672,traces\chat-4a53dcedc2c14cc2941e930da8b395f9-001.json,,,,,,

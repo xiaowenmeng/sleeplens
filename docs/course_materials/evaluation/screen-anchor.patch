@@ -1,0 +1,11 @@
+--- a/src/sleeplens/knowledge.py
++++ b/src/sleeplens/knowledge.py
+@@ -106,7 +106,7 @@
+     anchors = {"duration": "H1:AdultDuration", "quality": "H1:Quality",
+                "deep_sleep": "H6:NREM", "light_sleep": "H6:NREM", "rem_sleep": "H6:REM",
+                "sleep_stages": "H6:NREM", "stage_distribution": "H10:Benchmarks",
+-               "wearables": "H10:Estimates", "circadian": "H7:Clock", "sleep_diary": "H9:Diary",
++               "screens": "H7:EveningLight", "wearables": "H10:Estimates", "circadian": "H7:Clock", "sleep_diary": "H9:Diary",
+                "night_waking": "H8:NightWaking"}
+     selected = []
+     by_id = {ref["citation_id"]: ref for _, ref in ranked}

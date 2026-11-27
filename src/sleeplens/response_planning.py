@@ -231,7 +231,6 @@ def refine_query_plan(plan, proposal, question):
     # Explicitly named detailed metrics must survive a model's abstraction.
     if required & {"records"}:
         metrics = tuple(dict.fromkeys((*metrics, *requested_detail_metrics(question))))
-    stage_scope = stage_response_scope(question, plan)
     if stage_scope and "stages" not in stage_scope.metrics:
         metrics = tuple(m for m in metrics if m not in {"deep", "light", "rem", "stages"} or m in stage_scope.metrics)
     task = "combined" if required == {"records", "knowledge"} else "records" if required == {"records"} else "health" if required == {"knowledge"} else plan.task

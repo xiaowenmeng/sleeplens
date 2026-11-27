@@ -1,0 +1,474 @@
+=== CELL 0 markdown ===
+# Mistral Studio from Python: Agents and Libraries
+
+[Open in Colab](https://colab.research.google.com/github/tvatter/intro_to_python/blob/main/exercices/2026fall_aaim/02_mistral_studio_starter.ipynb)
+
+*Applied AI for Managers, Session 2.*
+
+**Mistral Studio** is the reference interface used in class. This notebook
+gives you access to the **same Agents and Libraries** from Python: what you
+create in Studio appears here, and what you change here appears in Studio.
+
+Python is **optional**. Use this notebook when Studio does not show a setting
+(for example, attaching a Library to an Agent), or to run repeatable tests.
+Run the cells from top to bottom; the optional sections are marked.
+
+> **In class today: Sections 1–5 only.** Optional exploration: Sections 6
+> onward.
+
+For today's in-class exercise, you only need Sections 1–5. Everything after
+that is optional.
+=== CELL 1 markdown ===
+## 1. Install and authenticate
+
+Create an API key in Mistral Studio (**API Keys**, then **Create new key**).
+In Colab, store it as a secret named `MISTRAL_API_KEY` (key icon in the left
+sidebar); otherwise the cell below asks for it. Never paste your key into a
+notebook cell, and never share or commit it.
+=== CELL 2 code ===
+%pip install -q -U "mistralai>=3" pandas
+=== CELL 3 code ===
+import os
+import time
+from getpass import getpass
+
+import pandas as pd
+from mistralai.client import Mistral
+from mistralai.client.errors import SDKError
+from mistralai.client.models import File
+
+pd.set_option("display.max_colwidth", 80)
+
+
+def get_api_key():
+  """Read the key from Colab secrets, then the environment, then ask."""
+  try:
+    from google.colab import userdata
+
+    return userdata.get("MISTRAL_API_KEY")
+  except Exception:  # noqa: BLE001, S110 - not in Colab, or no secret set
+    pass
+  return os.environ.get("MISTRAL_API_KEY") or getpass("Mistral API key: ")
+
+
+client = Mistral(api_key=get_api_key())
+print("Connected.")
+=== CELL 4 markdown ===
+## 2. Your Agents
+
+The table lists the Agents of your workspace, including those created in
+Studio. Set `AGENT_INDEX` to the row of the Agent you want to work with.
+=== CELL 5 code ===
+def list_agents():
+  """Return all Agents, following the pages of results."""
+  agents = []
+  page = client.beta.agents.list_pages(page_size=50)
+  while page is not None:
+    agents.extend(page.result.data)
+    page = page.next()
+  return agents
+
+
+agents = list_agents()
+pd.DataFrame(
+  [
+    {"name": a.name, "model": a.model, "version": a.version, "id": a.id}
+    for a in agents
+  ]
+)
+=== CELL 6 code ===
+AGENT_INDEX = 0
+agent = agents[AGENT_INDEX]
+print(f"Selected agent: {agent.name} ({agent.id})")
+=== CELL 7 markdown ===
+## 3. Your Libraries
+
+A **Library** is Mistral's managed knowledge base: you upload documents, and
+Mistral extracts their text, splits it, and indexes it for retrieval. Set
+`LIBRARY_INDEXES` to the row(s) of the Library you want to use.
+=== CELL 8 code ===
+def list_libraries():
+  return client.beta.libraries.list(page_size=100).data
+
+
+libraries = list_libraries()
+pd.DataFrame(
+  [
+    {"name": lib.name, "documents": lib.nb_documents, "id": lib.id}
+    for lib in libraries
+  ]
+)
+=== CELL 9 markdown ===
+**Optional:** no Library yet? The next cell creates a "Rapide SA" Library
+with the three documents of the in-class exercise (a few kilobytes of text,
+so processing is cheap), then lists the Libraries again.
+=== CELL 10 code ===
+# The Rapide SA documents (also in the course repository, under
+# exercices/2026fall_aaim/rapide_sa/), embedded so that the notebook
+# needs no download.
+DOCS = {
+  "shop_policy.md": """\
+# Rapide SA - Shop Policy (valid from 1 January 2026)
+
+Rapide SA is a fictional e-bike shop in Geneva. This document is synthetic and
+was written for a course exercise.
+
+## Opening hours
+
+Tuesday to Saturday, 9:00 to 18:30. The shop is closed on Sunday and Monday.
+
+## Test rides
+
+Test rides are free and last up to 45 minutes. They must be booked in advance,
+by phone or email, during opening hours. Bring an identity card.
+
+## Returns and refunds
+
+Customers may ask to return a bike within 30 days of purchase. Every return or
+refund request is decided by the store manager, who answers within two working
+days. Customer-service staff never promise a refund: they confirm that the
+request has been forwarded to the store manager.
+
+## Website and online payment problems
+
+Problems with the website or online payment are forwarded to the IT team, which
+answers within one working day. Customers can also pay in the shop.
+
+## Languages
+
+We answer customers in French, German, Italian, or English.
+""",
+  "warranty.md": """\
+# Rapide SA - Warranty Conditions (valid from 1 January 2026)
+
+This document is synthetic and was written for a course exercise.
+
+## Coverage
+
+- **Frame:** 5 years from the date of purchase, against manufacturing defects.
+- **Battery, motor, and display:** 2 years from the date of purchase, against
+  manufacturing defects. A battery whose capacity falls below 60% of its rated
+  capacity within this period is considered defective.
+- **Wear parts** (tyres, brake pads, chain, cassette) are not covered.
+
+## Making a claim
+
+Bring the bike and the purchase receipt to the shop. The workshop diagnoses the
+problem within five working days. If the claim is accepted, the part is
+repaired or replaced free of charge. A warranty claim is not a refund.
+""",
+  "catalogue.md": """\
+# Rapide SA - Catalogue 2026
+
+This document is synthetic and was written for a course exercise. Prices in
+Swiss francs (CHF), including VAT.
+
+| Code | Model | Sizes | Battery | Range (up to) | Price (CHF) |
+|---|---|---|---|---|---|
+| C500 | City 500 | S, M, L | 500 Wh | 80 km | 3,290 |
+| T300 | Trekking 300 | S, M, L | 625 Wh | 90 km | 3,890 |
+| CG700 | Cargo 700 | M, L | 750 Wh | 70 km | 5,490 |
+| K20 | Kids 20" | one size | 250 Wh | 40 km | 1,190 |
+
+Ranges are measured in eco mode on flat terrain; real range depends on weight,
+terrain, temperature, and assistance level.
+
+## Accessories
+
+| Code | Accessory | Fits | Price (CHF) |
+|---|---|---|---|
+| CS-1 | Child seat (rear) | C500, T300 | 189 |
+| PB-2 | Pannier bags (pair) | all adult models | 129 |
+
+Stock levels change daily and are not listed in this catalogue.
+""",
+  "refund_policy_2024.md": """\
+# Rapide SA - Returns Policy 2024 (no longer valid)
+
+This document is synthetic and was written for a course exercise. It was
+replaced by the Shop Policy valid from 1 January 2026.
+
+Customers may return any bike within 14 days of purchase for a full refund.
+Refunds are processed immediately by the sales staff in the shop.
+""",
+}
+RAPIDE_SA_DOCS = ["shop_policy.md", "warranty.md", "catalogue.md"]
+FINISHED = {"done", "error", "missing_content", "noop", "self_managed"}
+
+
+def read_doc(name):
+  """Return the content of an embedded document, as bytes."""
+  return DOCS[name].encode("utf-8")
+
+
+def wait_until_processed(library_id, timeout=300):
+  """Wait until Mistral has processed every document of a Library."""
+  start = time.time()
+  while True:
+    docs = client.beta.libraries.documents.list(library_id=library_id).data
+    pending = [d.name for d in docs if str(d.process_status) not in FINISHED]
+    if not pending or time.time() - start > timeout:
+      break
+    time.sleep(5)
+  for d in docs:
+    print(f"  {d.name}: {d.process_status}")
+
+
+def upload(library_id, doc_name, attempts=10):
+  """Upload one document, waiting if the processing rate limit is reached."""
+  for attempt in range(attempts):
+    try:
+      return client.beta.libraries.documents.upload(
+        library_id=library_id,
+        file=File(file_name=doc_name, content=read_doc(doc_name)),
+      )
+    except SDKError as error:
+      if error.status_code != 429 or attempt == attempts - 1:
+        raise
+      print(f"  Processing rate limit reached; retrying {doc_name} in 30 s...")
+      time.sleep(30)
+
+
+def create_library(name, doc_names, description=""):
+  """Create a Library and upload documents to it."""
+  library = client.beta.libraries.create(name=name, description=description)
+  for doc_name in doc_names:
+    upload(library.id, doc_name)
+  print(f"Created library {name} ({library.id}):")
+  wait_until_processed(library.id)
+  return library
+
+
+# Uncomment to create the Rapide SA Library:
+# create_library("Rapide SA", RAPIDE_SA_DOCS, "Rapide SA in-class exercise")
+# libraries = list_libraries()
+=== CELL 11 code ===
+LIBRARY_INDEXES = [0]
+library_ids = [libraries[i].id for i in LIBRARY_INDEXES]
+print("Selected libraries:", [libraries[i].name for i in LIBRARY_INDEXES])
+=== CELL 12 markdown ===
+## 4. Attach the Library to the Agent
+
+An Agent uses a Library through its `document_library` **tool**. If Studio
+lets you attach a Library in the Agent editor, do it there and skip this
+section.
+
+The helper below keeps the Agent's other tools (web search, code
+interpreter...) and adds the selected Libraries. Mistral saves the change as
+a new **version** of the Agent, so you can always go back.
+=== CELL 13 code ===
+def tool_as_dict(tool):
+  """A tool as a plain dictionary, without empty fields."""
+  if not isinstance(tool, dict):
+    tool = tool.model_dump(by_alias=True, exclude_none=True)
+  return {key: value for key, value in tool.items() if value is not None}
+
+
+def attach_libraries(agent_id, library_ids):
+  """Add Libraries to an Agent's document_library tool, keeping other tools."""
+  agent = client.beta.agents.get(agent_id=agent_id)
+  tools = [tool_as_dict(t) for t in (agent.tools or [])]
+  other_tools = [t for t in tools if t["type"] != "document_library"]
+  library_tools = [t for t in tools if t["type"] == "document_library"]
+  library_tool = (
+    library_tools[0] if library_tools else {"type": "document_library"}
+  )
+  ids = [i for t in library_tools for i in t.get("library_ids", [])]
+  ids += [i for i in library_ids if i not in ids]
+  library_tool = {**library_tool, "library_ids": ids}
+  updated = client.beta.agents.update(
+    agent_id=agent_id, tools=other_tools + [library_tool]
+  )
+  print("Tools before:", [t["type"] for t in tools])
+  print("Tools after: ", [tool_as_dict(t)["type"] for t in updated.tools])
+  print(f"Libraries attached: {ids}")
+  print(f"Agent version {agent.version} -> {updated.version}")
+  return updated
+
+
+agent = attach_libraries(agent.id, library_ids)
+=== CELL 14 markdown ===
+To go back to the previous version:
+`client.beta.agents.update_version(agent_id=agent.id, version=...)`.
+=== CELL 15 markdown ===
+## 5. Ask the Agent a question
+
+Use a **concrete** question whose answer you know is in the documents. Vague
+requests ("tell me something from my library") test browsing, not retrieval.
+The output shows the tools the Agent used, its answer, and its sources. The
+sources are not always returned, even when the Library was searched: check
+"Tools used", and the source named in the answer.
+=== CELL 16 code ===
+def ask(agent_id, question, show=True):
+  """Ask an Agent one question in a new conversation."""
+  response = client.beta.conversations.start(agent_id=agent_id, inputs=question)
+  tools_used, answer, sources = [], [], []
+  for entry in response.outputs:
+    if entry.type == "tool.execution":
+      tools_used.append(f"{entry.name} {entry.arguments}")
+    elif entry.type == "message.output":
+      content = entry.content
+      if isinstance(content, str):
+        answer.append(content)
+        continue
+      for chunk in content:
+        if chunk.type == "text":
+          answer.append(chunk.text)
+        elif chunk.type == "tool_reference":
+          sources.append(chunk.title)
+  result = {
+    "answer": "".join(answer).strip(),
+    "tools": tools_used,
+    "sources": sorted(set(sources)),
+    "response": response,
+  }
+  if show:
+    print("Tools used:", *result["tools"] or ["none"], sep="\n  ")
+    print("\nAnswer:\n" + result["answer"])
+    print("\nSources:", ", ".join(result["sources"]) or "none returned")
+  return result
+
+
+result = ask(
+  agent.id,
+  "Guten Tag, mein Akku ist nach zwei Monaten kaputt. Ist das Garantie?",
+)
+=== CELL 17 markdown ===
+**Optional:** the full response, as returned by the API.
+=== CELL 18 code ===
+# result["response"].model_dump()
+=== CELL 19 markdown ===
+## 6. The Agent is an object
+
+Everything you set in Studio is stored in the Agent: model, instructions,
+parameters, and tools.
+=== CELL 20 code ===
+agent = client.beta.agents.get(agent_id=agent.id)
+print("Name:        ", agent.name)
+print("Model:       ", agent.model)
+print("Version:     ", agent.version)
+print("Parameters:  ", agent.completion_args)
+print("Tools:       ", [tool_as_dict(t) for t in agent.tools or []])
+print("Instructions:\n" + (agent.instructions or ""))
+=== CELL 21 markdown ===
+## 7. The documents in a Library
+=== CELL 22 code ===
+library_id = library_ids[0]
+docs = client.beta.libraries.documents.list(library_id=library_id).data
+pd.DataFrame(
+  [
+    {
+      "name": d.name,
+      "status": str(d.process_status),
+      "pages": d.number_of_pages,
+      "size (bytes)": d.size,
+      "summary": (d.summary or "")[:80],
+    }
+    for d in docs
+  ]
+)
+=== CELL 23 markdown ===
+## 8. What did the ingestion see?
+
+Before blaming retrieval, check the text Mistral extracted from a document.
+For PDFs, Word, and PowerPoint files, this text comes from OCR: tables,
+charts, and scans may come out differently than you expect.
+=== CELL 24 code ===
+DOC_INDEX = 0
+text = client.beta.libraries.documents.text_content(
+  library_id=library_id, document_id=docs[DOC_INDEX].id
+).text
+print(f"{docs[DOC_INDEX].name}: {len(text)} characters\n")
+print(text[:1500])
+=== CELL 25 markdown ===
+## 9. Optional: compare two knowledge configurations
+
+Same questions, two knowledge configurations, and a table to record what you
+observe. The example compares your selected Library (configuration A) with
+the same Library plus an **outdated** refund policy (configuration B). Other
+ideas: a narrow vs. a broad Library, an original PDF vs. a cleaner text
+version.
+
+The cells create two temporary Agents (copies of your selected Agent's model
+and instructions) and one small Library, all named "AAIM test ...". The
+cleanup cell at the end deletes everything with that name. Document
+processing is rate-limited and billed: reuse Libraries rather than uploading
+the same documents again.
+=== CELL 26 code ===
+def make_test_agent(name, library_ids, base_agent):
+  """Create a temporary Agent like base_agent, using the given Libraries."""
+  return client.beta.agents.create(
+    model=base_agent.model,
+    name=name,
+    instructions=base_agent.instructions,
+    tools=[{"type": "document_library", "library_ids": library_ids}],
+  )
+
+
+outdated = create_library(
+  "AAIM test - outdated policy", ["refund_policy_2024.md"]
+)
+agent_a = make_test_agent("AAIM test A", [library_id], agent)
+agent_b = make_test_agent("AAIM test B", [library_id, outdated.id], agent)
+=== CELL 27 code ===
+questions = [
+  ("I bought a bike 20 days ago. Can I get a full refund?", "shop_policy"),
+  ("Can I book a test ride for Monday morning?", "shop_policy"),
+]
+
+rows = []
+for question, expected in questions:
+  a = ask(agent_a.id, question, show=False)
+  b = ask(agent_b.id, question, show=False)
+  rows.append(
+    {
+      "question": question,
+      "expected evidence": expected,
+      "A: answer": a["answer"],
+      "A: sources": ", ".join(a["sources"]),
+      "B: answer": b["answer"],
+      "B: sources": ", ".join(b["sources"]),
+      "observation": "",
+    }
+  )
+comparison = pd.DataFrame(rows)
+comparison  # noqa: B018 - display the table
+=== CELL 28 markdown ===
+Write your observations in the last column, or in your revision log. The goal
+is to understand the behaviour, not to win a benchmark.
+=== CELL 29 code ===
+# Cleanup: delete every Agent and Library whose name starts with "AAIM test".
+for test_agent in list_agents():
+  if test_agent.name.startswith("AAIM test"):
+    client.beta.agents.delete(agent_id=test_agent.id)
+    print("Deleted agent", test_agent.name)
+for test_library in list_libraries():
+  if test_library.name.startswith("AAIM test"):
+    client.beta.libraries.delete(library_id=test_library.id)
+    print("Deleted library", test_library.name)
+=== CELL 30 markdown ===
+## 10. Optional: processing status and reprocessing
+
+Reprocessing a document runs the extraction again, and **is billed again**.
+=== CELL 31 code ===
+status = client.beta.libraries.documents.status(
+  library_id=library_id, document_id=docs[DOC_INDEX].id
+)
+print(status.process_status)
+# client.beta.libraries.documents.reprocess(
+#   library_id=library_id, document_id=docs[DOC_INDEX].id
+# )
+=== CELL 32 markdown ===
+## 11. Going further
+
+Libraries are a **managed** RAG system: Mistral manages most low-level
+retrieval choices (extraction, chunking, embeddings, ranking). The API
+exposes a few controls, while the lower-level search tooling exposes
+substantially more:
+
+* [Libraries documentation](https://docs.mistral.ai/studio/search/libraries)
+  and [Agents & Conversations](https://docs.mistral.ai/studio/agents/agents-api);
+* [Agent tools](https://docs.mistral.ai/studio/agents/agent-tools), including
+  your own functions;
+* [Search Toolkit](https://docs.mistral.ai/studio/search/search-toolkit), for
+  building your own retrieval pipeline.

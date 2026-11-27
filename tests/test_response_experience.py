@@ -11,7 +11,8 @@ from openai.types.chat import ChatCompletionMessage
 
 from sleeplens.agent import ChatSession
 from sleeplens.analysis import analyze_sleep
-from sleeplens.query_policy import plan_query, render_facts
+from sleeplens.query_policy import plan_query
+from sleeplens.presentation import render_facts
 from sleeplens.response_planning import build_response_plan
 
 

@@ -25,7 +25,8 @@ from sleeplens.knowledge import load_knowledge, normalize_citation_format
 from sleeplens.llm import ModelError
 from sleeplens.product_rules import explain_blank_and_valid_zero, explain_product_rules
 from sleeplens.record_grounding import normalize_record_format
-from sleeplens.query_policy import explain_unavailable_measurement, plan_query, render_facts, search_query
+from sleeplens.query_policy import explain_unavailable_measurement, plan_query, search_query
+from sleeplens.presentation import render_facts
 from sleeplens.response_planning import build_response_plan, planned_tools, refine_query_plan, unpack_arguments
 from sleeplens.experience_context import pending_questions, scoped_experience
 from sleeplens.tools import ANALYZE_TOOL_NAME, ANALYZE_TOOL_SCHEMA, SEARCH_TOOL_NAME, SEARCH_TOOL_SCHEMA, dispatch_tool
@@ -35,7 +36,7 @@ from sleeplens.reply_policy import (
 )
 
 
-PROMPT_VERSION = "prompt-v30"
+PROMPT_VERSION = "prompt-v1"
 
 
 def _span_days(arguments):
@@ -399,14 +400,6 @@ class ChatSession:
             experience_context["pending_questions"] = [field for field in pending_questions(text)
                                                        if field not in experience_context["answered_fields"]]
             metadata["experience_context"] = deepcopy(experience_context)
-            sections = []
-            for paragraph in re.split(r"\n+", text):
-                ids = re.findall(r"\[(H\d+:[A-Za-z0-9_-]+)\]", paragraph)
-                if ids:
-                    topics = sorted({topic for ref in self.knowledge.references if ref["citation_id"] in ids
-                                     for topic in ref.get("topics", [])})
-                    sections.append({"citation_ids": list(dict.fromkeys(ids)), "topics": topics})
-            metadata["answer_sections"] = sections
             if record_output:
                 metadata["profile_id"] = record_output["profile_id"]
                 metadata["resolved_period"] = [record_output["period"]["start_date"], record_output["period"]["end_date"]]
@@ -530,7 +523,8 @@ class ChatSession:
                                "completion_tokens": None, "total_tokens": None}
                 result["model_calls"].append(call_record)
                 try:
-                    tools = planned_tools([ANALYZE_TOOL_SCHEMA, SEARCH_TOOL_SCHEMA])
+                    tools = [ANALYZE_TOOL_SCHEMA, SEARCH_TOOL_SCHEMA]
+                    tools = planned_tools(tools)
                     response = self.client.complete(messages, tools, timeout=remaining)
                 except ModelError:
                     call_record["status"] = "error"

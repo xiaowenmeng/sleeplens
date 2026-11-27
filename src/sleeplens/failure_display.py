@@ -5,7 +5,8 @@ from copy import deepcopy
 from datetime import date, timedelta
 import re
 
-from sleeplens.query_policy import render_facts, requested_detail_metrics
+from sleeplens.query_policy import requested_detail_metrics
+from sleeplens.presentation import render_facts
 from sleeplens.reply_policy import (
     message, policy_trace, record_issue, stage_facts, stage_question,
     stage_values, unavailable_period_reply, field_labels,
